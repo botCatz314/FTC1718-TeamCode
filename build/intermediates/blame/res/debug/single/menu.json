@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\menu\\main_menu.xml",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\8fe33fd572eac23cf50c40d65f83ca6fa5eadd1c\\output\\res\\menu\\main_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\menu\\menu_server.xml",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\d9734110382e29d4b5378cef3b5af47e9c3dcbcd\\output\\res\\menu\\menu_server.xml"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\menu\\ftc_robot_controller.xml",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\FtcRobotController\\build\\intermediates\\bundles\\default\\res\\menu\\ftc_robot_controller.xml"
+    }
+]

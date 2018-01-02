@@ -1,0 +1,7 @@
+#Thu Nov 02 19:30:20 MST 2017
+base.0=C\:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_ee7d4192e2a8c185cb26bbd3fc7751deaa47d1e3
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=C\:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_6568f9b05afa864d648412d8e1b5be60e707cd61\\classes.dex
+base.1=C\:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_6568f9b05afa864d648412d8e1b5be60e707cd61
+file.0=C\:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_ee7d4192e2a8c185cb26bbd3fc7751deaa47d1e3\\classes.dex

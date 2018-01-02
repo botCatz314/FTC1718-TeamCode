@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\texture_vertex_shader.glsl",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\366b52ade542450f431f19b1f79e3e0559fa4485\\output\\res\\raw\\texture_vertex_shader.glsl"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\nxtstartupsound.wav",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\598e20c8f574ed4cf6cf46c6a1fa16e741324e7c\\output\\res\\raw\\nxtstartupsound.wav"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\color_fragment_shader.glsl",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\366b52ade542450f431f19b1f79e3e0559fa4485\\output\\res\\raw\\color_fragment_shader.glsl"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\cube_mesh_vertex_shader.glsl",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\366b52ade542450f431f19b1f79e3e0559fa4485\\output\\res\\raw\\cube_mesh_vertex_shader.glsl"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\cube_mesh_fragment_shader.glsl",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\366b52ade542450f431f19b1f79e3e0559fa4485\\output\\res\\raw\\cube_mesh_fragment_shader.glsl"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\simple_vertex_shader.glsl",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\366b52ade542450f431f19b1f79e3e0559fa4485\\output\\res\\raw\\simple_vertex_shader.glsl"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\errormessage.wav",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\598e20c8f574ed4cf6cf46c6a1fa16e741324e7c\\output\\res\\raw\\errormessage.wav"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\chimedisconnect.wav",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\598e20c8f574ed4cf6cf46c6a1fa16e741324e7c\\output\\res\\raw\\chimedisconnect.wav"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\texture_fragment_shader.glsl",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\366b52ade542450f431f19b1f79e3e0559fa4485\\output\\res\\raw\\texture_fragment_shader.glsl"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\chimeconnect.wav",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\598e20c8f574ed4cf6cf46c6a1fa16e741324e7c\\output\\res\\raw\\chimeconnect.wav"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\debug\\raw\\warningmessage.wav",
+        "source": "C:\\Users\\ITSA-GAMINGHP2\\.android\\build-cache\\598e20c8f574ed4cf6cf46c6a1fa16e741324e7c\\output\\res\\raw\\warningmessage.wav"
+    }
+]
