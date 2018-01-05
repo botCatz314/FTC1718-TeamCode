@@ -35,6 +35,9 @@ public class Autonomous_B1 extends LinearOpMode {
     private DcMotor rightMotor2;
     private ColorSensor colorSensor;
     double powerOff = 0;
+    public boolean Right = false;
+    public boolean Center = false;
+    public boolean Left = false;
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -64,18 +67,7 @@ public class Autonomous_B1 extends LinearOpMode {
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
-        /*
-         * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-         * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-         * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-         * web site at https://developer.vuforia.com/license-manager.
-         *
-         * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-         * random data. As an example, here is a example of a fragment of a valid key:
-         *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-         * Once you've obtained a license key, copy the string from the Vuforia web site
-         * and paste it in to your code onthe next line, between the double quotes.
-         */
+
         parameters.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/";
 
         /*
@@ -139,6 +131,15 @@ public class Autonomous_B1 extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                 }
             }
+            if (vuMark == RelicRecoveryVuMark.CENTER){
+                Center = true;
+            }
+            if (vuMark == RelicRecoveryVuMark.RIGHT){
+                Right = true;
+            }
+            if (vuMark == RelicRecoveryVuMark.LEFT){
+                Left = true;
+            }
             else {
                 telemetry.addData("VuMark", "not visible");
             }
@@ -156,7 +157,7 @@ public class Autonomous_B1 extends LinearOpMode {
         final double encoderCounts = 560;
         final double driveReduction = 4.0;
         final double wheelDiameter = 90;
-        final double countPerMM = (encoderCounts * driveReduction)/(wheelDiameter * 3.14159);
+        final double countPerMM = (encoderCounts * driveReduction)/(wheelDiameter * 3.14159265);
         int rightTarget;
         int leftTarget;
         resetAllEncoders();
