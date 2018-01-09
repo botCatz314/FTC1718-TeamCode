@@ -4,12 +4,12 @@
         "source": "C:\\Users\\ITSA-5\\.gradle\\caches\\transforms-1\\files-1.1\\FtcCommon-release.aar\\2bf0db56b69d82d774b60f13060ad2e1\\res\\layout\\activity_generic_settings.xml"
     },
     {
-        "merged": "C:\\Users\\ITSA-5\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\androidTest\\debug\\xml_app_settings.xml.flat",
-        "source": "C:\\Users\\ITSA-5\\Desktop\\ftc_app\\FtcRobotController\\build\\intermediates\\bundles\\debug\\res\\xml\\app_settings.xml"
-    },
-    {
         "merged": "C:\\Users\\ITSA-5\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout_i2c_device.xml.flat",
         "source": "C:\\Users\\ITSA-5\\.gradle\\caches\\transforms-1\\files-1.1\\FtcCommon-release.aar\\2bf0db56b69d82d774b60f13060ad2e1\\res\\layout\\i2c_device.xml"
+    },
+    {
+        "merged": "C:\\Users\\ITSA-5\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\androidTest\\debug\\xml_app_settings.xml.flat",
+        "source": "C:\\Users\\ITSA-5\\Desktop\\ftc_app\\FtcRobotController\\build\\intermediates\\bundles\\debug\\res\\xml\\app_settings.xml"
     },
     {
         "merged": "C:\\Users\\ITSA-5\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_ic_launcher.png.flat",
