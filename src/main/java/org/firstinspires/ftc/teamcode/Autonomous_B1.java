@@ -140,10 +140,21 @@ public class Autonomous_B1 extends LinearOpMode {
             if (vuMark == RelicRecoveryVuMark.LEFT){
                 Left = true;
             }
+            if (vuMark != RelicRecoveryVuMark.CENTER){
+                Center = false;
+            }
+            if (vuMark != RelicRecoveryVuMark.RIGHT){
+                Right = false;
+            }
+            if (vuMark != RelicRecoveryVuMark.LEFT){
+                Left = false;
+            }
             else {
                 telemetry.addData("VuMark", "not visible");
             }
-
+            telemetry.addData(Left);
+            telemetry.addData(Center);
+            telemetry.addData(Right);
             telemetry.update();
         }
     }
