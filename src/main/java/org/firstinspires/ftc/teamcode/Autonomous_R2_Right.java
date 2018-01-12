@@ -39,7 +39,7 @@ public class Autonomous_R2_Right extends LinearOpMode {
         clawHeight = hardwareMap.dcMotor.get("armHeight");
         clawMotor = hardwareMap.dcMotor.get("clawMotor");
         servoStick = hardwareMap.servo.get("servoStick");
-        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor"); //gets property of color sensor from phone
+      //  colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor"); //gets property of color sensor from phone
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
         rightMotor2.setDirection(DcMotor.Direction.REVERSE); //sets the right motors reverse
 

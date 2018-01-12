@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Autonomous_R1_Left extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
-    private ColorSensor colorSensor;     //declares the color sensor
+   // private ColorSensor colorSensor;     //declares the color sensor
     private Servo servoStick; //declares servos
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
@@ -31,7 +31,7 @@ public class Autonomous_R1_Left extends LinearOpMode {
         leftMotor2 = hardwareMap.dcMotor.get("leftMotor2"); //gets property for right motor from phone
         rightMotor2 = hardwareMap.dcMotor.get("rightMotor2"); //gets property of second right motor from phone
         servoStick = hardwareMap.servo.get("servoStick"); //gets property of servo for lowering shaft to hit jewel from phone
-        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor"); //gets property of color sensor from phone
+        //colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor"); //gets property of color sensor from phone
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
         rightMotor2.setDirection(DcMotor.Direction.REVERSE); //sets the right motors reverse
@@ -56,9 +56,9 @@ public class Autonomous_R1_Left extends LinearOpMode {
 
         servoStick.setPosition(1);//servo stick down motion
         sleep(2000);//pause code for 2 seconds
-        if(colorSensor.blue() > colorSensor.red()){// asking if red's presence is greater than blue
-            telemetry.addData("red: ", colorSensor.red());//prints red's value to phone
-            telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
+        if(true){//colorSensor.blue() > colorSensor.red()){// asking if red's presence is greater than blue
+           // telemetry.addData("red: ", colorSensor.red());//prints red's value to phone
+          //  telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
             telemetry.update();//prints the telemetry to screen
             Drive(.2);// moves forwars at 40% power
             sleep(500); // pause for 1/2 second
@@ -67,9 +67,9 @@ public class Autonomous_R1_Left extends LinearOpMode {
             servoStick.setPosition(0); // bring up the jewel stick
 
         }
-        else if(colorSensor.red() > colorSensor.blue() ||true){// if blue is greater than red...
-            telemetry.addData("red: ", colorSensor.red());// queues value of red to be printed
-            telemetry.addData("blue: ", colorSensor.blue());//queues value of blue to be printed
+        else if(true){//colorSensor.red() > colorSensor.blue() ||true){// if blue is greater than red...
+            //telemetry.addData("red: ", colorSensor.red());// queues value of red to be printed
+         //   telemetry.addData("blue: ", colorSensor.blue());//queues value of blue to be printed
             telemetry.update();// prints queued data to phone
             Drive_Backwards(.2); // drives backwards at 40% power
             sleep(500); // stops for 1/2 a seconds
@@ -80,6 +80,7 @@ public class Autonomous_R1_Left extends LinearOpMode {
             Brake();//stops all wheel movement
         }
         servoStick.setPosition(0);// auxiliary bringing up of jewel whacker6
+
         Drive(.4);
         sleep(1000);
         Brake();
@@ -94,6 +95,7 @@ public class Autonomous_R1_Left extends LinearOpMode {
 
 
     }
+
     private void Drive(double power){//function for driving forwards
         leftMotor.setPower(power);//this turns on the left motor=to power input
         rightMotor.setPower(power);//this turns on the right motor=to power input

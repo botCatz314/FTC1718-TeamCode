@@ -31,7 +31,7 @@ public class Autonomous_B2_Right extends LinearOpMode {
         leftMotor2 = hardwareMap.dcMotor.get("leftMotor2"); //gets property for right motor from phone
         rightMotor2 = hardwareMap.dcMotor.get("rightMotor2"); //gets property of second right motor from phone
         servoStick = hardwareMap.servo.get("servoStick"); //gets property of servo for lowering shaft to hit jewel from phone
-        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor"); //gets property of color sensor from phone
+       // colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor"); //gets property of color sensor from phone
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
         rightMotor2.setDirection(DcMotor.Direction.REVERSE); //sets the right motors reverse

@@ -35,7 +35,8 @@ import java.util.Timer;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-@Disabled
+/*
+//@Disabled
 @Autonomous(name = "Autonomous_B1", group = "Pushbot" )
 public class Autonomous_B1 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
@@ -45,7 +46,7 @@ public class Autonomous_B1 extends LinearOpMode {
     static final double Kp_Turn = 0.65f; //P constant for PID turns
     static final double Kp_Drive = 0.13f; //P constant for gyro corrective dive
     BNO055IMU imu; //declares integrated gyro
-   // public Vuforia vuforia;
+    public Vuforia vuforia;
 
     public void runOpMode() {
       //  vuforia.runOpMode();
@@ -129,7 +130,7 @@ public class Autonomous_B1 extends LinearOpMode {
             servoStick.setPosition(0);
         }
 */
-        sleep(3000);
+        //sleep(3000);
         //Erik's code
        /*
         servoStick.setPosition(0); //moves servoStick down so it can hit jewels and reads color
@@ -147,7 +148,7 @@ public class Autonomous_B1 extends LinearOpMode {
             */
 
 
-    }
+ /*   }
     public void resetAllEncoders() //function that allows us to stop and reset the values of all the encoders
     {
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //resets right encoder
@@ -313,3 +314,4 @@ public class Autonomous_B1 extends LinearOpMode {
        leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
+*/
