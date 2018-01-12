@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-@Disabled
+
 @Autonomous(name = "Autonomous_R1", group = "Concept" )
 
 public class Autonomous_R1_Left extends LinearOpMode {
@@ -67,7 +67,7 @@ public class Autonomous_R1_Left extends LinearOpMode {
             servoStick.setPosition(0); // bring up the jewel stick
 
         }
-        else if(colorSensor.red() > colorSensor.blue()){// if blue is greater than red...
+        else if(colorSensor.red() > colorSensor.blue() ||true){// if blue is greater than red...
             telemetry.addData("red: ", colorSensor.red());// queues value of red to be printed
             telemetry.addData("blue: ", colorSensor.blue());//queues value of blue to be printed
             telemetry.update();// prints queued data to phone

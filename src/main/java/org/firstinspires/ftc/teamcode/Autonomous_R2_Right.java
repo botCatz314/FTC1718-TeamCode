@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-@Disabled
 @Autonomous(name = "Autonomous_R2", group = "Concept" )
 public class Autonomous_R2_Right extends LinearOpMode {
     private DcMotor leftMotor;
@@ -61,7 +60,7 @@ public class Autonomous_R2_Right extends LinearOpMode {
             Turn_Right(0.25);
             sleep(2000);
         }
-        else if(colorSensor.red() > colorSensor.blue()){// if blue is greater than red...
+        else if(colorSensor.red() > colorSensor.blue() || true){// if blue is greater than red...
             Drive(-.2);// moves forwars at 40% power
             sleep(500); // pause for 1/2 second
             Brake(); // stops wheel motion

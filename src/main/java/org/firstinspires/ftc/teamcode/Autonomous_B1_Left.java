@@ -16,7 +16,7 @@ import com.sun.tools.javac.code.Attribute;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-@Disabled
+
 @Autonomous(name = "Autonomous_B1", group = "Concept" )
 
 public class Autonomous_B1_Left extends LinearOpMode {
@@ -25,6 +25,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
     private Servo servoStick; //declares servos
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
+    private boolean NEEDSTOBEDELETED = true;
 
     @Override
     public void runOpMode() {
@@ -59,7 +60,8 @@ public class Autonomous_B1_Left extends LinearOpMode {
 
         servoStick.setPosition(1);//servo stick down motion
         sleep(2000);//pause code for 2 seconds
-        if(colorSensor.red() > colorSensor.blue()){// asking if red's presence is greater than blue
+       //
+         if(colorSensor.red() > colorSensor.blue() || NEEDSTOBEDELETED ){// asking if red's presence is greater than blue
             telemetry.addData("red: ", colorSensor.red());//prints red's value to phone
             telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
             telemetry.update();//prints the telemetry to screen

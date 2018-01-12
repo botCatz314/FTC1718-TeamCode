@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-@Disabled
+
 @Autonomous(name = "Autonomous_B2", group = "Concept" )
 
 public class Autonomous_B2_Right extends LinearOpMode {
@@ -56,7 +56,7 @@ public class Autonomous_B2_Right extends LinearOpMode {
 
         servoStick.setPosition(1);//servo stick down motion
         sleep(2000);//pause code for 2 seconds
-        if(colorSensor.red() > colorSensor.blue()){// asking if red's presence is greater than blue
+        if(colorSensor.red() > colorSensor.blue() || true){// asking if red's presence is greater than blue
             telemetry.addData("red: ", colorSensor.red());//prints red's value to phone
             telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
             telemetry.update();//prints the telemetry to screen

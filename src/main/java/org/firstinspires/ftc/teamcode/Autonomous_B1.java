@@ -35,6 +35,7 @@ import java.util.Timer;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
+@Disabled
 @Autonomous(name = "Autonomous_B1", group = "Pushbot" )
 public class Autonomous_B1 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
@@ -46,7 +47,6 @@ public class Autonomous_B1 extends LinearOpMode {
     BNO055IMU imu; //declares integrated gyro
    // public Vuforia vuforia;
 
-    @Override
     public void runOpMode() {
       //  vuforia.runOpMode();
        // if (vuforia.telemetry.addData("VuMark", "%s visible") == vuforia.telemetry.addData("LEFT", "%s visible")){
