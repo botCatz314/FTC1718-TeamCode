@@ -1,17 +1,21 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+
 /**
- * Created by ITSA-GAMINGHP2 on 11/2/2017.
+ * Created by ITSA-GAMINGHP2 on 1/12/2018.
  */
 @TeleOp
-public class BotCatzTeleOp extends LinearOpMode {
-    // declare motors as variables
+public class botCatzTeleOp extends LinearOpMode {
+
+        // declare motors as variables
     private DcMotor leftMotor;// declares left motor as a variable
     private DcMotor rightMotor;// declares right motor as a variable
     private DcMotor leftMotor2;// declares left motor2 as a variable
@@ -20,9 +24,7 @@ public class BotCatzTeleOp extends LinearOpMode {
     private DcMotor clawMotor;// declares claw motor as a variable
     private DcMotor armHeight;//declares armHeight as a variable
     private Servo servoStick;//declares servoStick as a variable
-    //private CRServo clawAngle;
-
-    @Override
+    //private CRServo clawAngle; \
     public void runOpMode() {
         leftMotor = hardwareMap.dcMotor.get("leftMotor");//this is the specifics of the code for the left motor
         rightMotor = hardwareMap.dcMotor.get("rightMotor");//this is the specifics of the code for the right motor
@@ -32,11 +34,12 @@ public class BotCatzTeleOp extends LinearOpMode {
         clawMotor = hardwareMap.dcMotor.get("clawMotor");//this is the specifics of the code for the claw motor
         armHeight = hardwareMap.dcMotor.get("armHeight");//specifies the value of armHeight
         servoStick = hardwareMap.servo.get("servoStick");//specifies the value of servoStick
-     //   clawAngle = hardwareMap.crservo.get("clawAngle");
+        //   clawAngle = hardwareMap.crservo.get("clawAngle");
         leftMotor.setDirection(DcMotor.Direction.REVERSE);//set left motor into drive in reverse
         leftMotor2.setDirection(DcMotor.Direction.REVERSE);//set left motor2 into drive in reverse
+
         waitForStart();//waits until we hit play
-        while (opModeIsActive()) {//it loops the code inside until we hit stop
+        while(opModeIsActive()) {//it loops the code inside until we hit stop
             leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor = to joystick value
             leftMotor2.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
             rightMotor.setPower(gamepad1.right_stick_y);//sets power of rightMotor = to joystick value
@@ -75,8 +78,3 @@ public class BotCatzTeleOp extends LinearOpMode {
         }
     }
 }
-
-
-
-
-

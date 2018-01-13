@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Jan 11 21:02:21 MST 2018
+#Fri Jan 12 23:10:10 MST 2018
 20.base=C\:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\assets\\debug
 143.base=C\:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\assets\\debug
 237.path=images/ftcDigitalChannel.png
