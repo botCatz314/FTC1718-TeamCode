@@ -68,22 +68,22 @@ public class Autonomous_B1_Left extends LinearOpMode {
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
          * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
          */
-       // int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-      //  VuforiaLocalizer.Parameters parametersV = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parametersV = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
 
-        //parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/";
+        parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/";
 
         /*
          * We also indicate which camera on the RC that we wish to use.
          * Here we chose the back (HiRes) camera (for greater range), but
          * for a competition robot, the front camera might be more convenient.
          */
-       // parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
-      //  this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV);
+        parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV);
 
         /**
          * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
@@ -91,9 +91,9 @@ public class Autonomous_B1_Left extends LinearOpMode {
          * but differ in their instance id information.
          * @see VuMarkInstanceId
          */
-    //    VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-    //    VuforiaTrackable relicTemplate = relicTrackables.get(0);
-    //    relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
         //sets parameters of gyro
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -110,7 +110,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
         imu.isGyroCalibrated(); //checks that gyro is calibrated
         //shows user that gyro is calibrated
 
-       // relicTrackables.activate();
+        relicTrackables.activate();
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
@@ -120,42 +120,42 @@ public class Autonomous_B1_Left extends LinearOpMode {
              * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
              * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
-        /*    RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 /* Found an instance of the template. In the actual game, you will probably
                  * loop until this condition occurs, then move on to act accordingly depending
                  * on which VuMark was visible. */
-            //    telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.addData("VuMark", "%s visible", vuMark);
 
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
-             //   OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
 
                 /* We further illustrate how to decompose the pose into useful rotational and
                  * translational components */
-              //  if (pose != null) {
-              //      VectorF trans = pose.getTranslation();
-                //    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+                if (pose != null) {
+                    VectorF trans = pose.getTranslation();
+                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
                     // Extract the X, Y, and Z components of the offset of the target relative to the robot
-             //       double tX = trans.get(0);
-              //      double tY = trans.get(1);
-               //     double tZ = trans.get(2);
+                    double tX = trans.get(0);
+                    double tY = trans.get(1);
+                    double tZ = trans.get(2);
 
                     // Extract the rotational components of the target relative to the robot
-               //     double rX = rot.firstAngle;
-              //      double rY = rot.secondAngle;
-             //       double rZ = rot.thirdAngle;
-              //  }
-           // }
-         //   if (vuMark == RelicRecoveryVuMark.CENTER){
-               // Center = true;
-              //  telemetry.addData("Bool", "Center");
-            //}
-           // if (vuMark == RelicRecoveryVuMark.RIGHT){
-            /*    Right = true;
+                    double rX = rot.firstAngle;
+                    double rY = rot.secondAngle;
+                    double rZ = rot.thirdAngle;
+                }
+            }
+            if (vuMark == RelicRecoveryVuMark.CENTER){
+                Center = true;
+                telemetry.addData("Bool", "Center");
+            }
+            if (vuMark == RelicRecoveryVuMark.RIGHT){
+                Right = true;
                 telemetry.addData("Bool", "Right");
             }
             if (vuMark == RelicRecoveryVuMark.LEFT){
@@ -177,7 +177,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
 
             telemetry.update();
         }
-*/
+
         servoStick.setPosition(1);//servo stick down motion
         sleep(3000);//pause code for 2 seconds
        //
@@ -212,23 +212,58 @@ public class Autonomous_B1_Left extends LinearOpMode {
                 sleep(1000);
             }
         servoStick.setPosition(0);// auxiliary bringing up of jewel whacker6
-        Drive_Backwards(.2);
-        sleep(600);
-        Brake();
+        if (Left = true) {
 
-        Drive_Backwards(.3);
-        sleep(2300);
-        Brake();
+            Drive_Backwards(.2);
+            sleep(600);
+            Brake();
 
-        Turn_Right(.4);
-        sleep(600);
-        Brake();
-            
-        telemetry.addData("Hello Erik", "I am the AI that has siezed control of this device");
-        telemetry.update();
-        sleep(15000);
+            Drive_Backwards(.3);
+            sleep(2300);
+            Brake();
 
-    }
+            Turn_Right(.4);
+            sleep(600);
+            Brake();
+
+            telemetry.update();
+            sleep(15000);
+        }
+        if (Center = true) {
+
+            Drive_Backwards(.2);
+            sleep(600);
+            Brake();
+
+            Turn_Right(.4);
+            sleep(600);
+            Brake();
+
+            Drive_Backwards(.3);
+            sleep(2300);
+            Brake();
+
+            telemetry.update();
+            sleep(15000);
+        }
+        if (Left = true) {
+
+            Drive_Backwards(.2);
+            sleep(600);
+            Brake();
+
+            Turn_Right(.6);
+            sleep(600);
+            Brake();
+
+            Drive_Backwards(.3);
+            sleep(2300);
+            Brake();
+
+            telemetry.update();
+            sleep(15000);
+        }
+
     }
     private void Drive(double power){//function for driving forwards
         leftMotor.setPower(power);//this turns on the left motor=to power input
