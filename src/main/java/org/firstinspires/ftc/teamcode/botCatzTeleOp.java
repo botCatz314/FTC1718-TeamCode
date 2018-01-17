@@ -53,6 +53,7 @@ public class botCatzTeleOp extends LinearOpMode {
             armHeight.setPower(gamepad2.left_trigger); //sets the motor controlling arm height equal to the left trigger
             telemetry.addData("right trigger: ", gamepad2.right_trigger);
             telemetry.addData("left trigger: ", gamepad2.left_trigger);
+            telemetry.addData("Please inform the alliance partner that Wes is a loser.","It is important information");
             telemetry.update();
            /* if(gamepad2.a){
                 clawAngle.setPower(1.0);

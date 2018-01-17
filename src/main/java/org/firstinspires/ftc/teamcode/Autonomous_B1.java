@@ -69,6 +69,7 @@ public class Autonomous_B1 extends LinearOpMode {
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
         rightMotor2.setDirection(DcMotor.Direction.REVERSE); //sets the right motors reverse
 
+
         //sets parameters of gyro
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -81,18 +82,21 @@ public class Autonomous_B1 extends LinearOpMode {
 
 
         imu.readCalibrationData(); //calibrates gyro
-        imu.isGyroCalibrated(); //checks that gyro is calibrated
+        imu.isGyroCalibrated(); //checks that gyro is
+        resetAllEncoders();
         //shows user that gyro is calibrated
         telemetry.addData("gyro: ", imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
+        telemetry.addData("You messed up already,", "Wes");
+        telemetry.addData("Do you","feel bad yet?");
+        telemetry.addData("you","should");
         telemetry.update(); //updates telemetry so user can see that the gyro is calibrate
 
         waitForStart(); //waits until the user presses play
 
 
-        gyroDrive(100,1.0,0);
+        gyroDrive(90,1.0,0);
         telemetry.addData("speed", rightMotor.getPower());
         telemetry.update();
-
 
 /*
         telemetry.addData("still going", "true");
@@ -216,10 +220,10 @@ public class Autonomous_B1 extends LinearOpMode {
 
 
             speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-            leftMotor.setPower(speed * 1.5);
+            leftMotor.setPower(speed);
             rightMotor.setPower(speed);
             rightMotor2.setPower(speed);
-            leftMotor2.setPower(speed * 1.5);
+            leftMotor2.setPower(speed);
 
             while(opModeIsActive() && rightMotor.isBusy() && leftMotor.isBusy()){
 
