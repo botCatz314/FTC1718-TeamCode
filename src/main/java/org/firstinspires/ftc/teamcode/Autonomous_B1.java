@@ -35,7 +35,7 @@ import java.util.Timer;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-/*
+
 //@Disabled
 @Autonomous(name = "Autonomous_B1", group = "Pushbot" )
 public class Autonomous_B1 extends LinearOpMode {
@@ -93,13 +93,15 @@ public class Autonomous_B1 extends LinearOpMode {
         telemetry.addData("speed", rightMotor.getPower());
         telemetry.update();
 
+
+/*
         telemetry.addData("still going", "true");
         telemetry.update();
         sleep(10000);
         imu.readCalibrationData();
         imu.isGyroCalibrated();
         telemetry.addData("calibrate: ", imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
-/*
+
         servoStick.setPosition(1);
         sleep(3000);
 
@@ -129,8 +131,8 @@ public class Autonomous_B1 extends LinearOpMode {
             telemetry.update();
             servoStick.setPosition(0);
         }
-*/
-        //sleep(3000);
+
+        //sleep(3000);*/
         //Erik's code
        /*
         servoStick.setPosition(0); //moves servoStick down so it can hit jewels and reads color
@@ -148,7 +150,7 @@ public class Autonomous_B1 extends LinearOpMode {
             */
 
 
- /*   }
+    }
     public void resetAllEncoders() //function that allows us to stop and reset the values of all the encoders
     {
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //resets right encoder
@@ -314,4 +316,3 @@ public class Autonomous_B1 extends LinearOpMode {
        leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
-*/

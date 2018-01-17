@@ -84,15 +84,7 @@ public class Autonomous_B2_Right extends LinearOpMode {
         Drive_Backwards(.2);
         sleep(2300);
         Brake();
-
-
-        Turn_Right(.3);
-        sleep(500);
-        Brake();
-        Drive(.3);
-        sleep(500);
-        Brake();
-
+        sleep(15000);
     }
 
     private void Drive(double power){//function for driving forwards

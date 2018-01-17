@@ -31,7 +31,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name = "Autonomous_B1", group = "Concept" )
-
+@Disabled
 public class Autonomous_B1_Left extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
     private ColorSensor colorSensor;     //declares the color sensor
@@ -221,12 +221,9 @@ public class Autonomous_B1_Left extends LinearOpMode {
         Brake();
 
         Turn_Right(.4);
-        sleep(300);
+        sleep(600);
         Brake();
-
-        Drive(.2);
-        sleep(400);
-        Brake();
+            
         telemetry.addData("Hello Erik", "I am the AI that has siezed control of this device");
         telemetry.update();
         sleep(15000);
