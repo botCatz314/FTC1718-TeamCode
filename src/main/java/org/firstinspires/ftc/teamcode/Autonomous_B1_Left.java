@@ -31,7 +31,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name = "Autonomous_B1", group = "Concept" )
-@Disabled
+//@Disabled
 public class Autonomous_B1_Left extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
     private ColorSensor colorSensor;     //declares the color sensor
