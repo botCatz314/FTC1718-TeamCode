@@ -39,6 +39,7 @@ public class TestAuto extends LinearOpMode {
     public boolean Left = false;
     public static final String TAG = "Vuforia VuMark Sample";
 
+    public double pi = 3.1415926535897932;
     OpenGLMatrix lastLocation = null;
 
     /**
@@ -107,6 +108,10 @@ public class TestAuto extends LinearOpMode {
         //shows user that gyro is calibrated
 
         relicTrackables.activate();
+        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
@@ -193,9 +198,47 @@ public class TestAuto extends LinearOpMode {
 
 }
 
-        public void DriveWithEncoders(){
-             double EncoderCounts = 7;
-             double DriveGearReduction = 2.0;
+        public void DriveWithEncoders(double distance, double speed){
+             double off = 0;
+             double encoderCounts = 7;
+             double driveGearReduction = 4.0;
+             double wheelDiameter = 9;
+             double countsPerMM = (encoderCounts * driveGearReduction)/(wheelDiameter*pi);
+
+             int newLeftTarget;
+             int newRightTarget;
+
+             if(opModeIsActive()){
+                 newLeftTarget = leftMotor.getCurrentPosition() + (int)(countsPerMM*distance);
+                 newRightTarget = rightMotor.getCurrentPosition() + (int)(countsPerMM * distance);
+
+                 leftMotor.setTargetPosition(newLeftTarget);
+                 rightMotor.setTargetPosition(newRightTarget);
+
+                 leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                 rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                 leftMotor.setPower(speed);
+                 rightMotor.setPower(speed);
+                 rightMotor2.setPower(speed);
+                 leftMotor2.setPower(speed);
+
+                 while(opModeIsActive() && rightMotor.isBusy() && leftMotor.isBusy()){
+                     telemetry.addData("target left position: ", newLeftTarget);
+                     telemetry.addData("target right position: ", newRightTarget);
+                     telemetry.addData("current left position", leftMotor.getCurrentPosition());
+                     telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
+                     telemetry.update();
+                 }
+                  leftMotor.setPower(off);
+                  rightMotor.setPower(off);
+                  rightMotor2.setPower(off);
+                  leftMotor2.setPower(off);
+
+                  leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                  rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+             }
 
 
 
