@@ -247,7 +247,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
             telemetry.update();
             sleep(15000);
         }
-        if (Left = true && UsingEncoders = false) {
+        if (Right = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
             sleep(600);
