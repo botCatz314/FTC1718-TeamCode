@@ -95,7 +95,6 @@ public class Autonomous_B1 extends LinearOpMode {
         waitForStart(); //waits until the user presses play
 
 
-        gyroDrive(90,1.0,0);
         telemetry.addData("speed", rightMotor.getPower());
         telemetry.update();
 
@@ -191,7 +190,7 @@ public class Autonomous_B1 extends LinearOpMode {
         priorError = error;
         return Range.clip((error *PCoeff)+ (integral *Ki) + (derivative * Kd), -1, 1); //returns PID value
     }
-    public void gyroDrive(double distance, double speed, double angle){ //function to move based off the gyro
+  /*  public void gyroDrive(double distance, double speed, double angle){ //function to move based off the gyro
         int newLeftTarget; //Declares a variable to be the distance that the left motor wants to move
         int newRightTarget; // declares a variable to hold the distance that the left motor wants to move
         int moveCounts; //holds the number of counts the motor needs to go to travel the correct distance
@@ -267,7 +266,7 @@ public class Autonomous_B1 extends LinearOpMode {
            leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             runUsingEncoders();
         }
-    }
+    } */
     private void gyroTurn(double speed, double angle){
 
         while(opModeIsActive() && !onHeading(speed, angle, Kp_Turn) ){

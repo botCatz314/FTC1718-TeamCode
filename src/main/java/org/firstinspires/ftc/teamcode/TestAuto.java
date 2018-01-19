@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -38,7 +39,7 @@ public class TestAuto extends LinearOpMode {
     public boolean Center = false;
     public boolean Left = false;
     public static final String TAG = "Vuforia VuMark Sample";
-
+    double Kp = 0.35;
     public double pi = 3.1415926535897932;
     OpenGLMatrix lastLocation = null;
 
@@ -191,57 +192,93 @@ public class TestAuto extends LinearOpMode {
                 telemetry.addData("Red val", colorSensor.red());
                 telemetry.update();
             }
-
+           DriveWithEncoders(100, 0.2);
 
         }
 
 
 }
 
-        public void DriveWithEncoders(double distance, double speed){
-             double off = 0;
-             double encoderCounts = 7;
-             double driveGearReduction = 4.0;
-             double wheelDiameter = 9;
-             double countsPerMM = (encoderCounts * driveGearReduction)/(wheelDiameter*pi);
+        public void DriveWithEncoders(double distance, double speed) {
+            double off = 0;
+            double encoderCounts = 7;
+            double driveGearReduction = 4.0;
+            double wheelDiameter = 9;
+            double countsPerMM = (encoderCounts * driveGearReduction) / (wheelDiameter * pi);
 
-             int newLeftTarget;
-             int newRightTarget;
+            int newLeftTarget;
+            int newRightTarget;
 
-             if(opModeIsActive()){
-                 newLeftTarget = leftMotor.getCurrentPosition() + (int)(countsPerMM*distance);
-                 newRightTarget = rightMotor.getCurrentPosition() + (int)(countsPerMM * distance);
+            if (opModeIsActive()) {
+                newLeftTarget = leftMotor.getCurrentPosition() + (int) (countsPerMM * distance);
+                newRightTarget = rightMotor.getCurrentPosition() + (int) (countsPerMM * distance);
 
-                 leftMotor.setTargetPosition(newLeftTarget);
-                 rightMotor.setTargetPosition(newRightTarget);
+                leftMotor.setTargetPosition(newLeftTarget);
+                rightMotor.setTargetPosition(newRightTarget);
 
-                 leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                 rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                 leftMotor.setPower(speed);
-                 rightMotor.setPower(speed);
-                 rightMotor2.setPower(speed);
-                 leftMotor2.setPower(speed);
+                leftMotor.setPower(speed);
+                rightMotor.setPower(speed);
+                rightMotor2.setPower(speed);
+                leftMotor2.setPower(speed);
 
-                 while(opModeIsActive() && rightMotor.isBusy() && leftMotor.isBusy()){
-                     telemetry.addData("target left position: ", newLeftTarget);
-                     telemetry.addData("target right position: ", newRightTarget);
-                     telemetry.addData("current left position", leftMotor.getCurrentPosition());
-                     telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
-                     telemetry.update();
+                while (opModeIsActive() && rightMotor.isBusy() && leftMotor.isBusy()) {
+                    telemetry.addData("target left position: ", newLeftTarget);
+                    telemetry.addData("target right position: ", newRightTarget);
+                    telemetry.addData("current left position", leftMotor.getCurrentPosition());
+                    telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
+                    telemetry.update();
+                }
+                leftMotor.setPower(off);
+                rightMotor.setPower(off);
+                rightMotor2.setPower(off);
+                leftMotor2.setPower(off);
+
+                leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            }
+        }
+
+             public double CalculateError(double desiredAngle){
+                 double error;
+                 error = desiredAngle - imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle;
+                 return error;
+    }
+
+            private boolean onHeading(double speed, double angle, double Kp){
+                 double error;
+                 double steer;
+                 boolean onTarget = false;
+                 double leftSpeed;
+                 double rightSpeed;
+
+                error = CalculateError(angle);
+
+                 if(Math.abs(error) <=1){
+                     steer = 0.0;
+                     leftSpeed = 0.0;
+                     rightSpeed = 0.0;
+                     onTarget = true;
                  }
-                  leftMotor.setPower(off);
-                  rightMotor.setPower(off);
-                  rightMotor2.setPower(off);
-                  leftMotor2.setPower(off);
+                 else{
+                     steer = getSteer(error, Kp);
+                     rightSpeed = speed * steer;
+                     leftSpeed = -rightSpeed;
+                 }
+                 leftMotor.setPower(leftSpeed);
+                 rightMotor.setPower(rightSpeed);
+                 rightMotor2.setPower(rightSpeed);
+                 leftMotor2.setPower(leftSpeed);
+                 return onTarget;
+            }
 
-                  leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                  rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-             }
+            public double getSteer(double error, double Kp){
 
 
+                return (error*Kp);
+            }
 
-}
-
-}
+        }
