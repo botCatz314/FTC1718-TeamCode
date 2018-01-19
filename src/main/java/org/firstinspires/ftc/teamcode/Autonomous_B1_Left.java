@@ -188,7 +188,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
                     telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
                     telemetry.update();//prints the telemetry to screen
                     sleep(4000); //pause for 4 seconds
-                    Drive(.2);// moves forwars at 40% power
+                    Drive_Forwards(.2);// moves forwards at 40% power
                     sleep(500); // pause for 1/2 second
                     Brake(); // stops wheel motion
                     sleep(500);
@@ -247,7 +247,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
             telemetry.update();
             sleep(15000);
         }
-        if (Left = true && UsingEncoders = false) {
+        if (Right = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
             sleep(600);
@@ -266,7 +266,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
         }
 
     }
-    private void Drive(double power){//function for driving forwards
+    private void Drive_Forwards(double power){//function for driving forwards
         leftMotor.setPower(power);//this turns on the left motor=to power input
         rightMotor.setPower(power);//this turns on the right motor=to power input
         rightMotor2.setPower(power);// this turns on the right motor2=to power input
