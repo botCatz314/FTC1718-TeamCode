@@ -25,8 +25,8 @@
       <file leaf-file-name="Autonomous_B1_Left.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/Autonomous_B1_Left.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="249" column="17" lean-forward="false" selection-start-line="249" selection-start-column="17" selection-end-line="249" selection-end-column="17" />
+            <state relative-caret-position="-84">
+              <caret line="190" column="55" lean-forward="false" selection-start-line="190" selection-start-column="55" selection-end-line="190" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -178,7 +178,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516331277821" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516331637065" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -226,7 +226,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516331277821" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516331637065" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -478,8 +478,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/Autonomous_B1_Left.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="249" column="17" lean-forward="false" selection-start-line="249" selection-start-column="17" selection-end-line="249" selection-end-column="17" />
+        <state relative-caret-position="-84">
+          <caret line="190" column="55" lean-forward="false" selection-start-line="190" selection-start-column="55" selection-end-line="190" selection-end-column="55" />
           <folding />
         </state>
       </provider>
