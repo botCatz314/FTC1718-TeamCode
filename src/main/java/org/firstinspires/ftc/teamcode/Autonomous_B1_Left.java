@@ -43,6 +43,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
     public boolean Center = false;
     public boolean Left = false;
     public static final String TAG = "Vuforia VuMark Sample";
+    public boolean UsingEncoders = false;
 
     OpenGLMatrix lastLocation = null;
 
@@ -212,7 +213,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
                 sleep(1000);
             }
         servoStick.setPosition(0);// auxiliary bringing up of jewel whacker6
-        if (Left = true) {
+        if (Left = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
             sleep(600);
@@ -229,7 +230,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
             telemetry.update();
             sleep(15000);
         }
-        if (Center = true) {
+        if (Center = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
             sleep(600);
@@ -246,7 +247,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
             telemetry.update();
             sleep(15000);
         }
-        if (Left = true) {
+        if (Left = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
             sleep(600);
