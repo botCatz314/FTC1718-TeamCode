@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 @Autonomous(name = "Autonomous_R2", group = "Concept" )
+@Disabled
 public class Autonomous_R2_Right extends LinearOpMode {
     private DcMotor leftMotor;
     private DcMotor rightMotor;

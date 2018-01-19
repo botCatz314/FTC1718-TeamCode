@@ -36,8 +36,9 @@ import java.util.Timer;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-//@Disabled
+
 @Autonomous(name = "Autonomous_B1", group = "Pushbot" )
+@Disabled
 public class Autonomous_B1 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
     private ColorSensor colorSensor;     //declares the color sensor

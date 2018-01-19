@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 @Autonomous(name = "Autonomous_R1", group = "Concept" )
-
+@Disabled
 public class Autonomous_R1_Left extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
     private ColorSensor colorSensor;     //declares the color sensor
