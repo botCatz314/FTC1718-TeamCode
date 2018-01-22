@@ -188,22 +188,22 @@ public class Autonomous_B1_Left extends LinearOpMode {
                     telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
                     telemetry.update();//prints the telemetry to screen
                     sleep(4000); //pause for 4 seconds
-                    Drive_Forwards(.2);// moves forwards at 40% power
+                //    Drive_Forwards(.2);// moves forwards at 40% power
                     sleep(500); // pause for 1/2 second
-                    Brake(); // stops wheel motion
+                //    Brake(); // stops wheel motion
                     sleep(500);
                     servoStick.setPosition(0); // bring up the jewel stick
-                    Drive_Backwards(.2);//drives to roughly the same place as other part of if statement
+                 //   Drive_Backwards(.2);//drives to roughly the same place as other part of if statement
                     sleep(1000);//pauses for one second
-                    Brake();//stops all wheel movement
+                //    Brake();//stops all wheel movement
                 } else if (colorSensor.blue() > colorSensor.red()) {// if blue is greater than red...
                     telemetry.addData("red: ", colorSensor.red());// queues value of red to be printed
                     telemetry.addData("blue: ", colorSensor.blue());//queues value of blue to be printed
                     telemetry.update();// prints queued data to phone
                     sleep(4000); // stops for 4 seconds
-                    Drive_Backwards(.2); // drives backwards at 40% power
+                //    Drive_Backwards(.2); // drives backwards at 40% power
                     sleep(500); // stops for 1/2 a seconds
-                    Brake();// stops wheel movement
+                 //   Brake();// stops wheel movement
                     servoStick.setPosition(0);// bring up jewel whacker
                 }
             }
@@ -213,7 +213,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
                 sleep(1000);
             }
         servoStick.setPosition(0);// auxiliary bringing up of jewel whacker6
-        if (Left = true && UsingEncoders = false) {
+     /*   if (Left = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
             sleep(600);
@@ -247,7 +247,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
             telemetry.update();
             sleep(15000);
         }
-        if (Right = true && UsingEncoders = false) {
+       // if (Right = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
             sleep(600);
@@ -295,5 +295,5 @@ public class Autonomous_B1_Left extends LinearOpMode {
         rightMotor.setPower(power);//drives right motor forwards
         rightMotor2.setPower(power);//drives right motor2 forwards
         leftMotor2.setPower(-power);//drives left motor2 backwards
-    }
+    */}
 }
