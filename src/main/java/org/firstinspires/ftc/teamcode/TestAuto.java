@@ -33,7 +33,8 @@ public class TestAuto extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
-    double Kp = 0.35;
+    Orientation lastAngle = new Orientation();
+    double Kp = 0.35, error, globalAngles;
     public double pi = 3.1415926535897932;
 
     @Override
@@ -68,7 +69,7 @@ public class TestAuto extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
-           DriveWithEncoders(7, .5);
+           //DriveWithEncoders(7, .5);
             sleep(30000);
         }
     }
@@ -113,4 +114,47 @@ public class TestAuto extends LinearOpMode {
 
         }
     }
+
+
+    public double readGyro(){
+        //gets value of Gyro
+        Orientation angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES);
+        double deltaAngle = angle.firstAngle -lastAngle.firstAngle; //change in angle = new - old
+
+        if(deltaAngle < 180){
+            deltaAngle +=360; //keeps delta angle within valid range
+        }
+        else if(deltaAngle > 180){
+            deltaAngle -= 360; //keeps delta angle within valid range
+        }
+
+        globalAngles +=deltaAngle; //global Angle = globalAngle + deltaAngle
+        lastAngle = angle; //sets last angle to the angle measurement we just received
+
+        return globalAngles;
+    }
+  public double CalculateError(double desiredAngle){
+        double error;
+        error = desiredAngle - readGyro();
+        return error;
+  }
+
+  public boolean OnHeading(double speed, double angle, double Kp){
+      double error, steer, leftSpeed, rightSpeed;
+      boolean onTarget = false;
+      error = CalculateError(angle);
+
+      return onTarget;
+  }
+
+
+
+
+
+
+
+
+
+
+
 }
