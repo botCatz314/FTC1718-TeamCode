@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
  * Created by ITSA-GAMINGHP2 on 1/12/2018.
  */
 @TeleOp
-public class botCatzTeleOp extends LinearOpMode {
+public class  botCatzTeleOp extends LinearOpMode {
 
         // declare motors as variables
     private DcMotor leftMotor;// declares left motor as a variable
@@ -40,10 +40,10 @@ public class botCatzTeleOp extends LinearOpMode {
 
         waitForStart();//waits until we hit play
         while(opModeIsActive()) {//it loops the code inside until we hit stop
-            leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor = to joystick value
             leftMotor2.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
-            rightMotor.setPower(gamepad1.right_stick_y);//sets power of rightMotor = to joystick value
             rightMotor2.setPower(gamepad1.right_stick_y);//sets power of rightMotor2 = to joystick value
+            leftMotor2.setPower(gamepad1.right_stick_x);
+            rightMotor2.setPower(-gamepad1.right_stick_x);
 
             slideMotor.setPower(gamepad2.right_stick_y);//sets power of linearSlide = to joystick value
             telemetry.addData("right stick: ", gamepad2.right_stick_y);

@@ -69,7 +69,7 @@ public class TestAuto extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
-           //DriveWithEncoders(7, .5);
+           DriveWithEncoders(20, .5);
             sleep(30000);
         }
     }
@@ -127,12 +127,11 @@ public class TestAuto extends LinearOpMode {
         else if(deltaAngle > 180){
             deltaAngle -= 360; //keeps delta angle within valid range
         }
-
         globalAngles +=deltaAngle; //global Angle = globalAngle + deltaAngle
         lastAngle = angle; //sets last angle to the angle measurement we just received
-
         return globalAngles;
     }
+
   public double CalculateError(double desiredAngle){
         double error;
         error = desiredAngle - readGyro();

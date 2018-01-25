@@ -182,8 +182,9 @@ public class Autonomous_B1_Left extends LinearOpMode {
         servoStick.setPosition(1);//servo stick down motion
         sleep(3000);//pause code for 2 seconds
        //
+
             try {
-                if (colorSensor.red() > colorSensor.blue()) {// asking if red's presence is greater than blue
+                if (colorSensor.red() *1.1 > colorSensor.blue()) {// asking if red's presence is greater than blue
                     telemetry.addData("red: ", colorSensor.red());//prints red's value to phone
                     telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
                     telemetry.update();//prints the telemetry to screen
@@ -196,7 +197,8 @@ public class Autonomous_B1_Left extends LinearOpMode {
                  //   Drive_Backwards(.2);//drives to roughly the same place as other part of if statement
                     sleep(1000);//pauses for one second
                 //    Brake();//stops all wheel movement
-                } else if (colorSensor.blue() > colorSensor.red()) {// if blue is greater than red...
+                }
+                else if (colorSensor.blue()*1.1 > colorSensor.red()) {// if blue is greater than red...
                     telemetry.addData("red: ", colorSensor.red());// queues value of red to be printed
                     telemetry.addData("blue: ", colorSensor.blue());//queues value of blue to be printed
                     telemetry.update();// prints queued data to phone
@@ -205,6 +207,9 @@ public class Autonomous_B1_Left extends LinearOpMode {
                     sleep(500); // stops for 1/2 a seconds
                  //   Brake();// stops wheel movement
                     servoStick.setPosition(0);// bring up jewel whacker
+                }
+                else{
+                    servoStick.setPosition(0);
                 }
             }
             catch(Error e) {
