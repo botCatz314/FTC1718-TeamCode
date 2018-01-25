@@ -109,7 +109,7 @@ public class Autonomous_R1 extends LinearOpMode {
             rightMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             leftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            
+            DriveWithEncoders(-16, 0.2);
             sleep(30000);
         }
     }
