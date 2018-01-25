@@ -24,7 +24,9 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     private DcMotor slideMotor;// declares slide motor as a variable
     private DcMotor clawMotor;// declares claw motor as a variable
     private DcMotor armHeight;//declares armHeight as a variable
-    private Servo servoStick;//declares servoStick as a variable
+    private Servo servoStickRight1;//declares servoStick as a variable
+    private Servo servoStickLeft2;
+
     private DcMotor slideReverse;
     //private CRServo clawAngle; \
     public void runOpMode() {
@@ -35,8 +37,9 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
         slideMotor = hardwareMap.dcMotor.get("slideMotor");//this is the specifics of the code for the slide motor
         clawMotor = hardwareMap.dcMotor.get("clawMotor");//this is the specifics of the code for the claw motor
         armHeight = hardwareMap.dcMotor.get("armHeight");//specifies the value of armHeight
-        servoStick = hardwareMap.servo.get("servoStick");//specifies the value of servoStick
+        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");//specifies the value of servoStick
         slideReverse = hardwareMap.dcMotor.get("slideReverse");
+        servoStickLeft2 = hardwareMap.dcMotor.get("servoStickLeft2");
         //   clawAngle = hardwareMap.crservo.get("clawAngle");
         leftMotor.setDirection(DcMotor.Direction.REVERSE);//set left motor into drive in reverse
         leftMotor2.setDirection(DcMotor.Direction.REVERSE);//set left motor2 into drive in reverse
@@ -91,13 +94,23 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             }*/
 
             if (gamepad1.a) {//if game pad 1 a is being pressed...
-                servoStick.setPosition(0);//servo stick is set to position 0
+                servoStickRight1.setPosition(0);//servo stick is set to position 0
                 telemetry.addData("a", "true");
                 telemetry.update();
             }
             if (gamepad1.b) { //if game pad 1 b is pressed ...
-                servoStick.setPosition(1);//servo stick is set to position 1
+                servoStickRight1.setPosition(1);//servo stick is set to position 1
                 telemetry.addData("b", "true");
+                telemetry.update();
+            }
+            if (gamepad1.x) {//if game pad 1 a is being pressed...
+                servoStickLeft2.setPosition(0);//servo stick is set to position 0
+                telemetry.addData("Correct", "true");
+                telemetry.update();
+            }
+            if (gamepad1.y) { //if game pad 1 b is pressed ...
+                servoStickLeft2.setPosition(1);//servo stick is set to position 1
+                telemetry.addData("Wrong", "true");
                 telemetry.update();
             }
             idle();//waits to be caught up
