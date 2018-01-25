@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -31,11 +32,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  */
 
 @Autonomous(name = "Autonomous_B1", group = "Concept" )
-@Disabled
+
 public class Autonomous_B1_Left extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
     private ColorSensor colorSensor;     //declares the color sensor
     private Servo servoStick; //declares servos
+    private Servo servoStick2;
+    double pi = 3.1415926535;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     private boolean NEEDSTOBEDELETED = true;
@@ -63,6 +66,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
         servoStick = hardwareMap.servo.get("servoStick"); //gets property of servo for lowering shaft to hit jewel from phone
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor"); //gets property of color sensor from phone
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
+        servoStick2 = hardwareMap.servo.get("servoStick2");
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
         rightMotor2.setDirection(DcMotor.Direction.REVERSE); //sets the right motors reverse
                 /*
@@ -132,7 +136,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
 
                 /* We further illustrate how to decompose the pose into useful rotational and
                  * translational components */
@@ -151,73 +155,72 @@ public class Autonomous_B1_Left extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                 }
             }
-            if (vuMark == RelicRecoveryVuMark.CENTER){
+            if (vuMark == RelicRecoveryVuMark.CENTER) {
                 Center = true;
                 telemetry.addData("Bool", "Center");
             }
-            if (vuMark == RelicRecoveryVuMark.RIGHT){
+            if (vuMark == RelicRecoveryVuMark.RIGHT) {
                 Right = true;
                 telemetry.addData("Bool", "Right");
             }
-            if (vuMark == RelicRecoveryVuMark.LEFT){
+            if (vuMark == RelicRecoveryVuMark.LEFT) {
                 Left = true;
                 telemetry.addData("Bool", "Left");
             }
-            if (vuMark != RelicRecoveryVuMark.CENTER){
+            if (vuMark != RelicRecoveryVuMark.CENTER) {
                 Center = false;
             }
-            if (vuMark != RelicRecoveryVuMark.RIGHT){
+            if (vuMark != RelicRecoveryVuMark.RIGHT) {
                 Right = false;
             }
-            if (vuMark != RelicRecoveryVuMark.LEFT){
+            if (vuMark != RelicRecoveryVuMark.LEFT) {
                 Left = false;
-            }
-            else {
+            } else {
                 telemetry.addData("VuMark", "not visible");
             }
 
             telemetry.update();
         }
 
-        servoStick.setPosition(1);//servo stick down motion
+        servoStick2.setPosition(1);//servo stick down motion
         sleep(3000);//pause code for 2 seconds
-       //
+        //
 
-            try {
-                if (colorSensor.red() *1.1 > colorSensor.blue()) {// asking if red's presence is greater than blue
-                    telemetry.addData("red: ", colorSensor.red());//prints red's value to phone
-                    telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
-                    telemetry.update();//prints the telemetry to screen
-                    sleep(4000); //pause for 4 seconds
+        try {
+            if (colorSensor.red() * 1.1 > colorSensor.blue()) {// asking if red's presence is greater than blue
+                telemetry.addData("red: ", colorSensor.red());//prints red's value to phone
+                telemetry.addData("blue: ", colorSensor.blue());//prints blue's value to phone
+                telemetry.update();//prints the telemetry to screen
+                sleep(4000); //pause for 4 seconds
                 //    Drive_Forwards(.2);// moves forwards at 40% power
-                    sleep(500); // pause for 1/2 second
+                sleep(500); // pause for 1/2 second
                 //    Brake(); // stops wheel motion
-                    sleep(500);
-                    servoStick.setPosition(0); // bring up the jewel stick
-                 //   Drive_Backwards(.2);//drives to roughly the same place as other part of if statement
-                    sleep(1000);//pauses for one second
+                sleep(500);
+                servoStick2.setPosition(0); // bring up the jewel stick
+                //   Drive_Backwards(.2);//drives to roughly the same place as other part of if statement
+                sleep(1000);//pauses for one second
                 //    Brake();//stops all wheel movement
-                }
-                else if (colorSensor.blue()*1.1 > colorSensor.red()) {// if blue is greater than red...
-                    telemetry.addData("red: ", colorSensor.red());// queues value of red to be printed
-                    telemetry.addData("blue: ", colorSensor.blue());//queues value of blue to be printed
-                    telemetry.update();// prints queued data to phone
-                    sleep(4000); // stops for 4 seconds
+            } else if (colorSensor.blue() * 1.1 > colorSensor.red()) {// if blue is greater than red...
+                telemetry.addData("red: ", colorSensor.red());// queues value of red to be printed
+                telemetry.addData("blue: ", colorSensor.blue());//queues value of blue to be printed
+                telemetry.update();// prints queued data to phone
+                sleep(4000); // stops for 4 seconds
                 //    Drive_Backwards(.2); // drives backwards at 40% power
-                    sleep(500); // stops for 1/2 a seconds
-                 //   Brake();// stops wheel movement
-                    servoStick.setPosition(0);// bring up jewel whacker
-                }
-                else{
-                    servoStick.setPosition(0);
-                }
+                sleep(500); // stops for 1/2 a seconds
+                //   Brake();// stops wheel movement
+                servoStick2.setPosition(0);// bring up jewel whacker
+            } else {
+                servoStick2.setPosition(0);
             }
-            catch(Error e) {
+        } catch (Error e) {
 
-                telemetry.addData("we messed up...", "aww");
-                sleep(1000);
-            }
-        servoStick.setPosition(0);// auxiliary bringing up of jewel whacker6
+            telemetry.addData("we messed up...", "aww");
+            sleep(1000);
+        }
+        servoStick2.setPosition(0);// auxiliary bringing up of jewel whacker
+       // DriveWithEncoders(20, .9);
+    }
+
      /*   if (Left = true && UsingEncoders = false) {
 
             Drive_Backwards(.2);
@@ -300,5 +303,49 @@ public class Autonomous_B1_Left extends LinearOpMode {
         rightMotor.setPower(power);//drives right motor forwards
         rightMotor2.setPower(power);//drives right motor2 forwards
         leftMotor2.setPower(-power);//drives left motor2 backwards
-    */}
-}
+    */
+
+        public void DriveWithEncoders(double distance, double speed) {
+            double off = 0;
+            double encoderCounts = 1120;
+            double driveGearReduction = 4.0;
+            double wheelDiameter = 9;
+            double countsPerMM = (encoderCounts * driveGearReduction) / (wheelDiameter * pi);
+
+            int newLeftTarget;
+            int newRightTarget;
+
+            if (opModeIsActive()) {
+                newLeftTarget = leftMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
+                newRightTarget = rightMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
+
+                leftMotor2.setTargetPosition(newLeftTarget);
+                rightMotor2.setTargetPosition(newRightTarget);
+
+                leftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                rightMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                leftMotor2.setPower(speed);
+                rightMotor2.setPower(speed);
+
+                while (opModeIsActive() && leftMotor2.isBusy() && rightMotor2.isBusy()) {
+                    telemetry.addData("target left position: ", newLeftTarget);
+                    telemetry.addData("target right position: ", newRightTarget);
+                    telemetry.addData("current left position", leftMotor.getCurrentPosition());
+                    telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
+                    telemetry.addData("rightMotor: ", rightMotor.isBusy());
+                    telemetry.addData("leftMotor", leftMotor.isBusy());
+                    telemetry.addData("rightSpeed", rightMotor2.getPower());
+                    telemetry.addData("leftSpeed", leftMotor2.getPower());
+                    telemetry.update();
+                }
+                leftMotor2.setPower(off);
+                rightMotor2.setPower(off);
+
+
+            }
+        }
+
+
+    }
+

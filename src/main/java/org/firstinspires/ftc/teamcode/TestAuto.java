@@ -31,6 +31,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name = "TestAuto", group = "Pushbot" )
 public class TestAuto extends LinearOpMode {
     private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
+    private Servo servoStick2;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     Orientation lastAngle = new Orientation();
@@ -45,6 +46,7 @@ public class TestAuto extends LinearOpMode {
         leftMotor2 = hardwareMap.dcMotor.get("leftMotor2"); //gets property for right motor from phone
         rightMotor2 = hardwareMap.dcMotor.get("rightMotor2"); //gets property of second right motor from phone
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
+        servoStick2 = hardwareMap.servo.get("servoStick2");
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
         rightMotor2.setDirection(DcMotor.Direction.REVERSE); //sets the right motors reverse
 
@@ -69,8 +71,11 @@ public class TestAuto extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
-           DriveWithEncoders(20, .5);
-            sleep(30000);
+          // DriveWithEncoders(20, .5);
+            servoStick2.setPosition(0);
+            sleep(200);
+            servoStick2.setPosition(1);
+           // sleep(30000);
         }
     }
 

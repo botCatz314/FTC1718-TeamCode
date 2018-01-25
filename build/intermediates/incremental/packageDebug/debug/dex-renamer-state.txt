@@ -1,4 +1,4 @@
-#Mon Jan 22 19:58:03 MST 2018
+#Wed Jan 24 19:48:59 MST 2018
 base.0=C\:\\Users\\ITSA-GAMINGHP2\\Desktop\\ftc_app\\TeamCode\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex
