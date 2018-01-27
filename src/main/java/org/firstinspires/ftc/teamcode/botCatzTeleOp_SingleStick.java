@@ -14,61 +14,54 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp
 public class botCatzTeleOp_SingleStick extends LinearOpMode {
 
-    public float x, y, z, w, pwr;
-    public static double deadzone = 0.2;
+    private float x, y, z, w, pwr;
+    private static double deadzone = 0.2;
 
     // declare motors as variables
-    private DcMotor leftMotor;// declares left motor as a variable
-    private DcMotor rightMotor;// declares right motor as a variable
-    private DcMotor leftMotor2;// declares left motor2 as a variable
-    private DcMotor rightMotor2;// declares right motor2 as a variable
-    private DcMotor slideMotor;// declares slide motor as a variable
-   // private DcMotor clawMotor;// declares claw motor as a variable
-    private DcMotor armHeight;//declares armHeight as a variable
-    private Servo servoStickRight1;//declares servoStick as a variable
-    private Servo servoStickLeft2;
-    private CRServo clawServo;
-    private DcMotor slideReverse;
+    private DcMotor leftMotor, rightMotor; //declares drive motors
+    private DcMotor slideMotor, armHeight, slideReverse; //declares attachment motors
+
+    //declares motors as variables
+    private Servo servoStickRight1,servoStickLeft2; //declares servos with regular range of motion
+    private CRServo clawServo; //declares Continuous Rotational servos
+
     //private CRServo clawAngle; 
     public void runOpMode() {
-        leftMotor = hardwareMap.dcMotor.get("leftMotor");//this is the specifics of the code for the left motor
-        rightMotor = hardwareMap.dcMotor.get("rightMotor");//this is the specifics of the code for the right motor
-        rightMotor2 = hardwareMap.dcMotor.get("rightMotor2");//this is the specifics of the code for the right motor 2
-        leftMotor2 = hardwareMap.dcMotor.get("leftMotor2");//this is the specifics of the code for the left motor 2
-        slideMotor = hardwareMap.dcMotor.get("slideMotor");//this is the specifics of the code for the slide motor
-       // clawMotor = hardwareMap.dcMotor.get("clawMotor");//this is the specifics of the code for the claw motor
-        armHeight = hardwareMap.dcMotor.get("armHeight");//specifies the value of armHeight
+
+        //defines drive motors
+        leftMotor = hardwareMap.dcMotor.get("leftMotor");
+        rightMotor = hardwareMap.dcMotor.get("rightMotor");
+
+        //defines attachment motors
+        slideMotor = hardwareMap.dcMotor.get("slideMotor");
+        armHeight = hardwareMap.dcMotor.get("armHeight");
         slideReverse = hardwareMap.dcMotor.get("slideReverse");
+
+        //defines servos
         clawServo = hardwareMap.crservo.get("clawServo");
-        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");//specifies the value of servoStick
+        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
         servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
-        //   clawAngle = hardwareMap.crservo.get("clawAngle");
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);//set left motor into drive in reverse
-        leftMotor2.setDirection(DcMotor.Direction.REVERSE);//set left motor2 into drive in reverse
+
+        //sets parameters
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
         slideReverse.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();//waits until we hit play
-        while(opModeIsActive()) {//it loops the code inside until we hit stop
-            /*leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor = to joystick value
-            leftMotor2.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
-            rightMotor.setPower(gamepad1.right_stick_y);//sets power of rightMotor = to joystick value
-            rightMotor2.setPower(gamepad1.right_stick_y);//sets power of rightMotor2 = to joystick value
-            */
 
-            // Different joystick controls:
+        while(opModeIsActive()) {//it loops the code inside until we hit stop
             getJoyVals();
             pwr = y; //this can be tweaked for exponential power increase
+            //sets power of drive motors
             rightMotor.setPower(Range.clip(pwr - x+z, -1, 1));
             leftMotor.setPower(Range.clip(pwr - x-z, -1, 1));
-            leftMotor2.setPower(Range.clip(pwr + x-z, -1, 1));
-            rightMotor2.setPower(Range.clip(pwr + x+z, -1, 1));
+            //returns data to phones
             telemetry.addData("x: ", x);
             telemetry.addData("y: ", y);
             telemetry.addData("pwr: ", pwr);
-            //telemetry.update();
-            // end different controls
+            telemetry.update();
 
-            slideMotor.setPower(gamepad2.right_stick_y);//sets power of linearSlide = to joystick value
+            //controls the linearSlide
+            slideMotor.setPower(gamepad2.right_stick_y);
             if(gamepad2.right_stick_y > 1.0){
                 gamepad2.right_stick_y = 1.0f;
                 slideReverse.setPower(0.5);
@@ -77,49 +70,40 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 gamepad2.right_stick_y = -0.5f;
                 slideReverse.setPower(-1.0);
             }
-           // clawMotor.setPower(gamepad2.left_stick_y);//sets power of clawMotor = to joystick value
+
+            //sets power of clawServo
             clawServo.setPower(gamepad2.left_stick_y);
+
+            //controls the height of the linear slide
             armHeight.setPower(-gamepad2.right_trigger);//sets the motor controlling arm height equal to the negative right trigger
             armHeight.setPower(gamepad2.left_trigger); //sets the motor controlling arm height equal to the left trigger
-            telemetry.addData("left stick: ", gamepad2.left_stick_y);
-            telemetry.addData("right stick: ", gamepad2.right_stick_y);
-            telemetry.addData("right trigger: ", gamepad2.right_trigger);
-            telemetry.addData("left trigger: ", gamepad2.left_trigger);
-            telemetry.update();
-           /* if(gamepad2.a){
-                clawAngle.setPower(1.0);
-            }
-            if(gamepad2.b){
-                clawAngle.setPower(-1.0);
-            }
-            if(gamepad2.x){
-                clawAngle.setPower(0.0);
-            }*/
 
-            if (gamepad1.a) {//if game pad 1 a is being pressed...
-                servoStickRight1.setPosition(0);//servo stick is set to position 0
+            //gives drivers control of the servoStick in case it does not pull up
+            if (gamepad1.a) {
+                servoStickRight1.setPosition(0);
                 telemetry.addData("a", "true");
                 telemetry.update();
             }
-            if (gamepad1.b) { //if game pad 1 b is pressed ...
-                servoStickRight1.setPosition(1);//servo stick is set to position 1
+            if (gamepad1.b) {
+                servoStickRight1.setPosition(1);
                 telemetry.addData("b", "true");
                 telemetry.update();
             }
-            if (gamepad1.x) {//if game pad 1 a is being pressed...
-                servoStickLeft2.setPosition(0);//servo stick is set to position 0
+            if (gamepad1.x) {
+                servoStickLeft2.setPosition(0);
                 telemetry.addData("Correct", "true");
                 telemetry.update();
             }
-            if (gamepad1.y) { //if game pad 1 b is pressed ...
-                servoStickLeft2.setPosition(1);//servo stick is set to position 1
+            if (gamepad1.y) {
+                servoStickLeft2.setPosition(1);
                 telemetry.addData("Wrong", "true");
                 telemetry.update();
             }
+
             idle();//waits to be caught up
         }
     }
-    public void getJoyVals()
+    private void getJoyVals()
     {
         y = gamepad1.left_stick_y;
         x = gamepad1.left_stick_x;
