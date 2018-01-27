@@ -24,7 +24,8 @@ public class  botCatzTeleOp extends LinearOpMode {
     private DcMotor clawMotor;// declares claw motor as a variable
     private DcMotor armHeight;//declares armHeight as a variable
     private Servo servoStick;//declares servoStick as a variable
-    //private CRServo clawAngle; \
+    //private CRServo clawAngle;
+
     public void runOpMode() {
         leftMotor = hardwareMap.dcMotor.get("leftMotor");//this is the specifics of the code for the left motor
         rightMotor = hardwareMap.dcMotor.get("rightMotor");//this is the specifics of the code for the right motor

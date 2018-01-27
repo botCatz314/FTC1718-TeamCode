@@ -270,7 +270,6 @@ public class Autonomous_B1_Left extends LinearOpMode {
                 }
                 leftMotor2.setPower(off);
                 rightMotor2.setPower(off);
-
             }
         }
     }

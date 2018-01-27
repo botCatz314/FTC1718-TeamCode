@@ -71,11 +71,11 @@ public class TestAuto extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
-          // DriveWithEncoders(20, .5);
+            // DriveWithEncoders(20, .5);
             servoStick2.setPosition(0);
             sleep(200);
             servoStick2.setPosition(1);
-           // sleep(30000);
+            // sleep(30000);
         }
     }
 
@@ -121,44 +121,32 @@ public class TestAuto extends LinearOpMode {
     }
 
 
-    public double readGyro(){
+    public double readGyro() {
         //gets value of Gyro
         Orientation angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES);
-        double deltaAngle = angle.firstAngle -lastAngle.firstAngle; //change in angle = new - old
+        double deltaAngle = angle.firstAngle - lastAngle.firstAngle; //change in angle = new - old
 
-        if(deltaAngle < 180){
-            deltaAngle +=360; //keeps delta angle within valid range
-        }
-        else if(deltaAngle > 180){
+        if (deltaAngle < 180) {
+            deltaAngle += 360; //keeps delta angle within valid range
+        } else if (deltaAngle > 180) {
             deltaAngle -= 360; //keeps delta angle within valid range
         }
-        globalAngles +=deltaAngle; //global Angle = globalAngle + deltaAngle
+        globalAngles += deltaAngle; //global Angle = globalAngle + deltaAngle
         lastAngle = angle; //sets last angle to the angle measurement we just received
         return globalAngles;
     }
 
-  public double CalculateError(double desiredAngle){
+    public double CalculateError(double desiredAngle) {
         double error;
         error = desiredAngle - readGyro();
         return error;
-  }
+    }
 
-  public boolean OnHeading(double speed, double angle, double Kp){
-      double error, steer, leftSpeed, rightSpeed;
-      boolean onTarget = false;
-      error = CalculateError(angle);
+    public boolean OnHeading(double speed, double angle, double Kp) {
+        double error, steer, leftSpeed, rightSpeed;
+        boolean onTarget = false;
+        error = CalculateError(angle);
 
-      return onTarget;
-  }
-
-
-
-
-
-
-
-
-
-
-
+        return onTarget;
+    }
 }

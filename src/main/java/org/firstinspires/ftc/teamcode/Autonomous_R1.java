@@ -164,8 +164,6 @@ public class Autonomous_R1 extends LinearOpMode {
             }
             leftMotor.setPower(off);
             rightMotor.setPower(off);
-
-
         }
     }
 

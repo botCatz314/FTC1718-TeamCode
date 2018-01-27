@@ -47,19 +47,9 @@ public class Autonomous_B1 extends LinearOpMode {
     static final double Kp_Turn = 0.65f; //P constant for PID turns
     static final double Kp_Drive = 0.13f; //P constant for gyro corrective dive
     BNO055IMU imu; //declares integrated gyro
-    public Vuforia vuforia;
 
     public void runOpMode() {
-      //  vuforia.runOpMode();
-       // if (vuforia.telemetry.addData("VuMark", "%s visible") == vuforia.telemetry.addData("LEFT", "%s visible")){
 
-        //}
-      //  if (vuforia.telemetry.addData("VuMark", "%s visible") == vuforia.telemetry.addData("RIGHT", "%s visible")){
-
-       // }
-       // if (vuforia.telemetry.addData("VuMark", "%s visible") == vuforia.telemetry.addData("CENTER", "%s visible")){
-
-       // }
         leftMotor = hardwareMap.dcMotor.get("leftMotor"); //gets properties of left motor from phone
         rightMotor = hardwareMap.dcMotor.get("rightMotor"); //gets properties for second left motor from phone
         leftMotor2 = hardwareMap.dcMotor.get("leftMotor2"); //gets property for right motor from phone
