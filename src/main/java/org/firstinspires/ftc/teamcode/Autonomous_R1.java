@@ -90,20 +90,6 @@ public class Autonomous_R1 extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
-            // DriveWithEncoders(20, .5);
-        /*    servoStick.setPosition(0);
-            sleep(200);
-
-            if(colorSensor.blue()*1.1 > colorSensor.red()){
-                DriveWithEncoders(100, .7);
-
-                servoStick.setPosition(1);
-            }
-            else if(colorSensor.red() *1.1 > colorSensor.blue()){
-                DriveWithEncoders(10, -0.4);
-                servoStick.setPosition(1);
-            }*/
-
             DriveWithEncoders(20, .5);
             sleep(200);
 
@@ -176,7 +162,7 @@ public class Autonomous_R1 extends LinearOpMode {
             rightMotor.setPower(off);
         }
     }
-    
+
     public double readGyro(){
         //gets value of Gyro
         Orientation angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES);
