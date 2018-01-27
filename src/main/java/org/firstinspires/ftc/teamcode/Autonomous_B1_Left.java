@@ -54,8 +54,8 @@ public class Autonomous_B1_Left extends LinearOpMode {
     VuforiaLocalizer vuforia;
 
     @Override
-    public void runOpMode() {
 
+    public void runOpMode() {
         leftMotor = hardwareMap.dcMotor.get("leftMotor"); //gets properties of left motor from phone
         rightMotor = hardwareMap.dcMotor.get("rightMotor"); //gets properties for second left motor from phone
         leftMotor2 = hardwareMap.dcMotor.get("leftMotor2"); //gets property for right motor from phone
@@ -196,81 +196,78 @@ public class Autonomous_B1_Left extends LinearOpMode {
             telemetry.addData("we messed up...", "aww");
             sleep(1000);
         }
-        servoStick2.setPosition(0);// auxiliary bringing up of jewel whacker
-       // DriveWithEncoders(20, .9);
-
-
-    private void Drive_Forwards(double power){//function for driving forwards
+        servoStick2.setPosition(0);
+    }
+    private void Drive_Forwards(double power) {//function for driving forwards
         leftMotor.setPower(power);//this turns on the left motor=to power input
         rightMotor.setPower(power);//this turns on the right motor=to power input
         rightMotor2.setPower(power);// this turns on the right motor2=to power input
         leftMotor2.setPower(power);//this turns on the left motor2=to power input
     }
 
-    private void Brake(){//stops all wheel movement
+    private void Brake() {//stops all wheel movement
         leftMotor.setPower(0);//brakes left motor
         rightMotor.setPower(0.0);//brakes right motor
         rightMotor2.setPower(0.0);//brakes right motor2
         leftMotor2.setPower(0.0);//brakes left motor2
     }
 
-    private void Drive_Backwards(double power){//reverse all wheels
+    private void Drive_Backwards(double power) {//reverse all wheels
         leftMotor.setPower(-power);//left motor drives in reverse
         rightMotor.setPower(-power);//right motor drives in reverse
         rightMotor2.setPower(-power);//right motor2 drives in reverse
         leftMotor2.setPower(-power);//left motor2 drives in reverse
     }
 
-    private void Turn_Right(double power){//drives motors to turn right
+    private void Turn_Right(double power) {//drives motors to turn right
         leftMotor.setPower(power);//drives left motor forwards
         rightMotor.setPower(-power);//drives left motor backwards
         rightMotor2.setPower(-power);//drives right motor2 backwards
         leftMotor2.setPower(power);//drives left motor2 forwards
     }
 
-    private void Turn_Left (double power){//drives all motors left
+    private void Turn_Left(double power) {//drives all motors left
         leftMotor.setPower(-power);//drives left motor backwards
         rightMotor.setPower(power);//drives right motor forwards
         rightMotor2.setPower(power);//drives right motor2 forwards
         leftMotor2.setPower(-power);//drives left motor2 backwards
+    }
+    public void DriveWithEncoders(double distance, double speed) {
+        double off = 0;
+        double encoderCounts = 1120;
+        double driveGearReduction = 4.0;
+        double wheelDiameter = 9;
+        double countsPerMM = (encoderCounts * driveGearReduction) / (wheelDiameter * pi);
 
-        public void DriveWithEncoders(double distance, double speed) {
-            double off = 0;
-            double encoderCounts = 1120;
-            double driveGearReduction = 4.0;
-            double wheelDiameter = 9;
-            double countsPerMM = (encoderCounts * driveGearReduction) / (wheelDiameter * pi);
+        int newLeftTarget;
+        int newRightTarget;
 
-            int newLeftTarget;
-            int newRightTarget;
+        if (opModeIsActive()) {
+            newLeftTarget = leftMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
+            newRightTarget = rightMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
 
-            if (opModeIsActive()) {
-                newLeftTarget = leftMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
-                newRightTarget = rightMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
+            leftMotor2.setTargetPosition(newLeftTarget);
+            rightMotor2.setTargetPosition(newRightTarget);
 
-                leftMotor2.setTargetPosition(newLeftTarget);
-                rightMotor2.setTargetPosition(newRightTarget);
+            leftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                leftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                rightMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftMotor2.setPower(speed);
+            rightMotor2.setPower(speed);
 
-                leftMotor2.setPower(speed);
-                rightMotor2.setPower(speed);
-
-                while (opModeIsActive() && leftMotor2.isBusy() && rightMotor2.isBusy()) {
-                    telemetry.addData("target left position: ", newLeftTarget);
-                    telemetry.addData("target right position: ", newRightTarget);
-                    telemetry.addData("current left position", leftMotor.getCurrentPosition());
-                    telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
-                    telemetry.addData("rightMotor: ", rightMotor.isBusy());
-                    telemetry.addData("leftMotor", leftMotor.isBusy());
-                    telemetry.addData("rightSpeed", rightMotor2.getPower());
-                    telemetry.addData("leftSpeed", leftMotor2.getPower());
-                    telemetry.update();
-                }
-                leftMotor2.setPower(off);
-                rightMotor2.setPower(off);
+            while (opModeIsActive() && leftMotor2.isBusy() && rightMotor2.isBusy()) {
+                telemetry.addData("target left position: ", newLeftTarget);
+                telemetry.addData("target right position: ", newRightTarget);
+                telemetry.addData("current left position", leftMotor.getCurrentPosition());
+                telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
+                telemetry.addData("rightMotor: ", rightMotor.isBusy());
+                telemetry.addData("leftMotor", leftMotor.isBusy());
+                telemetry.addData("rightSpeed", rightMotor2.getPower());
+                telemetry.addData("leftSpeed", leftMotor2.getPower());
+                telemetry.update();
             }
+            leftMotor2.setPower(off);
+            rightMotor2.setPower(off);
         }
     }
-
+}
