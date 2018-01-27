@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -22,23 +23,23 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     private DcMotor leftMotor2;// declares left motor2 as a variable
     private DcMotor rightMotor2;// declares right motor2 as a variable
     private DcMotor slideMotor;// declares slide motor as a variable
-    private DcMotor clawMotor;// declares claw motor as a variable
+   // private DcMotor clawMotor;// declares claw motor as a variable
     private DcMotor armHeight;//declares armHeight as a variable
     private Servo servoStickRight1;//declares servoStick as a variable
     private Servo servoStickLeft2;
-
+    private CRServo clawServo;
     private DcMotor slideReverse;
-    //private CRServo clawAngle; \
+    //private CRServo clawAngle; 
     public void runOpMode() {
         leftMotor = hardwareMap.dcMotor.get("leftMotor");//this is the specifics of the code for the left motor
         rightMotor = hardwareMap.dcMotor.get("rightMotor");//this is the specifics of the code for the right motor
         rightMotor2 = hardwareMap.dcMotor.get("rightMotor2");//this is the specifics of the code for the right motor 2
         leftMotor2 = hardwareMap.dcMotor.get("leftMotor2");//this is the specifics of the code for the left motor 2
         slideMotor = hardwareMap.dcMotor.get("slideMotor");//this is the specifics of the code for the slide motor
-        clawMotor = hardwareMap.dcMotor.get("clawMotor");//this is the specifics of the code for the claw motor
+       // clawMotor = hardwareMap.dcMotor.get("clawMotor");//this is the specifics of the code for the claw motor
         armHeight = hardwareMap.dcMotor.get("armHeight");//specifies the value of armHeight
         slideReverse = hardwareMap.dcMotor.get("slideReverse");
-
+        clawServo = hardwareMap.crservo.get("clawServo");
         servoStickRight1 = hardwareMap.servo.get("servoStickRight1");//specifies the value of servoStick
         servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
         //   clawAngle = hardwareMap.crservo.get("clawAngle");
@@ -76,7 +77,8 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 gamepad2.right_stick_y = -0.5f;
                 slideReverse.setPower(-1.0);
             }
-            clawMotor.setPower(gamepad2.left_stick_y);//sets power of clawMotor = to joystick value
+           // clawMotor.setPower(gamepad2.left_stick_y);//sets power of clawMotor = to joystick value
+            clawServo.setPower(gamepad2.left_stick_y);
             armHeight.setPower(-gamepad2.right_trigger);//sets the motor controlling arm height equal to the negative right trigger
             armHeight.setPower(gamepad2.left_trigger); //sets the motor controlling arm height equal to the left trigger
             telemetry.addData("left stick: ", gamepad2.left_stick_y);

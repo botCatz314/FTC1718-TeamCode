@@ -129,9 +129,9 @@ public class Autonomous_R1 extends LinearOpMode {
     }
 
     public void DriveWithEncoders(double distance, double speed) {
-        double off = 0;
-        double encoderCounts = 1120;
-        double driveGearReduction = 4.0;
+        double off = 0; //for setting motor power to 0
+        double encoderCounts = 1120; //the number of counts per revolution of encoder shaft
+        double driveGearReduction = 4.0; //
         double wheelDiameter = 9;
         double countsPerMM = (encoderCounts * driveGearReduction) / (wheelDiameter * pi);
 
