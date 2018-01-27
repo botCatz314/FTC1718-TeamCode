@@ -37,9 +37,10 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
         slideMotor = hardwareMap.dcMotor.get("slideMotor");//this is the specifics of the code for the slide motor
         clawMotor = hardwareMap.dcMotor.get("clawMotor");//this is the specifics of the code for the claw motor
         armHeight = hardwareMap.dcMotor.get("armHeight");//specifies the value of armHeight
-        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");//specifies the value of servoStick
         slideReverse = hardwareMap.dcMotor.get("slideReverse");
-        servoStickLeft2 = hardwareMap.dcMotor.get("servoStickLeft2");
+
+        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");//specifies the value of servoStick
+        servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
         //   clawAngle = hardwareMap.crservo.get("clawAngle");
         leftMotor.setDirection(DcMotor.Direction.REVERSE);//set left motor into drive in reverse
         leftMotor2.setDirection(DcMotor.Direction.REVERSE);//set left motor2 into drive in reverse
