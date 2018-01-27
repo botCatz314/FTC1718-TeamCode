@@ -201,29 +201,37 @@ public class Autonomous_R1 extends LinearOpMode {
         }
     }
 
-    public void DriveWithEncoders(double distance, double speed) {
-        double off = 0; //for setting motor power to 0
-        double encoderCounts = 1120; //the number of counts per revolution of encoder shaft
-        double driveGearReduction = 4.0; //
+    //declares function that calculates math to drive by encoder
+    private void DriveWithEncoders(double distance, double speed) {
+        //computes mathematical formulas that translate between encoder counts and real distance
+        double off = 0;
+        double encoderCounts = 1120;
+        double driveGearReduction = 4.0;
         double wheelDiameter = 9;
         double countsPerMM = (encoderCounts * driveGearReduction) / (wheelDiameter * pi);
 
+        //declares two variables to serve as our left and right motor
         int newLeftTarget;
         int newRightTarget;
 
         if (opModeIsActive()) {
+            //adds desired distance to the current reading of encoders to ensure accurate measurements
             newLeftTarget = leftMotor.getCurrentPosition() + (int) (countsPerMM * distance);
             newRightTarget = rightMotor.getCurrentPosition() + (int) (countsPerMM * distance);
 
+            //sets the motors' target positions
             leftMotor.setTargetPosition(newLeftTarget);
             rightMotor.setTargetPosition(newRightTarget);
 
+            //sets the motors' mode
             leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+            //turn the motors on for input speed
             leftMotor.setPower(speed);
             rightMotor.setPower(speed);
 
+            //loops and gives telemetry until the motors are finished
             while (opModeIsActive() && leftMotor.isBusy() && rightMotor.isBusy()) {
                 telemetry.addData("target left position: ", newLeftTarget);
                 telemetry.addData("target right position: ", newRightTarget);
@@ -235,11 +243,13 @@ public class Autonomous_R1 extends LinearOpMode {
                 telemetry.addData("leftSpeed", leftMotor.getPower());
                 telemetry.update();
             }
+
+            //turns power of motors off
             leftMotor.setPower(off);
             rightMotor.setPower(off);
         }
     }
-
+    
     public double readGyro(){
         //gets value of Gyro
         Orientation angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES);
