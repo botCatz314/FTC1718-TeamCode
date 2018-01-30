@@ -107,7 +107,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 telemetry.addData("Wrong", "true");
                 telemetry.update();
             }
-            if (gamepad1.back) {
+            if (gamepad1.dpad_up) {
                 if (TankDriveActive == false) {
                     TankDriveActive = true;
                     telemetry.addData("TankDrive", "true");
