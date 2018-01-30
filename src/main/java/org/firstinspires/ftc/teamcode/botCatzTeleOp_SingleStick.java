@@ -16,6 +16,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
 
     private float x, y, z, w, pwr;
     private static double deadzone = 0.2;
+    private static boolean TankDriveActive = false;
 
     // declare motors as variables
     private DcMotor leftMotor, rightMotor; //declares drive motors
@@ -27,29 +28,36 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
 
     //private CRServo clawAngle; 
     public void runOpMode() {
+            //defines drive motors
+            leftMotor = hardwareMap.dcMotor.get("leftMotor");
+            rightMotor = hardwareMap.dcMotor.get("rightMotor");
 
-        //defines drive motors
-        leftMotor = hardwareMap.dcMotor.get("leftMotor");
-        rightMotor = hardwareMap.dcMotor.get("rightMotor");
+            //defines attachment motors
+            slideMotor = hardwareMap.dcMotor.get("slideMotor");
+            armHeight = hardwareMap.dcMotor.get("armHeight");
+            slideReverse = hardwareMap.dcMotor.get("slideReverse");
 
-        //defines attachment motors
-        slideMotor = hardwareMap.dcMotor.get("slideMotor");
-        armHeight = hardwareMap.dcMotor.get("armHeight");
-        slideReverse = hardwareMap.dcMotor.get("slideReverse");
+            //defines servos
+            clawServo = hardwareMap.crservo.get("clawServo");
+            servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
+            servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
 
-        //defines servos
-        clawServo = hardwareMap.crservo.get("clawServo");
-        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
-        servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
+            //sets parameters
+            leftMotor.setDirection(DcMotor.Direction.REVERSE);
+            slideReverse.setDirection(DcMotor.Direction.REVERSE);
 
-        //sets parameters
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        slideReverse.setDirection(DcMotor.Direction.REVERSE);
-
-        waitForStart();//waits until we hit play
+            waitForStart();//waits until we hit play
 
         while(opModeIsActive()) {//it loops the code inside until we hit stop
-            getJoyVals();
+            if (TankDriveActive == false) {
+                getJoyVals();
+            }
+            if (TankDriveActive == true){
+                leftMotor2.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
+                rightMotor2.setPower(gamepad1.right_stick_y);//sets power of rightMotor2 = to joystick value
+                leftMotor2.setPower(gamepad1.right_stick_x);
+                rightMotor2.setPower(-gamepad1.right_stick_x);
+            }
             pwr = y; //this can be tweaked for exponential power increase
             //sets power of drive motors
             rightMotor.setPower(Range.clip(pwr - x+z, -1, 1));
@@ -99,8 +107,22 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 telemetry.addData("Wrong", "true");
                 telemetry.update();
             }
+            if (gamepad1.back) {
+                if (TankDriveActive == false) {
+                    TankDriveActive = true;
+                    telemetry.addData("TankDrive", "true");
+                    telemetry.update();
+                }
+                if (TankDriveActive == true) {
+                    TankDriveActive = false;
+                    telemetry.addData("TankDrive", "false");
+                    telemetry.update();
+                }
+                telemetry.update();
+            }
 
             idle();//waits to be caught up
+
         }
     }
     private void getJoyVals()
