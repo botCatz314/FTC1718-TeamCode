@@ -16,7 +16,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
 
     private float x, y, z, w, pwr;
     private static double deadzone = 0.2;
-    private static boolean TankDriveActive = false;
+    private static boolean TankDriveActive = false, hold = false;
 
     // declare motors as variables
     private DcMotor leftMotor, rightMotor; //declares drive motors
@@ -119,6 +119,19 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 }
                 telemetry.update();
             }
+            if(gamepad2.right_bumper){
+                hold = true;
+            }
+            if(gamepad2.left_bumper){
+                hold = false;
+            }
+            if(hold){
+                clawMotor.setPower(-0.5);
+            }
+            else if(!hold){
+                clawMotor.setPower(0);
+            }
+
 
             idle();//waits to be caught up
 
