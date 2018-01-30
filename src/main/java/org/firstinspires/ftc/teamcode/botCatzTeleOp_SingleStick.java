@@ -53,10 +53,10 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 getJoyVals();
             }
             if (TankDriveActive == true){
-                leftMotor2.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
-                rightMotor2.setPower(gamepad1.right_stick_y);//sets power of rightMotor2 = to joystick value
-                leftMotor2.setPower(gamepad1.right_stick_x);
-                rightMotor2.setPower(-gamepad1.right_stick_x);
+                leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
+                rightMotor.setPower(gamepad1.right_stick_y);//sets power of rightMotor2 = to joystick value
+                leftMotor.setPower(gamepad1.right_stick_x);
+                rightMotor.setPower(-gamepad1.right_stick_x);
             }
             pwr = y; //this can be tweaked for exponential power increase
             //sets power of drive motors
