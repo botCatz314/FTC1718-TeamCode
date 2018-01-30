@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -30,12 +31,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name = "TestAuto", group = "Pushbot" )
 public class TestAuto extends LinearOpMode {
-    private DcMotor leftMotor, rightMotor, leftMotor2, rightMotor2; //Declares the motors
+    private DcMotor leftMotor, rightMotor; //Declares the motors
     private Servo servoStick2;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     Orientation lastAngle = new Orientation();
-    double Kp = 0.35, error, globalAngles;
+    double threshold;
     public double pi = 3.1415926535897932;
 
     @Override
@@ -43,13 +44,9 @@ public class TestAuto extends LinearOpMode {
 
         leftMotor = hardwareMap.dcMotor.get("leftMotor"); //gets properties of left motor from phone
         rightMotor = hardwareMap.dcMotor.get("rightMotor"); //gets properties for second left motor from phone
-        leftMotor2 = hardwareMap.dcMotor.get("leftMotor2"); //gets property for right motor from phone
-        rightMotor2 = hardwareMap.dcMotor.get("rightMotor2"); //gets property of second right motor from phone
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
         servoStick2 = hardwareMap.servo.get("servoStick2");
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
-        rightMotor2.setDirection(DcMotor.Direction.REVERSE); //sets the right motors reverse
-
         //sets parameters of gyro
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -64,18 +61,17 @@ public class TestAuto extends LinearOpMode {
         //shows user that gyro is calibrated
 
 
-        leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
-
-            // DriveWithEncoders(20, .5);
-            servoStick2.setPosition(0);
-            sleep(200);
-            servoStick2.setPosition(1);
-            // sleep(30000);
+while(true) {
+    telemetry.addData("gyro",  imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES));
+    telemetry.update();
+}
+            //sleep(30000);
         }
     }
 
@@ -90,63 +86,82 @@ public class TestAuto extends LinearOpMode {
         int newRightTarget;
 
         if (opModeIsActive()) {
-            newLeftTarget = leftMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
-            newRightTarget = rightMotor2.getCurrentPosition() + (int) (countsPerMM * distance);
+            newLeftTarget = leftMotor.getCurrentPosition() + (int) (countsPerMM * distance);
+            newRightTarget = rightMotor.getCurrentPosition() + (int) (countsPerMM * distance);
 
-            leftMotor2.setTargetPosition(newLeftTarget);
-            rightMotor2.setTargetPosition(newRightTarget);
+            leftMotor.setTargetPosition(newLeftTarget);
+            rightMotor.setTargetPosition(newRightTarget);
 
-            leftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            leftMotor2.setPower(speed);
-            rightMotor2.setPower(speed);
+            leftMotor.setPower(speed);
+            rightMotor.setPower(speed);
 
-            while (opModeIsActive() && leftMotor2.isBusy() && rightMotor2.isBusy()) {
+            while (opModeIsActive() && leftMotor.isBusy() && rightMotor.isBusy()) {
                 telemetry.addData("target left position: ", newLeftTarget);
                 telemetry.addData("target right position: ", newRightTarget);
                 telemetry.addData("current left position", leftMotor.getCurrentPosition());
                 telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
                 telemetry.addData("rightMotor: ", rightMotor.isBusy());
                 telemetry.addData("leftMotor", leftMotor.isBusy());
-                telemetry.addData("rightSpeed", rightMotor2.getPower());
-                telemetry.addData("leftSpeed", leftMotor2.getPower());
+                telemetry.addData("rightSpeed", rightMotor.getPower());
+                telemetry.addData("leftSpeed", leftMotor.getPower());
                 telemetry.update();
             }
-            leftMotor2.setPower(off);
-            rightMotor2.setPower(off);
+            leftMotor.setPower(off);
+            rightMotor.setPower(off);
 
 
         }
     }
-
-
-    public double readGyro() {
-        //gets value of Gyro
-        Orientation angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES);
-        double deltaAngle = angle.firstAngle - lastAngle.firstAngle; //change in angle = new - old
-
-        if (deltaAngle < 180) {
-            deltaAngle += 360; //keeps delta angle within valid range
-        } else if (deltaAngle > 180) {
-            deltaAngle -= 360; //keeps delta angle within valid range
-        }
-        globalAngles += deltaAngle; //global Angle = globalAngle + deltaAngle
-        lastAngle = angle; //sets last angle to the angle measurement we just received
-        return globalAngles;
-    }
-
     public double CalculateError(double desiredAngle) {
         double error;
-        error = desiredAngle - readGyro();
+        error = desiredAngle - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle;;
         return error;
     }
+    private void turnGyro(double angle, double speed){
+        while(opModeIsActive() && !OnHeading(speed, angle)){
+            telemetry.addData("turning", "check");
+            telemetry.update();
+        }
+    }
 
-    public boolean OnHeading(double speed, double angle, double Kp) {
+    public boolean OnHeading(double speed, double angle) {
         double error, steer, leftSpeed, rightSpeed;
         boolean onTarget = false;
         error = CalculateError(angle);
 
+        if(error <= threshold ){
+            steer = 0.0;
+            leftSpeed= 0.0;
+            rightSpeed = 0.0;
+            onTarget = true;
+        }
+        else {
+            steer = adjustHeading(error);
+            rightSpeed = speed * steer;
+            leftSpeed = -rightSpeed;
+
+        }
+        rightMotor.setPower(rightSpeed);
+        leftMotor.setPower(leftSpeed);
         return onTarget;
+    }
+
+    private double adjustHeading(double error){
+       double  Kp = 0.35, Ki = 0, Kd = 0;
+       double errorPrior = 0;
+       double integral = 0, derivative = 0;
+        ElapsedTime turning = new ElapsedTime();
+        turning.reset();
+       while(true) {
+           integral = integral + (error * turning.time());
+           derivative = (error - errorPrior)/turning.time();
+           errorPrior = error;
+           sleep(1);
+           return Range.clip((error * Kp)+(Ki*integral)+(Kd*derivative), -1, 1);
+
+       }
     }
 }
