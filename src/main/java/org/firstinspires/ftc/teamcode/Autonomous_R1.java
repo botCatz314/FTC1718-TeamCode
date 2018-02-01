@@ -176,7 +176,7 @@ servoStickRight1.setPosition(1);//drop servo stick
             leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);//begin drive by time
             rightMotor.setPower(3);//turn right
             leftMotor.setPower(-3);//turn right
-            sleep(300);//allow robot to turn right
+            sleep(275);//allow robot to turn right
             leftMotor.setPower(3);//drive forward
             rightMotor.setPower(3);//drive forward
             //pray that it works
@@ -185,6 +185,11 @@ servoStickRight1.setPosition(1);//drop servo stick
             rightMotor.setPower(0);//stop
             blockFlicker.setPosition(1);//flick block
             blockFlicker.setPosition(0);//flick block
+            leftMotor.setPower(-3);
+            rightMotor.setPower(-3);
+            sleep(125);
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
             //pray that it works
             sleep(300000);//wait for end of autonomous
         }
