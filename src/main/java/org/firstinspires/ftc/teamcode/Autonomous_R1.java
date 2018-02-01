@@ -160,30 +160,33 @@ public class Autonomous_R1 extends LinearOpMode {
                 telemetry.addData("VuMark", "not visible");
             }
             telemetry.update();
-servoStickRight1.setPosition(1);
-            DriveWithEncoders(20, 0.3);
-            sleep(100);
-            servoStickRight1.setPosition(0);
-            sleep(100);
-
-            rightMotor.setPower(.3);
-            leftMotor.setPower(-0.3);
-            sleep(600);
-            leftMotor.setPower(0);
-            rightMotor.setPower(0);
-            rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightMotor.setPower(3);
-            leftMotor.setPower(-3);
-            sleep(300);
-            leftMotor.setPower(3);
-            rightMotor.setPower(3);
-            sleep(300);
-            leftMotor.setPower(0);
-            rightMotor.setPower(0);
-            blockFlicker.setPosition(1);
-            blockFlicker.setPosition(0);
-            sleep(300000);
+            //perform cult ritual to raise our odds of winning
+servoStickRight1.setPosition(1);//drop servo stick
+            DriveWithEncoders(20, 0.3);//drive forward
+            sleep(100);//let the robot drive forward
+            servoStickRight1.setPosition(0);//raise servo stick
+            sleep(100);//continue forward driving
+// ensure that the fluxx capacitor is not overloading; it has a history of failing while under connections with the ion reactor as the nuclear fission required to transfer the energy is HIGHLY unstable.
+            rightMotor.setPower(.3);//turn right
+            leftMotor.setPower(-0.3);//turn right
+            sleep(600);//allow robot to turn right
+            leftMotor.setPower(0);//stop
+            rightMotor.setPower(0);//stop
+            rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);//begin drive by time
+            leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);//begin drive by time
+            rightMotor.setPower(3);//turn right
+            leftMotor.setPower(-3);//turn right
+            sleep(300);//allow robot to turn right
+            leftMotor.setPower(3);//drive forward
+            rightMotor.setPower(3);//drive forward
+            //pray that it works
+            sleep(300);//allow robot to drive forward
+            leftMotor.setPower(0);//stop
+            rightMotor.setPower(0);//stop
+            blockFlicker.setPosition(1);//flick block
+            blockFlicker.setPosition(0);//flick block
+            //pray that it works
+            sleep(300000);//wait for end of autonomous
         }
     }
 
