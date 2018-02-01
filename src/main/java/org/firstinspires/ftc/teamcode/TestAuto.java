@@ -32,7 +32,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name = "TestAuto", group = "Pushbot" )
 public class TestAuto extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
-    private Servo servoStick2;
+    private Servo servoStickLeft2, servoStickRight1;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     Orientation lastAngle = new Orientation();
@@ -45,7 +45,8 @@ public class TestAuto extends LinearOpMode {
         leftMotor = hardwareMap.dcMotor.get("leftMotor"); //gets properties of left motor from phone
         rightMotor = hardwareMap.dcMotor.get("rightMotor"); //gets properties for second left motor from phone
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
-        servoStick2 = hardwareMap.servo.get("servoStick2");
+        servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
+        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
         //sets parameters of gyro
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -68,9 +69,22 @@ public class TestAuto extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
-    turnGyro(90,0.5);
+   // turnGyro(90,0.5);
     //telemetry.addData("gyro",  imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES));
    // telemetry.update();
+
+    telemetry.addData("actually running: ", true);
+    telemetry.addData("servo left pos:", servoStickLeft2.getPosition());
+    telemetry.addData("servo right Pos", servoStickRight1.getPosition());
+    telemetry.update();
+
+            servoStickRight1.setPosition(1);
+            telemetry.addData("actually running: ", true);
+            telemetry.addData("servo left pos:", servoStickLeft2.getPosition());
+            telemetry.addData("servo right Pos", servoStickRight1.getPosition());
+            telemetry.update();
+            sleep(1500);
+            servoStickRight1.setPosition(0);
 
             sleep(30000);
         }

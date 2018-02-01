@@ -113,30 +113,6 @@ public class Autonomous_R1 extends LinearOpMode {
         relicTrackables.activate(); //Activates Vuforia
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
-
-            DriveWithEncoders(20, .5);
-            sleep(200);
-
-            rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-            rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            sleep(100);
-            rightMotor.setPower(0.6);
-            leftMotor.setPower(-0.6);
-            sleep(1000);
-            rightMotor.setPower(0);
-            leftMotor.setPower(0);
-
-            sleep(200);
-            rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            DriveWithEncoders(-16, 0.2);
-            sleep(30000);
-
-
             //Sets variable for figuring out which picture it is
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             //Checks if the VuMark is unknown and acts based on that
@@ -183,7 +159,15 @@ public class Autonomous_R1 extends LinearOpMode {
             }
             telemetry.update();
 
+            DriveWithEncoders(20, 0.3);
+            sleep(200);
 
+            rightMotor.setPower(.3);
+            leftMotor.setPower(-0.3);
+            sleep(600);
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
+            sleep(30000);
         }
     }
 
