@@ -16,15 +16,15 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
 
     private float x, y, z, w, pwr;
     private static double deadzone = 0.2;
-    private static boolean TankDriveActive = false, hold = false;
+    private static boolean TankDriveActive = false;
 
     // declare motors as variables
     private DcMotor leftMotor, rightMotor; //declares drive motors
-    private DcMotor slideMotor, armHeight, slideReverse, clawMotor; //declares attachment motors
+    private DcMotor slideMotor, armHeight, slideReverse; //declares attachment motors
 
     //declares motors as variables
     private Servo servoStickRight1,servoStickLeft2; //declares servos with regular range of motion
-     //declares Continuous Rotational servos
+    private DcMotor clawMotor;
 
     //private CRServo clawAngle; 
     public void runOpMode() {
@@ -36,11 +36,12 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             slideMotor = hardwareMap.dcMotor.get("slideMotor");
             armHeight = hardwareMap.dcMotor.get("armHeight");
             slideReverse = hardwareMap.dcMotor.get("slideReverse");
-            clawMotor = hardwareMap.dcMotor.get("clawMotor");
 
             //defines servos
+            clawServo = hardwareMap.crservo.get("clawServo");
             servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
             servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
+
             //sets parameters
             leftMotor.setDirection(DcMotor.Direction.REVERSE);
             slideReverse.setDirection(DcMotor.Direction.REVERSE);
@@ -48,90 +49,71 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             waitForStart();//waits until we hit play
 
         while(opModeIsActive()) {//it loops the code inside until we hit stop
-            if (TankDriveActive == false) {
-                getJoyVals();
-            }
+
             if (TankDriveActive == true){
                 leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
                 rightMotor.setPower(gamepad1.right_stick_y);//sets power of rightMotor2 = to joystick value
                 leftMotor.setPower(gamepad1.right_stick_x);
                 rightMotor.setPower(-gamepad1.right_stick_x);
             }
-            pwr = y; //this can be tweaked for exponential power increase
-            //sets power of drive motors
-            rightMotor.setPower(Range.clip(pwr - x+z, -1, 1));
-            leftMotor.setPower(Range.clip(pwr - x-z, -1, 1));
-            //returns data to phones
-            telemetry.addData("x: ", x);
-            telemetry.addData("y: ", y);
-            telemetry.addData("pwr: ", pwr);
-            telemetry.update();
+           else {
+                getJoyVals();
+                pwr = y; //this can be tweaked for exponential power increase
+                //sets power of drive motors
+                rightMotor.setPower(Range.clip(pwr - x+z, -1, 1));
+                leftMotor.setPower(Range.clip(pwr - x-z, -1, 1));
+                //returns data to phones
+                telemetry.addData("x: ", x);
+                telemetry.addData("y: ", y);
+                telemetry.addData("pwr: ", pwr);
+                telemetry.update();
+            }
+            if (gamepad1.a) {
+                TankDriveActive = true;
+            }
+            if (gamepad1.b) {
+                TankDriveActive = false;
+            }
 
             //controls the linearSlide
-            slideMotor.setPower(gamepad2.right_stick_y);
-            if(gamepad2.right_stick_y > 1.0){
-                gamepad2.right_stick_y = 1.0f;
-                slideReverse.setPower(0.5);
+
+            if(gamepad2.right_stick_y > 0.1){
+                slideReverse.setPower(0.5*gamepad2.right_stick_y);
+                slideMotor.setPower(gamepad2.right_stick_y);
             }
-            else if(gamepad2.right_stick_y < -0.5){
-                gamepad2.right_stick_y = -0.5f;
-                slideReverse.setPower(-1.0);
+            if(gamepad2.right_stick_y < -0.1){
+                slideReverse.setPower(0.5*gamepad2.right_stick_y);
+                slideMotor.setPower(gamepad2.right_stick_y);
             }
 
             //sets power of clawServo
-            clawMotor.setPower(gamepad2.left_stick_y);
+            clawServo.setPower(gamepad2.left_stick_y);
 
             //controls the height of the linear slide
             armHeight.setPower(-gamepad2.right_trigger);//sets the motor controlling arm height equal to the negative right trigger
             armHeight.setPower(gamepad2.left_trigger); //sets the motor controlling arm height equal to the left trigger
 
             //gives drivers control of the servoStick in case it does not pull up
-            if (gamepad1.a) {
+            if (gamepad2.a) {
                 servoStickRight1.setPosition(0);
                 telemetry.addData("a", "true");
                 telemetry.update();
             }
-            if (gamepad1.b) {
+            if (gamepad2.b) {
                 servoStickRight1.setPosition(1);
                 telemetry.addData("b", "true");
                 telemetry.update();
             }
-            if (gamepad1.x) {
+            if (gamepad2.x) {
                 servoStickLeft2.setPosition(0);
                 telemetry.addData("Correct", "true");
                 telemetry.update();
             }
-            if (gamepad1.y) {
+            if (gamepad2.y) {
                 servoStickLeft2.setPosition(1);
                 telemetry.addData("Wrong", "true");
                 telemetry.update();
             }
-            if (gamepad1.dpad_up) {
-                if (TankDriveActive == false) {
-                    TankDriveActive = true;
-                    telemetry.addData("TankDrive", "true");
-                    telemetry.update();
-                }
-                if (TankDriveActive == true) {
-                    TankDriveActive = false;
-                    telemetry.addData("TankDrive", "false");
-                    telemetry.update();
-                }
-                telemetry.update();
-            }
-            if(gamepad2.right_bumper){
-                hold = true;
-            }
-            if(gamepad2.left_bumper){
-                hold = false;
-            }
-            if(hold){
-                clawMotor.setPower(-0.5);
-            }
-            else if(!hold){
-                clawMotor.setPower(0);
-            }
-
 
             idle();//waits to be caught up
 
