@@ -67,11 +67,12 @@ public class TestAuto extends LinearOpMode {
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
-while(true) {
-    telemetry.addData("gyro",  imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES));
-    telemetry.update();
-}
-            //sleep(30000);
+
+    turnGyro(90,0.5);
+    //telemetry.addData("gyro",  imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES));
+   // telemetry.update();
+
+            sleep(30000);
         }
     }
 
