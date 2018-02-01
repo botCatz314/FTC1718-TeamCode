@@ -51,10 +51,15 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
         while(opModeIsActive()) {//it loops the code inside until we hit stop
 
             if (TankDriveActive == true){
-                leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
+                /*leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
                 rightMotor.setPower(gamepad1.right_stick_y);//sets power of rightMotor2 = to joystick value
                 leftMotor.setPower(gamepad1.right_stick_x);
                 rightMotor.setPower(-gamepad1.right_stick_x);
+                */
+                //leftMotor.setPower(-gamepad1.left_stick_y);
+                leftMotor.setPower(-gamepad1.left_stick_y);
+                //rightMotor.setPower(-gamepad1.right_stick_y);
+                rightMotor.setPower(-gamepad1.right_stick_y);
             }
            else {
                 getJoyVals();
