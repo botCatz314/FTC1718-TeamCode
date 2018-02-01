@@ -32,7 +32,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name = "Autonomous_R1", group = "Pushbot" )
 public class Autonomous_R1 extends LinearOpMode {
-    private DcMotor leftMotor, rightMotor; //Declares the drive motors
+    private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
     private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
 
@@ -73,6 +73,8 @@ public class Autonomous_R1 extends LinearOpMode {
         //declares drive motor
         leftMotor = hardwareMap.dcMotor.get("leftMotor"); //gets properties of left motor from phone
         rightMotor = hardwareMap.dcMotor.get("rightMotor"); //gets properties for second left motor from phone
+        clawMotor = hardwareMap.dcMotor.get("clawMotor");
+        armHeight = hardwareMap.dcMotor.get("armHeight");
 
         //declares sensors
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
@@ -158,16 +160,30 @@ public class Autonomous_R1 extends LinearOpMode {
                 telemetry.addData("VuMark", "not visible");
             }
             telemetry.update();
-
+servoStickRight1.setPosition(1);
             DriveWithEncoders(20, 0.3);
-            sleep(200);
+            sleep(100);
+            servoStickRight1.setPosition(0);
+            sleep(100);
 
             rightMotor.setPower(.3);
             leftMotor.setPower(-0.3);
             sleep(600);
             leftMotor.setPower(0);
             rightMotor.setPower(0);
-            sleep(30000);
+            rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightMotor.setPower(3);
+            leftMotor.setPower(-3);
+            sleep(300);
+            leftMotor.setPower(3);
+            rightMotor.setPower(3);
+            sleep(300);
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
+            blockFlicker.setPosition(1);
+            blockFlicker.setPosition(0);
+            sleep(300000);
         }
     }
 
