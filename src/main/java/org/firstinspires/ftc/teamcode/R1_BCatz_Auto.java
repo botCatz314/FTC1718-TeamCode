@@ -228,7 +228,7 @@ public class R1_BCatz_Auto extends LinearOpMode {
                 telemetry.addData("bool", "left");
             }
             else {
-                telemetry.addData("VuMark", "not visible");
+                telemetry.addData("wes", "is stupid");
             }
 
 

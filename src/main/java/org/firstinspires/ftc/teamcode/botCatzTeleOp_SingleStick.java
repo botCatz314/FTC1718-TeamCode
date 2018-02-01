@@ -38,7 +38,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             slideReverse = hardwareMap.dcMotor.get("slideReverse");
 
             //defines servos
-            clawServo = hardwareMap.crservo.get("clawServo");
+            clawMotor = hardwareMap.dcMotor.get("clawMotor");
             servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
             servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
 
@@ -87,7 +87,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             }
 
             //sets power of clawServo
-            clawServo.setPower(gamepad2.left_stick_y);
+            clawMotor.setPower(gamepad2.left_stick_y);
 
             //controls the height of the linear slide
             armHeight.setPower(-gamepad2.right_trigger);//sets the motor controlling arm height equal to the negative right trigger
