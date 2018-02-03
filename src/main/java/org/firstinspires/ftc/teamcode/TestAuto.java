@@ -36,7 +36,8 @@ public class TestAuto extends LinearOpMode {
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     Orientation lastAngle = new Orientation();
-    double threshold;
+    double threshold = .30;
+    double right = 1, left = 0;
     public double pi = 3.1415926535897932;
 
     @Override
@@ -61,6 +62,8 @@ public class TestAuto extends LinearOpMode {
         imu.isGyroCalibrated(); //checks that gyro is calibrated
         //shows user that gyro is calibrated
 
+        /*telemetry.addData("gyro", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
+        telemetry.update();*/
 
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -68,7 +71,7 @@ public class TestAuto extends LinearOpMode {
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
-
+/*
    // turnGyro(90,0.5);
     //telemetry.addData("gyro",  imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES));
    // telemetry.update();
@@ -87,9 +90,18 @@ public class TestAuto extends LinearOpMode {
             servoStickRight1.setPosition(0);
 
             sleep(30000);
+     */
+            imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle = 0;
+            telemetry.addData("gyro", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
+            telemetry.update();
+            sleep(400);
+            turnGyro(90, 0.2);
+            sleep(100);
+            telemetry.addData("gyro", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
+            telemetry.update();
+            sleep(30000);
         }
     }
-
     public void DriveWithEncoders(double distance, double speed) {
         double off = 0;
         double encoderCounts = 1120;
@@ -132,10 +144,14 @@ public class TestAuto extends LinearOpMode {
     }
     public double CalculateError(double desiredAngle) {
         double error;
-        error = desiredAngle - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle;;
+        error = desiredAngle - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle;
+        telemetry.addData("error", error);
+        telemetry.update();
         return error;
     }
     private void turnGyro(double angle, double speed){
+        telemetry.addData("turn Gyro", angle);
+        telemetry.update();
         while(opModeIsActive() && !OnHeading(speed, angle)){
             telemetry.addData("turning", "check");
             telemetry.update();
@@ -146,7 +162,6 @@ public class TestAuto extends LinearOpMode {
         double error, steer, leftSpeed, rightSpeed;
         boolean onTarget = false;
         error = CalculateError(angle);
-
         if(error <= threshold ){
             steer = 0.0;
             leftSpeed= 0.0;
@@ -155,7 +170,7 @@ public class TestAuto extends LinearOpMode {
         }
         else {
             steer = adjustHeading(error);
-            rightSpeed = speed * steer;
+            rightSpeed = -(speed * steer);
             leftSpeed = -rightSpeed;
 
         }
@@ -165,7 +180,7 @@ public class TestAuto extends LinearOpMode {
     }
 
     private double adjustHeading(double error){
-       double  Kp = 0.35, Ki = 0, Kd = 0;
+       double  Kp = .27, Ki = 0, Kd = 0;
        double errorPrior = 0;
        double integral = 0, derivative = 0;
         ElapsedTime turning = new ElapsedTime();
@@ -174,7 +189,7 @@ public class TestAuto extends LinearOpMode {
            integral = integral + (error * turning.time());
            derivative = (error - errorPrior)/turning.time();
            errorPrior = error;
-           sleep(1);
+          // sleep(1);
            return Range.clip((error * Kp)+(Ki*integral)+(Kd*derivative), -1, 1);
 
        }
