@@ -38,6 +38,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
     private ColorSensor colorSensor;     //declares the color sensor
     private Servo servoStick; //declares servos
     private Servo servoStick2;
+    double threshold = .25;
 
     double pi = 3.1415926535;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
@@ -268,6 +269,59 @@ public class Autonomous_B1_Left extends LinearOpMode {
             }
             leftMotor2.setPower(off);
             rightMotor2.setPower(off);
+        }
+    }
+
+    public double CalculateError(double desiredAngle) {
+        double error;
+        error = desiredAngle - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle;
+        telemetry.addData("error", error);
+        telemetry.update();
+        return error;
+    }
+    private void turnGyro(double angle, double speed){
+        telemetry.addData("turn Gyro", angle);
+        telemetry.update();
+        while(opModeIsActive() && !OnHeading(speed, angle)){
+            telemetry.addData("turning", "check");
+            telemetry.update();
+        }
+    }
+
+    public boolean OnHeading(double speed, double angle) {
+        double error, steer, leftSpeed, rightSpeed;
+        boolean onTarget = false;
+        error = CalculateError(angle);
+        if(error <= threshold ){
+            steer = 0.0;
+            leftSpeed= 0.0;
+            rightSpeed = 0.0;
+            onTarget = true;
+        }
+        else {
+            steer = adjustHeading(error);
+            rightSpeed = -(speed * steer);
+            leftSpeed = -rightSpeed;
+
+        }
+        rightMotor.setPower(rightSpeed);
+        leftMotor.setPower(leftSpeed);
+        return onTarget;
+    }
+
+    private double adjustHeading(double error){
+        double  Kp = .15, Ki = 0, Kd = 0;
+        double errorPrior = 0;
+        double integral = 0, derivative = 0;
+        ElapsedTime turning = new ElapsedTime();
+        turning.reset();
+        while(true) {
+            integral = integral + (error * turning.time());
+            derivative = (error - errorPrior)/turning.time();
+            errorPrior = error;
+            // sleep(1);
+            return Range.clip((error * Kp)+(Ki*integral)+(Kd*derivative), -1, 1);
+
         }
     }
 }

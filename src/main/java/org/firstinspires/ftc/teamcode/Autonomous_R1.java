@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -43,6 +44,7 @@ public class Autonomous_R1 extends LinearOpMode {
 
     private double Kp = 0.35, error, globalAngles, powerOff = 0;
     private double pi = 3.1415926535897932;
+    double threshold = .25;
 
 
     public boolean Right = false; //Variable for the Vuforia code
@@ -161,8 +163,30 @@ public class Autonomous_R1 extends LinearOpMode {
             }
             telemetry.update();
             //perform cult ritual to raise our odds of winning
-servoStickRight1.setPosition(1);//drop servo stick
-            DriveWithEncoders(20, 0.3);//drive forward
+            servoStickLeft2.setPosition(1);//drop servo stick
+            sleep(2000);//sleeps giving servo opportunity to drop
+            if(colorSensorLeft.blue() > colorSensorLeft.red()){ //reads if color sensor is seeing blue
+                telemetry.addData("blue", colorSensorLeft.blue()); //gives telemetry to tell us that it sees blue, mostly for debugging
+                telemetry.update(); //pushes telemetry just set in line above to phone
+                DriveWithEncoders(-5,.3); //drives backwards to hit ball
+                sleep(100); //sleeps to catch up
+                servoStickLeft2.setPosition(0); //returns servo stick to original position, so we don't risk damaging it
+                DriveWithEncoders(25,0.3); //drives forward to a location equal to the else if
+                sleep(2000); //waits giving robot chance to catch up
+
+            }
+            else if(colorSensorLeft.red() > colorSensorLeft.blue()){ //looks for red rather than blue
+                telemetry.addData("red", colorSensorLeft.red()); //gives telemetry to tell us that it sees red, mostly for debugging
+                telemetry.update(); //pushes previously set telemetry data to phone
+                DriveWithEncoders(20, 0.3); //drives forward off balancing board
+                sleep(100); //sleeps to allow robot to catch up
+                servoStickLeft2.setPosition(0); //brings servo stick back up so we don't damage it
+                sleep(1000); //waits allowing robot to catch up
+            }
+            servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick
+            sleep(30000); //waits for rest of program so it doesn't start looping
+
+      /*      DriveWithEncoders(20, 0.3);//drive forward
             sleep(100);//let the robot drive forward
             servoStickRight1.setPosition(0);//raise servo stick
             sleep(100);//continue forward driving
@@ -190,8 +214,7 @@ servoStickRight1.setPosition(1);//drop servo stick
             sleep(125);
             leftMotor.setPower(0);
             rightMotor.setPower(0);
-            //pray that it works
-            sleep(300000);//wait for end of autonomous
+            //pray that it works*/
         }
     }
 
@@ -244,33 +267,56 @@ servoStickRight1.setPosition(1);//drop servo stick
         }
     }
 
-    public double readGyro(){
-        //gets value of Gyro
-        Orientation angle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES);
-        double deltaAngle = angle.firstAngle -lastAngle.firstAngle; //change in angle = new - old
-
-        if(deltaAngle < 180){
-            deltaAngle +=360; //keeps delta angle within valid range
-        }
-        else if(deltaAngle > 180){
-            deltaAngle -= 360; //keeps delta angle within valid range
-        }
-        globalAngles +=deltaAngle; //global Angle = globalAngle + deltaAngle
-        lastAngle = angle; //sets last angle to the angle measurement we just received
-        return globalAngles;
-    }
-
-    public double CalculateError(double desiredAngle){
+    public double CalculateError(double desiredAngle) {
         double error;
-        error = desiredAngle - readGyro();
+        error = desiredAngle - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle;
+        telemetry.addData("error", error);
+        telemetry.update();
         return error;
     }
+    private void turnGyro(double angle, double speed){
+        telemetry.addData("turn Gyro", angle);
+        telemetry.update();
+        while(opModeIsActive() && !OnHeading(speed, angle)){
+            telemetry.addData("turning", "check");
+            telemetry.update();
+        }
+    }
 
-    public boolean OnHeading(double speed, double angle, double Kp){
+    public boolean OnHeading(double speed, double angle) {
         double error, steer, leftSpeed, rightSpeed;
         boolean onTarget = false;
         error = CalculateError(angle);
+        if(error <= threshold ){
+            steer = 0.0;
+            leftSpeed= 0.0;
+            rightSpeed = 0.0;
+            onTarget = true;
+        }
+        else {
+            steer = adjustHeading(error);
+            rightSpeed = -(speed * steer);
+            leftSpeed = -rightSpeed;
 
+        }
+        rightMotor.setPower(rightSpeed);
+        leftMotor.setPower(leftSpeed);
         return onTarget;
+    }
+
+    private double adjustHeading(double error){
+        double  Kp = .15, Ki = 0, Kd = 0;
+        double errorPrior = 0;
+        double integral = 0, derivative = 0;
+        ElapsedTime turning = new ElapsedTime();
+        turning.reset();
+        while(true) {
+            integral = integral + (error * turning.time());
+            derivative = (error - errorPrior)/turning.time();
+            errorPrior = error;
+            // sleep(1);
+            return Range.clip((error * Kp)+(Ki*integral)+(Kd*derivative), -1, 1);
+
+        }
     }
 }

@@ -36,7 +36,7 @@ public class TestAuto extends LinearOpMode {
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     Orientation lastAngle = new Orientation();
-    double threshold = .30;
+    double threshold = .25;
     double right = 1, left = 0;
     public double pi = 3.1415926535897932;
 
@@ -91,7 +91,8 @@ public class TestAuto extends LinearOpMode {
 
             sleep(30000);
      */
-            imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle = 0;
+//this is what I was testing last
+          /*  imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle = 0;
             telemetry.addData("gyro", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
             telemetry.update();
             sleep(400);
@@ -99,7 +100,12 @@ public class TestAuto extends LinearOpMode {
             sleep(100);
             telemetry.addData("gyro", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
             telemetry.update();
-            sleep(30000);
+            sleep(30000);*/
+          servoStickRight1.setPosition(1);
+          sleep(3000);
+          servoStickRight1.setPosition(0);
+          telemetry.addData("We just", "Made it here");
+          sleep(30000);
         }
     }
     public void DriveWithEncoders(double distance, double speed) {
@@ -180,7 +186,7 @@ public class TestAuto extends LinearOpMode {
     }
 
     private double adjustHeading(double error){
-       double  Kp = .27, Ki = 0, Kd = 0;
+       double  Kp = .15, Ki = 0, Kd = 0;
        double errorPrior = 0;
        double integral = 0, derivative = 0;
         ElapsedTime turning = new ElapsedTime();
