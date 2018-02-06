@@ -50,7 +50,7 @@ public class Autonomous_R1 extends LinearOpMode {
     public boolean Right = false; //Variable for the Vuforia code
     public boolean Center = false;//Variable for the Vuforia code
     public boolean Left = false;  //Variable for the Vuforia code
-    public static final String TAG = "Vuforia VuMark Sample";
+    public static final String TAG = "Vuforia VuMark Sample"; //The Sample used in Vuforia
     public boolean UsingEncoders = false;
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
@@ -61,15 +61,15 @@ public class Autonomous_R1 extends LinearOpMode {
 
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()); //Uses camera viewer on the phone
-        VuforiaLocalizer.Parameters parametersV = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        VuforiaLocalizer.Parameters parametersV = new VuforiaLocalizer.Parameters(cameraMonitorViewId); //Enables camera viewer on the phone
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-        parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/";
+        parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/"; //Key for using Vuforia in code
         parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT; //Decides which camera to use
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV);
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV); //Creates Vuforia Localizer
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark"); //Decides which pictures to use
         VuforiaTrackable relicTemplate = relicTrackables.get(0); //Base pictures
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+        relicTemplate.setName("relicVuMarkTemplate"); // Can help in debugging; otherwise not necessary
 
 
         //declares drive motor
@@ -118,13 +118,13 @@ public class Autonomous_R1 extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
             //Sets variable for figuring out which picture it is
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate); //Reference to picture
             //Checks if the VuMark is unknown and acts based on that
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) { //Events for if VuMark is unknown
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Gets the angle of the picture
                 //Turns it into rotation and position coordinates
-                if (pose != null) {
+                if (pose != null) { //Events to track position of the picture relative to the robot.
                     VectorF trans = pose.getTranslation();
                     Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                     // Extract the X, Y, and Z components of the offset of the target relative to the robot
@@ -187,10 +187,14 @@ public class Autonomous_R1 extends LinearOpMode {
             sleep(30000); //waits for rest of program so it doesn't start looping
 
       /*      DriveWithEncoders(20, 0.3);//drive forward
+=======
+            servoStickRight1.setPosition(1);//drop servo stick
+            DriveWithEncoders(20, 0.3);//drive forward
+>>>>>>> c00a6c3b7fd23e140e36c2bc0cf362e9dfe30739
             sleep(100);//let the robot drive forward
             servoStickRight1.setPosition(0);//raise servo stick
             sleep(100);//continue forward driving
-// ensure that the fluxx capacitor is not overloading; it has a history of failing while under connections with the ion reactor as the nuclear fission required to transfer the energy is HIGHLY unstable.
+            // ensure that the fluxx capacitor is not overloading; it has a history of failing while under connections with the ion reactor as the nuclear fission required to transfer the energy is HIGHLY unstable.
             rightMotor.setPower(.3);//turn right
             leftMotor.setPower(-0.3);//turn right
             sleep(600);//allow robot to turn right

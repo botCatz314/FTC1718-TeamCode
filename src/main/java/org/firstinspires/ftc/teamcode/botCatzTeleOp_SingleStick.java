@@ -57,9 +57,9 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 rightMotor.setPower(-gamepad1.right_stick_x);
                 */
                 //leftMotor.setPower(-gamepad1.left_stick_y);
-                leftMotor.setPower(-gamepad1.left_stick_y);
+                leftMotor.setPower(gamepad1.left_stick_y);
                 //rightMotor.setPower(-gamepad1.right_stick_y);
-                rightMotor.setPower( gamepad1 .right_stick_y);
+                rightMotor.setPower(gamepad1.right_stick_y);
             }
            else {
                 getJoyVals();
