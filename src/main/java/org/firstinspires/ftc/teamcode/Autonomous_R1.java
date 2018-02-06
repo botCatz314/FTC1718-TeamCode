@@ -185,40 +185,6 @@ public class Autonomous_R1 extends LinearOpMode {
             }
             servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick
             sleep(30000); //waits for rest of program so it doesn't start looping
-
-      /*      DriveWithEncoders(20, 0.3);//drive forward
-=======
-            servoStickRight1.setPosition(1);//drop servo stick
-            DriveWithEncoders(20, 0.3);//drive forward
->>>>>>> c00a6c3b7fd23e140e36c2bc0cf362e9dfe30739
-            sleep(100);//let the robot drive forward
-            servoStickRight1.setPosition(0);//raise servo stick
-            sleep(100);//continue forward driving
-            // ensure that the fluxx capacitor is not overloading; it has a history of failing while under connections with the ion reactor as the nuclear fission required to transfer the energy is HIGHLY unstable.
-            rightMotor.setPower(.3);//turn right
-            leftMotor.setPower(-0.3);//turn right
-            sleep(600);//allow robot to turn right
-            leftMotor.setPower(0);//stop
-            rightMotor.setPower(0);//stop
-            rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);//begin drive by time
-            leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);//begin drive by time
-            rightMotor.setPower(3);//turn right
-            leftMotor.setPower(-3);//turn right
-            sleep(275);//allow robot to turn right
-            leftMotor.setPower(3);//drive forward
-            rightMotor.setPower(3);//drive forward
-            //pray that it works
-            sleep(300);//allow robot to drive forward
-            leftMotor.setPower(0);//stop
-            rightMotor.setPower(0);//stop
-            blockFlicker.setPosition(1);//flick block
-            blockFlicker.setPosition(0);//flick block
-            leftMotor.setPower(-3);
-            rightMotor.setPower(-3);
-            sleep(125);
-            leftMotor.setPower(0);
-            rightMotor.setPower(0);
-            //pray that it works*/
         }
     }
     //declares function that calculates math to drive by encoder
