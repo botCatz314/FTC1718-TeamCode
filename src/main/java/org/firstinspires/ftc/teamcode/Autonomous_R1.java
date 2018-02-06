@@ -277,7 +277,6 @@ public class Autonomous_R1 extends LinearOpMode {
             integral = integral + (error * turning.time()); //integral value = previous integral value (initial being 0) + the error * elapsed time
             derivative = (error - errorPrior)/turning.time(); //derivative value = error subtracted by previous error divided by the elapsed time
             errorPrior = error; //error prior = error which will be updated soon
-            // sleep(1);
             return Range.clip((error * Kp)+(Ki*integral)+(Kd*derivative), -1, 1); //return P+I+D between -1 and 1 to be multiplied by the speed
         }
     }
