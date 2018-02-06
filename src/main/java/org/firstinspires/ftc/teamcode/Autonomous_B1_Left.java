@@ -47,12 +47,12 @@ public class Autonomous_B1_Left extends LinearOpMode {
     public boolean Right = false; //Variable for the Vuforia code
     public boolean Center = false;//Variable for the Vuforia code
     public boolean Left = false;  //Variable for the Vuforia code
-    public static final String TAG = "Vuforia VuMark Sample";
+    public static final String TAG = "Vuforia VuMark Sample"; //Vuforia Sample
     public boolean UsingEncoders = false;
 
-    OpenGLMatrix lastLocation = null;
+    OpenGLMatrix lastLocation = null; //Reference for the position of the picture
 
-    VuforiaLocalizer vuforia;
+    VuforiaLocalizer vuforia; //Reference for Vuforia localizer
 
     @Override
 
@@ -70,12 +70,12 @@ public class Autonomous_B1_Left extends LinearOpMode {
 
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()); //Uses camera viewer on the phone
-        VuforiaLocalizer.Parameters parametersV = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        VuforiaLocalizer.Parameters parametersV = new VuforiaLocalizer.Parameters(cameraMonitorViewId); //Enables Camera Viewer on phone
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-        parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/";
+        parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/"; //Key for Vuforia to work in code
         parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT; //Decides which camera to use
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV);
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV); //Creates Vuofria Localizer reference
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark"); //Decides which pictures to use
         VuforiaTrackable relicTemplate = relicTrackables.get(0); //Base pictures
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
@@ -100,7 +100,7 @@ public class Autonomous_B1_Left extends LinearOpMode {
         while (opModeIsActive()) {
 
             //Sets variable for figuring out which picture it is
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate); 
             //Checks if the VuMark is unknown and acts based on that
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
