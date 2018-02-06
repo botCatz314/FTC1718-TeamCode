@@ -121,7 +121,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             }
             if (clawHold){
                 // hold claw closed
-                clawMotor.setPower(-0.25);
+                clawMotor.setPower(-0.4);
             }
 
             //controls the height of the linear slide
