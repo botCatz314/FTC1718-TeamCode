@@ -173,7 +173,6 @@ public class Autonomous_R1 extends LinearOpMode {
                 servoStickLeft2.setPosition(0); //returns servo stick to original position, so we don't risk damaging it
                 DriveWithEncoders(25,0.3); //drives forward to a location equal to the else if
                 sleep(2000); //waits giving robot chance to catch up
-
             }
             else if(colorSensorLeft.red() > colorSensorLeft.blue()){ //looks for red rather than blue
                 telemetry.addData("red", colorSensorLeft.red()); //gives telemetry to tell us that it sees red, mostly for debugging
