@@ -55,7 +55,8 @@ public class Autonomous_R1 extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
 
-
+ 
+    // Runs at init time
     @Override
     public void runOpMode() {
 
@@ -115,15 +116,25 @@ public class Autonomous_R1 extends LinearOpMode {
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         relicTrackables.activate(); //Activates Vuforia
+        
+        // Everything above is the init.
+        // This blocks and everything below is after start
         waitForStart(); //waits until the user presses play
+        
+        // opModeIsActive will return false when the user hits stop.
         while (opModeIsActive()) {
+            // VuMark == camera access
+            
             //Sets variable for figuring out which picture it is
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate); //Reference to picture
             //Checks if the VuMark is unknown and acts based on that
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) { //Events for if VuMark is unknown
+                // Do this when we know what the relic is.
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Gets the angle of the picture
                 //Turns it into rotation and position coordinates
+                
+                // Extract the position of the relic if there is one.
                 if (pose != null) { //Events to track position of the picture relative to the robot.
                     VectorF trans = pose.getTranslation();
                     Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
@@ -137,55 +148,68 @@ public class Autonomous_R1 extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                 }
             }
+            // At this point we might have a known relic position.
+            // ??? if the relic is unknown.
+            
             //Runs a check to see which of the picture is active
-            if (vuMark == RelicRecoveryVuMark.CENTER) {
-                Center = true;
+            Center = (vuMark == RelicRecoveryVuMark.CENTER);
+            Right = (vuMark == RelicRecoveryVuMark.RIGHT);
+            Left = (vuMark == RelicRecoveryVuMark.LEFT);
+            if (Center) {
                 telemetry.addData("Bool", "Center");
-            }
-            if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                Right = true;
+            } else if (Right) {
                 telemetry.addData("Bool", "Right");
-            }
-            if (vuMark == RelicRecoveryVuMark.LEFT) {
-                Left = true;
+            } else if (Left) {
                 telemetry.addData("Bool", "Left");
-            }
-            if (vuMark != RelicRecoveryVuMark.CENTER) {
-                Center = false;
-            }
-            if (vuMark != RelicRecoveryVuMark.RIGHT) {
-                Right = false;
-            }
-            if (vuMark != RelicRecoveryVuMark.LEFT) {
-                Left = false;
             } else {
                 telemetry.addData("VuMark", "not visible");
             }
+            
+            // Write out the debug info
             telemetry.update();
-            //perform cult ritual to raise our odds of winning
-            servoStickLeft2.setPosition(1);//drop servo stick
+            
+            //perform cult rituals to raise our odds of winning
+            
+            double down = 1;
+            double up = 0;
+            servoStickLeft2.setPosition(down);//drop servo stick
             sleep(2000);//sleeps giving servo opportunity to drop
+            
+            // If blue: backward then forward;  if red: just forward
             if(colorSensorLeft.blue() > colorSensorLeft.red()){ //reads if color sensor is seeing blue
                 telemetry.addData("blue", colorSensorLeft.blue()); //gives telemetry to tell us that it sees blue, mostly for debugging
                 telemetry.update(); //pushes telemetry just set in line above to phone
-                DriveWithEncoders(-5,.3); //drives backwards to hit ball
+                
+                // -5 is backwards, 0.3 is slow
+                DriveWithEncoders(-5, 0.3); //drives backwards to hit ball
                 sleep(100); //sleeps to catch up
-                servoStickLeft2.setPosition(0); //returns servo stick to original position, so we don't risk damaging it
-                DriveWithEncoders(25,0.3); //drives forward to a location equal to the else if
+                // TODO: sleep longer?
+                
+                servoStickLeft2.setPosition(up); //returns servo stick to original position, so we don't risk damaging it
+                // TODO: Sleep?
+                
+                // Forward a lot, but still slowly
+                DriveWithEncoders(25, 0.3); //drives forward to a location equal to the else if
                 sleep(2000); //waits giving robot chance to catch up
-            }
-            else if(colorSensorLeft.red() > colorSensorLeft.blue()){ //looks for red rather than blue
+            } else if(colorSensorLeft.red() > colorSensorLeft.blue()){ //looks for red rather than blue
                 telemetry.addData("red", colorSensorLeft.red()); //gives telemetry to tell us that it sees red, mostly for debugging
                 telemetry.update(); //pushes previously set telemetry data to phone
+                
                 DriveWithEncoders(20, 0.3); //drives forward off balancing board
                 sleep(100); //sleeps to allow robot to catch up
-                servoStickLeft2.setPosition(0); //brings servo stick back up so we don't damage it
+                // TODO: sleep longer?
+                
+                servoStickLeft2.setPosition(up); //brings servo stick back up so we don't damage it
                 sleep(1000); //waits allowing robot to catch up
             }
-            servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick
+            // Just in case.  Should already be up.
+            servoStickLeft2.setPosition(up); //auxiliary bringing up of the servo stick
+            
+            // Don't repeat.  In a while loop???
             sleep(30000); //waits for rest of program so it doesn't start looping
         }
     }
+    
     //declares function that calculates math to drive by encoder
     private void DriveWithEncoders(double distance, double speed) {
         //computes mathematical formulas that translate between encoder counts and real distance
