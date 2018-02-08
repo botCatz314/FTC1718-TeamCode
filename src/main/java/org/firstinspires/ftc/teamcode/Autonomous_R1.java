@@ -44,7 +44,7 @@ public class Autonomous_R1 extends LinearOpMode {
 
     private double Kp = 0.35, error, globalAngles, powerOff = 0;
     private double pi = 3.1415926535897932;
-    double threshold = .25;
+    double threshold = .25, colorThreshold;
 
 
     public boolean Right = false; //Variable for the Vuforia code
@@ -138,6 +138,7 @@ public class Autonomous_R1 extends LinearOpMode {
                 }
             }
             //Runs a check to see which of the picture is active
+
             if (vuMark == RelicRecoveryVuMark.CENTER) {
                 Center = true;
                 telemetry.addData("Bool", "Center");
@@ -163,11 +164,10 @@ public class Autonomous_R1 extends LinearOpMode {
             }
             telemetry.update();
             //perform cult ritual to raise our odds of winning
-            servoStickLeft2.setPosition(1);//drop servo stick
-            sleep(2000);//sleeps giving servo opportunity to drop
-
-            servoStickLeft2.setPosition(0);
-            /*if(colorSensorLeft.blue() > colorSensorLeft.red()){ //reads if color sensor is seeing blue
+            servoStickRight1.setPosition(1);//drop servo stick
+            sleep(3000);//sleeps giving servo opportunity to drop
+            servoStickRight1.setPosition(0);
+            if(colorSensorLeft.blue() - colorSensorLeft.red() > colorThreshold){ //reads if color sensor is seeing blue
                 telemetry.addData("blue", colorSensorLeft.blue()); //gives telemetry to tell us that it sees blue, mostly for debugging
                 telemetry.update(); //pushes telemetry just set in line above to phone
                 DriveWithEncoders(-5,.3); //drives backwards to hit ball
@@ -176,13 +176,19 @@ public class Autonomous_R1 extends LinearOpMode {
                 DriveWithEncoders(25,0.3); //drives forward to a location equal to the else if
                 sleep(2000); //waits giving robot chance to catch up
             }
-            else if(colorSensorLeft.red() > colorSensorLeft.blue()){ //looks for red rather than blue
+            else if(colorSensorLeft.red() - colorSensorLeft.blue() > colorThreshold){ //looks for red rather than blue
                 telemetry.addData("red", colorSensorLeft.red()); //gives telemetry to tell us that it sees red, mostly for debugging
                 telemetry.update(); //pushes previously set telemetry data to phone
                 DriveWithEncoders(20, 0.3); //drives forward off balancing board
                 sleep(100); //sleeps to allow robot to catch up
                 servoStickLeft2.setPosition(0); //brings servo stick back up so we don't damage it
                 sleep(1000); //waits allowing robot to catch up
+            }
+            else{
+                servoStickRight1.setPosition(0);
+                sleep(3000);
+                DriveWithEncoders(20, 0.3);
+                sleep(1000);
             }
             servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick*/
             sleep(30000); //waits for rest of program so it doesn't start looping
