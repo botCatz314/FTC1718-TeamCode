@@ -165,7 +165,9 @@ public class Autonomous_R1 extends LinearOpMode {
             //perform cult ritual to raise our odds of winning
             servoStickLeft2.setPosition(1);//drop servo stick
             sleep(2000);//sleeps giving servo opportunity to drop
-            if(colorSensorLeft.blue() > colorSensorLeft.red()){ //reads if color sensor is seeing blue
+
+            servoStickLeft2.setPosition(0);
+            /*if(colorSensorLeft.blue() > colorSensorLeft.red()){ //reads if color sensor is seeing blue
                 telemetry.addData("blue", colorSensorLeft.blue()); //gives telemetry to tell us that it sees blue, mostly for debugging
                 telemetry.update(); //pushes telemetry just set in line above to phone
                 DriveWithEncoders(-5,.3); //drives backwards to hit ball
@@ -182,7 +184,7 @@ public class Autonomous_R1 extends LinearOpMode {
                 servoStickLeft2.setPosition(0); //brings servo stick back up so we don't damage it
                 sleep(1000); //waits allowing robot to catch up
             }
-            servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick
+            servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick*/
             sleep(30000); //waits for rest of program so it doesn't start looping
         }
     }
