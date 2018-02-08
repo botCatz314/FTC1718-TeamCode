@@ -21,6 +21,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     private float x, y, z, w, pwr;
     private static double deadzone = 0.2;
     private static boolean TankDriveActive = false, clawHold = false;
+    private static boolean lsExtendPos = false, lsExtendNeg = false, lsRetractPos = false, lsRetractNeg = false;
 
     // declare motors as variables
     private DcMotor leftMotor, rightMotor; //declares drive motors
@@ -30,27 +31,27 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     private Servo servoStickRight1,servoStickLeft2; //declares servos with regular range of motion
     private DcMotor clawMotor;
 
-    //private CRServo clawAngle; 
+    //private CRServo clawAngle;
     public void runOpMode() {
-            //defines drive motors
-            leftMotor = hardwareMap.dcMotor.get("leftMotor");
-            rightMotor = hardwareMap.dcMotor.get("rightMotor");
+        //defines drive motors
+        leftMotor = hardwareMap.dcMotor.get("leftMotor");
+        rightMotor = hardwareMap.dcMotor.get("rightMotor");
 
-            //defines attachment motors
-            slideMotor = hardwareMap.dcMotor.get("slideMotor");
-            armHeight = hardwareMap.dcMotor.get("armHeight");
-            slideReverse = hardwareMap.dcMotor.get("slideReverse");
+        //defines attachment motors
+        slideMotor = hardwareMap.dcMotor.get("slideMotor");
+        armHeight = hardwareMap.dcMotor.get("armHeight");
+        slideReverse = hardwareMap.dcMotor.get("slideReverse");
 
-            //defines servos
-            clawMotor = hardwareMap.dcMotor.get("clawMotor");
-            servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
-            servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
+        //defines servos
+        clawMotor = hardwareMap.dcMotor.get("clawMotor");
+        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
+        servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
 
-            //sets parameters
-            leftMotor.setDirection(DcMotor.Direction.REVERSE);
-            slideReverse.setDirection(DcMotor.Direction.REVERSE);
+        //sets parameters
+        leftMotor.setDirection(DcMotor.Direction.REVERSE);
+        slideReverse.setDirection(DcMotor.Direction.REVERSE);
 
-            waitForStart();//waits until we hit play
+        waitForStart();//waits until we hit play
 
         while(opModeIsActive()) {//it loops the code inside until we hit stop
 
@@ -65,7 +66,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 //rightMotor.setPower(-gamepad1.right_stick_y);
                 rightMotor.setPower(gamepad1.right_stick_y);
             }
-           else {
+            else {
                 getJoyVals();
                 pwr = y; //this can be tweaked for exponential power increase
                 //sets power of drive motors
@@ -89,25 +90,39 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             if(gamepad2.right_stick_y > 0.1){
                 slideReverse.setPower(0.5*gamepad2.right_stick_y);
                 slideMotor.setPower(gamepad2.right_stick_y);
-            }
-            if(gamepad2.right_stick_y < -0.1){
+            } else if(gamepad2.right_stick_y < -0.1){
                 slideReverse.setPower(0.5*gamepad2.right_stick_y);
                 slideMotor.setPower(gamepad2.right_stick_y);
+            } else {
+                slideReverse.setPower(0);
+                slideMotor.setPower(0);
             }
 
             if (gamepad2.dpad_down){
-                slideMotor.setPower(-0.25);
+                lsExtendNeg = true;
+                if (lsExtendNeg) lsExtendPos = false;
             }
             if (gamepad2.dpad_up){
-                slideMotor.setPower(0.25);
+                lsExtendPos = true;
+                if (lsExtendPos) lsExtendNeg = false;
             }
             if (gamepad2.dpad_left){
-                slideReverse.setPower(-0.25);
+                lsRetractPos = true;
+                if (lsRetractPos) lsRetractNeg = false;
             }
             if (gamepad2.dpad_right){
-                slideReverse.setPower(0.25);
+                lsRetractNeg = true;
+                if (lsRetractNeg) lsRetractPos = false;
             }
 
+            if (lsExtendNeg) slideMotor.setPower(-0.25);
+
+            if (lsExtendPos) slideMotor.setPower(0.25);
+
+            if (lsRetractNeg) slideReverse.setPower(-0.25);
+
+            if (lsRetractPos) slideReverse.setPower(0.25);
+            
             //sets power of clawMotor
             clawMotor.setPower(-gamepad2.right_trigger); //Close claw
             clawMotor.setPower(gamepad2.left_trigger); //Open claw
