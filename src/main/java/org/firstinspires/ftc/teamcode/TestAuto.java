@@ -80,14 +80,18 @@ public class TestAuto extends LinearOpMode {
             servoStickRight1.setPosition(1);
             sleep(3000);
             try {
-                if (DriveFunctions.ReadBlue(colorSensorRight) == 0) {
+                if (DriveFunctions.ReadColor(colorSensorRight) == 0) {
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
-                    sleep(1000);
+                    sleep(3000);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                 }
-                else if(DriveFunctions.ReadBlue(colorSensorRight)==1){
+                else if(DriveFunctions.ReadColor(colorSensorRight)==1){
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.2);
                     sleep(500);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
+                    sleep(100);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
+                    sleep(3500);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                 }
                 else{
@@ -95,7 +99,7 @@ public class TestAuto extends LinearOpMode {
                     sleep(3000);
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
                     sleep(1000);
-                    Drive
+                    DriveFunctions.Brake(leftMotor, rightMotor);
                 }
             }
             catch(IllegalArgumentException INVALIDCOLOR){

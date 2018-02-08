@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 public class DriveFunctions {
     static double colorThreshold =20;
-    static public Integer ReadBlue(ColorSensor colorSensor){
+    static public Integer ReadColor(ColorSensor colorSensor){
         if(colorSensor.red() - colorSensor.blue() > colorThreshold ){
             return 0;
         }
