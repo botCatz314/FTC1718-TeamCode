@@ -31,7 +31,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_R1", group = "Pushbot" )
+@Autonomous(name = "Autonomous_B2", group = "Pushbot" )
 public class Autonomous_B2_Right extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
@@ -164,32 +164,33 @@ public class Autonomous_B2_Right extends LinearOpMode {
             }
             telemetry.update();
             //perform cult ritual to raise our odds of winning
-            servoStickRight1.setPosition(1);//drop servo stick
+            servoStickLeft2.setPosition(1);//drop servo stick
             sleep(3000);//sleeps giving servo opportunity to drop
-            servoStickRight1.setPosition(0);
-            if(colorSensorLeft.blue() - colorSensorLeft.red() > colorThreshold){ //reads if color sensor is seeing blue
+            servoStickLeft2.setPosition(0);
+            if(colorSensorLeft.red() - colorSensorLeft.blue() > colorThreshold){ //reads if color sensor is seeing blue
                 telemetry.addData("blue", colorSensorLeft.blue()); //gives telemetry to tell us that it sees blue, mostly for debugging
                 telemetry.update(); //pushes telemetry just set in line above to phone
-                DriveWithEncoders(-5,.3); //drives backwards to hit ball
+                DriveFunctions.DriveStraight(leftMotor,rightMotor,-0.3);
                 sleep(100); //sleeps to catch up
                 servoStickLeft2.setPosition(0); //returns servo stick to original position, so we don't risk damaging it
                 DriveWithEncoders(25,0.3); //drives forward to a location equal to the else if
                 sleep(2000); //waits giving robot chance to catch up
             }
-            else if(colorSensorLeft.red() - colorSensorLeft.blue() > colorThreshold){ //looks for red rather than blue
+            else if(colorSensorLeft.blue() - colorSensorLeft.red() > colorThreshold){ //looks for red rather than blue
                 telemetry.addData("red", colorSensorLeft.red()); //gives telemetry to tell us that it sees red, mostly for debugging
                 telemetry.update(); //pushes previously set telemetry data to phone
-                DriveWithEncoders(20, 0.3); //drives forward off balancing board
+DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
                 sleep(100); //sleeps to allow robot to catch up
                 servoStickLeft2.setPosition(0); //brings servo stick back up so we don't damage it
                 sleep(1000); //waits allowing robot to catch up
             }
             else{
-                servoStickRight1.setPosition(0);
+                servoStickLeft2.setPosition(0);
                 sleep(3000);
-                DriveWithEncoders(20, 0.3);
+                DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
                 sleep(1000);
             }
+            telemetry.addData("running", "better than wes");
             servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick*/
             turnLeft(300);
             Brake();

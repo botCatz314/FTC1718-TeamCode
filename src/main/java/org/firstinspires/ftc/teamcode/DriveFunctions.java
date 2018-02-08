@@ -40,7 +40,10 @@ public class DriveFunctions {
         left.setPower(stop);
         right.setPower(stop);
     }
-
+static public void Turn(double leftsSpeed, double rightSpeed, DcMotor leftMotor, DcMotor rightMotor){
+        leftMotor.setPower(leftsSpeed);
+        rightMotor.setPower(rightSpeed);
+}
 
 
 
