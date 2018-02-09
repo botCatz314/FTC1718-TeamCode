@@ -98,17 +98,24 @@ public class TestAuto extends LinearOpMode {
                     servoStickRight1.setPosition(0);
                     sleep(3000);
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
-                    sleep(1000);
+                    sleep(3000);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                 }
             }
             catch(IllegalArgumentException INVALIDCOLOR){
                 servoStickRight1.setPosition(0);
                 sleep(3000);
-                DriveWithEncoders(20,0.3);
-                sleep(6000);
+                DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                sleep(3000);
+                DriveFunctions.Brake(leftMotor,rightMotor);
             }
             servoStickRight1.setPosition(0);
+            sleep(3000);
+            DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
+            sleep(1800);
+            DriveFunctions.Brake(leftMotor, rightMotor);
+
+
             sleep(30000);
         }
 /*
