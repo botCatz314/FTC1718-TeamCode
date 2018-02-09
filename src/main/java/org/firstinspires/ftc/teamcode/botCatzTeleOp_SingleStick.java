@@ -28,7 +28,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     private DcMotor slideMotor, armHeight, slideReverse; //declares attachment motors
 
     //declares motors as variables
-    private Servo servoStickRight1,servoStickLeft2; //declares servos with regular range of motion
+    private Servo servoStickRight1,servoStickLeft2, blockFlicker; //declares servos with regular range of motion
     private DcMotor clawMotor;
 
     private static String version = "3.0.3";
@@ -48,6 +48,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
         clawMotor = hardwareMap.dcMotor.get("clawMotor");
         servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
         servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
+        blockFlicker = hardwareMap.servo.get("blockFlicker");
 
         //sets parameters
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -92,10 +93,10 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
 
             //controls the linearSlide
 
-            if(gamepad2.right_stick_y > 0.1){
+            if(gamepad2.right_stick_y > 0.2){
                 slideReverse.setPower(0.5*gamepad2.right_stick_y);
                 slideMotor.setPower(gamepad2.right_stick_y);
-            } else if(gamepad2.right_stick_y < -0.1){
+            } else if(gamepad2.right_stick_y < -0.2){
                 slideReverse.setPower(gamepad2.right_stick_y);
                 slideMotor.setPower(0.5*gamepad2.right_stick_y);
             } else {
@@ -167,6 +168,14 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 servoStickLeft2.setPosition(0);
                 telemetry.addData("Wrong", "true");
                 telemetry.update();
+            }
+            if(gamepad1.left_bumper){
+                blockFlicker.setPosition(1);
+                telemetry.addData("Correct", "true");
+            }
+            if (gamepad1.right_bumper){
+                blockFlicker.setPosition(0);
+                telemetry.addData("Wrong", "true");
             }
 
             idle();//waits to be caught up

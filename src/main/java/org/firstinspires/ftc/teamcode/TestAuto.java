@@ -81,40 +81,47 @@ public class TestAuto extends LinearOpMode {
             sleep(3000);
             try {
                 if (DriveFunctions.ReadColor(colorSensorRight) == 0) {
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
-                    sleep(3000);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(2000);
                     DriveFunctions.Brake(leftMotor, rightMotor);
+                    servoStickRight1.setPosition(0);
+                    sleep(3000);
                 }
                 else if(DriveFunctions.ReadColor(colorSensorRight)==1){
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.2);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
                     sleep(500);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     sleep(100);
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
-                    sleep(3500);
+                    servoStickRight1.setPosition(0);
+                    sleep(3000);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(2500);
                     DriveFunctions.Brake(leftMotor, rightMotor);
+                    servoStickRight1.setPosition(0);
+                    sleep(100);
+                    sleep(3000);
                 }
                 else{
                     servoStickRight1.setPosition(0);
                     sleep(3000);
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
-                    sleep(3000);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(2000);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                 }
             }
             catch(IllegalArgumentException INVALIDCOLOR){
+                sleep(300);
                 servoStickRight1.setPosition(0);
                 sleep(3000);
                 DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-                sleep(3000);
+                sleep(2000);
                 DriveFunctions.Brake(leftMotor,rightMotor);
             }
             servoStickRight1.setPosition(0);
             sleep(3000);
             DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
-            sleep(1800);
+            sleep(1200);
             DriveFunctions.Brake(leftMotor, rightMotor);
-
 
             sleep(30000);
         }

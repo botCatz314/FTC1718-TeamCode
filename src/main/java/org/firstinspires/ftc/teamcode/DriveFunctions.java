@@ -32,8 +32,8 @@ public class DriveFunctions {
     }
 
     static void DriveStraight(DcMotor left, DcMotor right, double speed){
-        left.setPower(speed);
         right.setPower(speed);
+        left.setPower(speed);
     }
     static void Brake(DcMotor left, DcMotor right){
         double stop = 0;

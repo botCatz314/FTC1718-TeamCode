@@ -120,9 +120,9 @@ public class Autonomous_R1 extends LinearOpMode {
             //Sets variable for figuring out which picture it is
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate); //Reference to picture
             //Checks if the VuMark is unknown and acts based on that
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) { //Events for if VuMark is unknown
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) { //Events for if VuMark is known
                 telemetry.addData("VuMark", "%s visible", vuMark);
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Gets the angle of the picture
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Gets the position of the picture
                 //Turns it into rotation and position coordinates
                 if (pose != null) { //Events to track position of the picture relative to the robot.
                     VectorF trans = pose.getTranslation();
@@ -137,6 +137,7 @@ public class Autonomous_R1 extends LinearOpMode {
                     double rZ = rot.thirdAngle;
                 }
             }
+
             //Runs a check to see which of the picture is active
 
             if (vuMark == RelicRecoveryVuMark.CENTER) {
