@@ -92,42 +92,31 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             }
 
             //controls the linearSlide
-
-            if(gamepad2.right_stick_y > 0.2){
-                slideReverse.setPower(0.5*gamepad2.right_stick_y);
+            if(gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1){
                 slideMotor.setPower(gamepad2.right_stick_y);
-            } else if(gamepad2.right_stick_y < -0.2){
-                slideReverse.setPower(gamepad2.right_stick_y);
-                slideMotor.setPower(0.5*gamepad2.right_stick_y);
             } else {
-                slideReverse.setPower(0);
                 slideMotor.setPower(0);
             }
+            if(gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1){
+                slideReverse.setPower(gamepad2.left_stick_y);
+            } else {
+                slideReverse.setPower(0);
+            }
 
+            //controls the height of the linear slide
+            //armHeight.setPower(-gamepad2.left_stick_y);//sets the motor controlling arm height equal to the left stick
             if (gamepad2.dpad_down){
-                lsExtendNeg = !lsExtendNeg;
-                if (lsExtendNeg) lsExtendPos = false;
+                armHeight.setPower(0.4);
             }
             if (gamepad2.dpad_up){
-                lsExtendPos = !lsExtendPos;
-                if (lsExtendPos) lsExtendNeg = false;
+                armHeight.setPower(-0.4);
             }
             if (gamepad2.dpad_left){
-                lsRetractPos = !lsRetractPos;
-                if (lsRetractPos) lsRetractNeg = false;
+                armHeight.setPower(0);
             }
             if (gamepad2.dpad_right){
-                lsRetractNeg = !lsRetractNeg;
-                if (lsRetractNeg) lsRetractPos = false;
+                armHeight.setPower(0);
             }
-
-            if (lsExtendNeg) slideMotor.setPower(-0.25);
-
-            if (lsExtendPos) slideMotor.setPower(0.25);
-
-            if (lsRetractNeg) slideReverse.setPower(-0.25);
-
-            if (lsRetractPos) slideReverse.setPower(0.25);
 
             //sets power of clawMotor
             clawMotor.setPower(-gamepad2.right_trigger); //Close claw
@@ -144,9 +133,6 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 // hold claw closed
                 clawMotor.setPower(-0.4);
             }
-
-            //controls the height of the linear slide
-            armHeight.setPower(-gamepad2.left_stick_y);//sets the motor controlling arm height equal to the left stick
 
             //gives drivers control of the servoStick in case it does not pull up
             if (gamepad2.a) {
