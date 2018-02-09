@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.util.Range;
  * Created by ITSA-GAMINGHP2 on 1/12/2018.
  * tele op code for robot
  * botCatzTeleOp_SingleStick
- * v3.0.2
- * 2/5/2018
+ * v3.0.3
+ * 2/7/2018
  */
 @TeleOp
 public class botCatzTeleOp_SingleStick extends LinearOpMode {
@@ -30,6 +30,8 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     //declares motors as variables
     private Servo servoStickRight1,servoStickLeft2; //declares servos with regular range of motion
     private DcMotor clawMotor;
+
+    private static String version = "3.0.3";
 
     //private CRServo clawAngle;
     public void runOpMode() {
@@ -54,6 +56,9 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
         waitForStart();//waits until we hit play
 
         while(opModeIsActive()) {//it loops the code inside until we hit stop
+
+            telemetry.addData("TeleOp Version: ", version);
+            telemetry.update();
 
             if (TankDriveActive == true){
                 /*leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
@@ -99,19 +104,19 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             }
 
             if (gamepad2.dpad_down){
-                lsExtendNeg = true;
+                lsExtendNeg = !lsExtendNeg;
                 if (lsExtendNeg) lsExtendPos = false;
             }
             if (gamepad2.dpad_up){
-                lsExtendPos = true;
+                lsExtendPos = !lsExtendPos;
                 if (lsExtendPos) lsExtendNeg = false;
             }
             if (gamepad2.dpad_left){
-                lsRetractPos = true;
+                lsRetractPos = !lsRetractPos;
                 if (lsRetractPos) lsRetractNeg = false;
             }
             if (gamepad2.dpad_right){
-                lsRetractNeg = true;
+                lsRetractNeg = !lsRetractNeg;
                 if (lsRetractNeg) lsRetractPos = false;
             }
 
@@ -122,7 +127,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             if (lsRetractNeg) slideReverse.setPower(-0.25);
 
             if (lsRetractPos) slideReverse.setPower(0.25);
-            
+
             //sets power of clawMotor
             clawMotor.setPower(-gamepad2.right_trigger); //Close claw
             clawMotor.setPower(gamepad2.left_trigger); //Open claw
