@@ -34,7 +34,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name = "TestAuto", group = "Pushbot" )
 public class TestAuto extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
-    private Servo servoStickLeft2, servoStickRight1;
+    private Servo servoStickLeft2, servoStickRight1,blockFlicker;
     private ColorSensor colorSensorRight, colorSensorLeft;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
@@ -54,6 +54,7 @@ public class TestAuto extends LinearOpMode {
         colorSensorLeft = hardwareMap.colorSensor.get("colorSensorLeft");
         colorSensorRight = hardwareMap.colorSensor.get("colorSensorRight");
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
+        blockFlicker = hardwareMap.servo.get("blockFlicker");
         //sets parameters of gyro
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -82,20 +83,23 @@ public class TestAuto extends LinearOpMode {
             try {
                 if (DriveFunctions.ReadColor(colorSensorRight) == 0) {
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-                    sleep(2000);
+                    sleep(200);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     servoStickRight1.setPosition(0);
+                    DriveFunctions.DriveStraight(leftMotor,rightMotor,1);
+                    sleep(1500);
+                    DriveFunctions.Brake(leftMotor,rightMotor);
                     sleep(3000);
                 }
                 else if(DriveFunctions.ReadColor(colorSensorRight)==1){
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
-                    sleep(500);
+                    sleep(300);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     sleep(100);
                     servoStickRight1.setPosition(0);
                     sleep(3000);
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-                    sleep(2500);
+                    sleep(2200);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     servoStickRight1.setPosition(0);
                     sleep(100);
@@ -105,7 +109,7 @@ public class TestAuto extends LinearOpMode {
                     servoStickRight1.setPosition(0);
                     sleep(3000);
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-                    sleep(2000);
+                    sleep(3000);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                 }
             }
@@ -118,6 +122,9 @@ public class TestAuto extends LinearOpMode {
                 DriveFunctions.Brake(leftMotor,rightMotor);
             }
             servoStickRight1.setPosition(0);
+            blockFlicker.setPosition(0);
+            sleep(400);
+            blockFlicker.setPosition(1);
             sleep(3000);
             sleep(30000);
         }
