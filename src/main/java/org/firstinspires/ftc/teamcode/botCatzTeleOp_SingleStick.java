@@ -22,6 +22,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     private static double deadzone = 0.2;
     private static boolean TankDriveActive = false, clawHold = false;
     private static boolean lsExtendPos = false, lsExtendNeg = false, lsRetractPos = false, lsRetractNeg = false;
+    private static boolean armUp = false, armDown = false;
 
     // declare motors as variables
     private DcMotor leftMotor, rightMotor; //declares drive motors
@@ -106,17 +107,25 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             //controls the height of the linear slide
             //armHeight.setPower(-gamepad2.left_stick_y);//sets the motor controlling arm height equal to the left stick
             if (gamepad2.dpad_down){
-                armHeight.setPower(0.4);
+                armUp = !armUp;
+                if (armUp) armDown = false;
             }
             if (gamepad2.dpad_up){
-                armHeight.setPower(-0.4);
+                armDown = !armDown;
+                if (armDown) armUp = false;
             }
             if (gamepad2.dpad_left){
                 armHeight.setPower(0);
+                armUp = false;
+                armDown = false;
             }
             if (gamepad2.dpad_right){
                 armHeight.setPower(0);
+                armUp = false;
+                armDown = false;
             }
+            if (armUp) armHeight.setPower(0.5);
+            if (armDown) armHeight.setPower(-0.5);
 
             //sets power of clawMotor
             clawMotor.setPower(-gamepad2.right_trigger); //Close claw

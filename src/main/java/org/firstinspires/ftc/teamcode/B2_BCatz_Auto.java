@@ -29,13 +29,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 /**
  * Created by ITSA-GAMINGHP2 on 2/9/2018.
  */
-@Autonomous(name = "Autonomous r2", group = "Pushbot" )
-public class Autonomous_R2_Right extends LinearOpMode {
-    private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
+@Autonomous(name = "B2_BCatz_Auto_v1", group = "Pushbot" )
+public class B2_BCatz_Auto extends LinearOpMode {
+        private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
-    private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
+        private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
 
-    private ColorSensor colorSensorLeft, colorSensorRight; //declares color sensors
+        private ColorSensor colorSensorLeft, colorSensorRight; //declares color sensors
     double threshold = .25, colorThreshold;
 
     @Override
@@ -54,53 +54,73 @@ public class Autonomous_R2_Right extends LinearOpMode {
 
         //declares attachment motors
         blockFlicker = hardwareMap.servo.get("blockFlicker");
-        telemetry.addData("Hello Mortal", "This has downloaded");
-        telemetry.update();
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
             telemetry.addData("Running B2_BCatz_Auto", "--");
             telemetry.update();
-            servoStickRight1.setPosition(1);
+            servoStickLeft2.setPosition(1);
             sleep(3000);
             try {
-                if (DriveFunctions.ReadColor(colorSensorRight) == 0) {
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-                    sleep(2000);
+                if (DriveFunctions.ReadColor(colorSensorLeft) == 1) {
+                    telemetry.addData("Seeing blue", "--");
+                    telemetry.update();
+                    telemetry.addData("driving straight", "--");
+                    telemetry.update();
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.5);
+                    sleep(200);
                     DriveFunctions.Brake(leftMotor, rightMotor);
-                    servoStickRight1.setPosition(0);
+                    telemetry.addData("Servo Up", "--");
+                    telemetry.update();
+                    servoStickLeft2.setPosition(0);
                     sleep(3000);
+                    telemetry.addData("Jewel Functions Done", "--");
+                    telemetry.update();
                 }
-                else if(DriveFunctions.ReadColor(colorSensorRight)==1){
+                else if(DriveFunctions.ReadColor(colorSensorLeft)==0){
+                    telemetry.addData("Seeing red", "--");
+                    telemetry.update();
+                    telemetry.addData("Reversing", "--");
+                    telemetry.update();
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
                     sleep(500);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     sleep(100);
-                    servoStickRight1.setPosition(0);
+                    telemetry.addData("Servo Up", "--");
+                    telemetry.update();
+                    servoStickLeft2.setPosition(0);
                     sleep(3000);
+                    telemetry.addData("Driving Straight", "--");
+                    telemetry.update();
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
                     sleep(2500);
                     DriveFunctions.Brake(leftMotor, rightMotor);
-                    servoStickRight1.setPosition(0);
-                    sleep(100);
+                    telemetry.addData("Servo Up", "--");
+                    telemetry.update();
+                    servoStickLeft2.setPosition(0);
                     sleep(3000);
                 }
                 else{
-                    servoStickRight1.setPosition(0);
+                    telemetry.addData("IDK?", "--");
+                    telemetry.update();
+                    servoStickLeft2.setPosition(0);
                     sleep(3000);
+                    telemetry.addData("Servo Up", "--");
+                    telemetry.update();
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
                     sleep(2000);
+                    telemetry.addData("Driving Straight", "--");
+                    telemetry.update();
                     DriveFunctions.Brake(leftMotor, rightMotor);
                 }
             }
             catch(IllegalArgumentException INVALIDCOLOR){
                 sleep(300);
-                servoStickRight1.setPosition(0);
+                servoStickLeft2.setPosition(0);
                 sleep(3000);
                 DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
                 sleep(2000);
                 DriveFunctions.Brake(leftMotor,rightMotor);
             }
-            servoStickRight1.setPosition(0);
 
             sleep(30000);
         }

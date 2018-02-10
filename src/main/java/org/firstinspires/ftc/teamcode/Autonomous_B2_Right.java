@@ -185,21 +185,28 @@ DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
                 sleep(1000); //waits allowing robot to catch up
             }
             else{
-                servoStickLeft2.setPosition(0);
+                servoStickLeft2.setPosition(1);
                 sleep(3000);
                 DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
                 sleep(1000);
             }
             telemetry.addData("running", "better than wes");
-            servoStickLeft2.setPosition(0); //auxiliary bringing up of the servo stick*/
-            turnLeft(300);
-            Brake();
+            servoStickLeft2.setPosition(1); //auxiliary bringing up of the servo stick*/
+            sleep(100);
             DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
             sleep(300);
             DriveFunctions.Brake(leftMotor,rightMotor);
+            turnLeft(800);
+            Brake();
+            servoStickLeft2.setPosition(1);
+            DriveFunctions.DriveStraight(leftMotor,rightMotor,0.5);
+            sleep(900);
+            DriveFunctions.Brake(leftMotor,rightMotor);
             blockFlicker.setPosition(0);
             sleep(200);
-            blockFlicker.setPosition(1);
+            DriveFunctions.BackUp(leftMotor,rightMotor,0.3);
+            sleep(200);
+            DriveFunctions.Brake(leftMotor,rightMotor);
             sleep(30000); //waits for rest of program so it doesn't start looping
         }
     }

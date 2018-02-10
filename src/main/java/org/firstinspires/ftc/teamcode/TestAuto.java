@@ -119,10 +119,13 @@ public class TestAuto extends LinearOpMode {
             }
             servoStickRight1.setPosition(0);
             sleep(3000);
-            DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
+            DriveFunctions.Turn(-0.3, 0.3, leftMotor, rightMotor);
             sleep(1200);
             DriveFunctions.Brake(leftMotor, rightMotor);
 
+            DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
+            sleep(300);
+            DriveFunctions.Brake(leftMotor, rightMotor);
             sleep(30000);
         }
 /*
