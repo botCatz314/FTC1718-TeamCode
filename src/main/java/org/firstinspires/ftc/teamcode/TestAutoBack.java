@@ -70,27 +70,34 @@ public class TestAutoBack extends LinearOpMode {
             try {
                 if (DriveFunctions.ReadColor(colorSensorRight) == 0) {
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
-                    sleep(3000);
+                    sleep(400);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     servoStickRight1.setPosition(0);
-                    sleep(3000);
+                    DriveFunctions.DriveStraight(leftMotor,rightMotor,-1);
+                    sleep(1200);
+                    DriveFunctions.Brake(leftMotor,rightMotor);
+                    DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
+                    sleep(300);
+                    DriveFunctions.Brake(leftMotor,rightMotor);
+                    DriveFunctions.DriveStraight(leftMotor,rightMotor,-0.3);
+                    sleep(300);
+                    DriveFunctions.Brake(leftMotor,rightMotor);
+                    sleep(30000);
                 }
                 else if(DriveFunctions.ReadColor(colorSensorRight)==1){
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-                    sleep(500);
+                    sleep(400);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     sleep(100);
                     servoStickRight1.setPosition(0);
                     sleep(3000);
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
-                    sleep(2500);
-                    DriveFunctions.Brake(leftMotor, rightMotor);
-                    servoStickRight1.setPosition(0);
-                    sleep(100);
-                    sleep(3000);
+                    sleep(30000);
                 }
                 else{
                     servoStickRight1.setPosition(0);
+                    DriveFunctions.Turn(0,0.3,leftMotor,rightMotor);
+                    sleep(300);
+                    DriveFunctions.Brake(leftMotor,rightMotor);
                     sleep(3000);
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
                     sleep(2000);
