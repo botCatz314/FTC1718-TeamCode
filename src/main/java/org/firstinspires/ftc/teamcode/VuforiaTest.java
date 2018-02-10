@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,6 +13,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.DriveFunctions.*;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -31,8 +34,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_B2", group = "Pushbot" )
-public class Autonomous_B2_Right extends LinearOpMode {
+@Autonomous(name = "VuforiaTest", group = "Pushbot" )
+@Disabled
+public class VuforiaTest extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
     private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
@@ -65,7 +69,7 @@ public class Autonomous_B2_Right extends LinearOpMode {
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
         parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/"; //Key for using Vuforia in code
-        parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT; //Decides which camera to use
+        parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.BACK; //Decides which camera to use
         this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV); //Creates Vuforia Localizer
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark"); //Decides which pictures to use
         VuforiaTrackable relicTemplate = relicTrackables.get(0); //Base pictures
@@ -196,19 +200,24 @@ public class Autonomous_B2_Right extends LinearOpMode {
             if (Center == true){
                 DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
                 Brake();
-                sleep(3000)
+                sleep(3000);
             }
             if (Right == true){
-                DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor)
+                DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
+                sleep(3000);
+                DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
                 Brake();
-                sleep(3000)
+                sleep(3000);
             }
             if (Left == true){
-                DriveFunctions.Turn(-0.3, 0.3, leftMotor, rightMotor)
+                DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
                 Brake();
-                sleep(3000)
+                sleep(3000);
             }
-            sleep(3000)
+            else {
+                telemetry.addData("Sup", "No Picture");
+            }
+            sleep(3000);
         }
     }
 

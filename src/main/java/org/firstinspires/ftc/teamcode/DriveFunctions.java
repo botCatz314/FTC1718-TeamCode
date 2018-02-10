@@ -33,7 +33,7 @@ public class DriveFunctions {
 
     static void DriveStraight(DcMotor left, DcMotor right, double speed){
         right.setPower(speed);
-        left.setPower(speed*1.5);
+        left.setPower(speed);
     }
     static void BackUp(DcMotor left, DcMotor right, double speed){
         right.setPower(-speed);
