@@ -93,8 +93,18 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             }
 
             //controls the linearSlide
+<<<<<<< HEAD
+
+            if(gamepad2.right_stick_y > 0.1){
+                slideReverse.setPower(0.5*gamepad2.right_stick_y);
+                slideMotor.setPower(gamepad2.right_stick_y);
+            } else if(gamepad2.right_stick_y < -0.1){
+                slideReverse.setPower(gamepad2.right_stick_y);
+                slideMotor.setPower(0.5*gamepad2.right_stick_y);
+=======
             if(gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1){
                 slideMotor.setPower(gamepad2.right_stick_y);
+>>>>>>> 202d1ce4bfa48901e3c275ae04b262fa00f57482
             } else {
                 slideMotor.setPower(0);
             }
@@ -107,6 +117,22 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             //controls the height of the linear slide
             //armHeight.setPower(-gamepad2.left_stick_y);//sets the motor controlling arm height equal to the left stick
             if (gamepad2.dpad_down){
+<<<<<<< HEAD
+                lsExtendNeg = !lsExtendNeg;
+                if (lsExtendNeg) lsExtendPos = false;
+            }
+            if (gamepad2.dpad_up){
+                lsExtendPos = !lsExtendPos;
+                if (lsExtendPos) lsExtendNeg = false;
+            }
+            if (gamepad2.dpad_left){
+                lsRetractPos = !lsRetractPos;
+                if (lsRetractPos) lsRetractNeg = false;
+            }
+            if (gamepad2.dpad_right){
+                lsRetractNeg = !lsRetractNeg;
+                if (lsRetractNeg) lsRetractPos = false;
+=======
                 armUp = !armUp;
                 if (armUp) armDown = false;
             }
@@ -123,6 +149,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 armHeight.setPower(0);
                 armUp = false;
                 armDown = false;
+>>>>>>> 202d1ce4bfa48901e3c275ae04b262fa00f57482
             }
             if (armUp) armHeight.setPower(0.5);
             if (armDown) armHeight.setPower(-0.5);
