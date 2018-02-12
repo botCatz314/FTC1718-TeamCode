@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -29,14 +31,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "TestAuto", group = "Pushbot" )
-public class TestAuto extends LinearOpMode {
+@Autonomous(name = "RedSide", group = "Pushbot" )
+public class RedSide extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
-    private Servo servoStickLeft2, servoStickRight1;
+    private Servo servoStickLeft2, servoStickRight1,blockFlicker;
+    private ColorSensor colorSensorRight, colorSensorLeft;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     Orientation lastAngle = new Orientation();
-    double threshold = .25;
+    double threshold = .25, colorThreshold;
     double right = 1, left = 0;
     public double pi = 3.1415926535897932;
 
@@ -48,7 +51,10 @@ public class TestAuto extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
         servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
         servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
+        colorSensorLeft = hardwareMap.colorSensor.get("colorSensorLeft");
+        colorSensorRight = hardwareMap.colorSensor.get("colorSensorRight");
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
+        blockFlicker = hardwareMap.servo.get("blockFlicker");
         //sets parameters of gyro
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -71,6 +77,93 @@ public class TestAuto extends LinearOpMode {
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
+
+            servoStickRight1.setPosition(1);
+            sleep(2000);
+            try {
+                if (DriveFunctions.ReadColor(colorSensorRight) == 0) {
+                    // back jewell is red, forward to flick blue off
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(400);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
+                    servoStickRight1.setPosition(0);
+                    DriveFunctions.DriveStraight(leftMotor,rightMotor,1);
+                    sleep(1500);
+                    DriveFunctions.Brake(leftMotor,rightMotor);
+                    sleep(3000);
+                }
+                else if(DriveFunctions.ReadColor(colorSensorRight)==1){
+                    // back jewell is blue, reverse to flick it off
+                    DriveFunctions.BackUp(leftMotor, rightMotor, 0.2);
+                    sleep(400);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
+                    sleep(100);
+                    servoStickRight1.setPosition(0);
+                    sleep(1000);
+                    //DriveFunctions.Turn(-0.2,0.2,leftMotor,rightMotor);
+                    //sleep(100);
+                    servoStickRight1.setPosition(0);
+                    sleep(1000);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
+                    sleep(200);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(500);
+                    DriveFunctions.Turn(-0.2,0.2,leftMotor,rightMotor);
+                    sleep(300);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
+                    //DriveFunctions.Turn(0.2,0.2,leftMotor,rightMotor);
+                    //sleep(200);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(400);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
+                    servoStickRight1.setPosition(0);
+                    sleep(1000);
+                }
+                else{
+                    servoStickRight1.setPosition(0);
+                    sleep(3000);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(3000);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
+                }
+            }
+            catch(IllegalArgumentException INVALIDCOLOR){
+                sleep(300);
+                servoStickRight1.setPosition(0);
+                sleep(3000);
+                DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                sleep(2000);
+                DriveFunctions.Brake(leftMotor,rightMotor);
+            }
+            servoStickRight1.setPosition(0);
+            DriveFunctions.BackUp(leftMotor,rightMotor,0.3);
+            sleep(500);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
+            sleep(300);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            DriveFunctions.BackUp(leftMotor,rightMotor,0.2);
+            sleep(100);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            DriveFunctions.Turn(0.2,0.2,leftMotor,rightMotor);
+            sleep(100);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            blockFlicker.setPosition(0);
+            sleep(1000);
+            blockFlicker.setPosition(1);
+            sleep(1000);
+            blockFlicker.setPosition(0);
+            sleep(1000);
+            blockFlicker.setPosition(1);
+            sleep(1000);
+            DriveFunctions.DriveStraight(leftMotor,rightMotor,0.2);
+            sleep(2000);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            DriveFunctions.BackUp(leftMotor,rightMotor,0.2);
+            sleep(250);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            sleep(30000);
+        }
 /*
    // turnGyro(90,0.5);
     //telemetry.addData("gyro",  imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES));
@@ -101,12 +194,12 @@ public class TestAuto extends LinearOpMode {
             telemetry.addData("gyro", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle);
             telemetry.update();
             sleep(30000);*/
-          servoStickRight1.setPosition(1);
+        /*  servoStickRight1.setPosition(1);
           sleep(3000);
           servoStickRight1.setPosition(0);
           telemetry.addData("We just", "Made it here");
           sleep(30000);
-        }
+        }*/
     }
     public void DriveWithEncoders(double distance, double speed) {
         double off = 0;

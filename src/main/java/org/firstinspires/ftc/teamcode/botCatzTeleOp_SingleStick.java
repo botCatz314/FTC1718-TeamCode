@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.util.Range;
  * Created by ITSA-GAMINGHP2 on 1/12/2018.
  * tele op code for robot
  * botCatzTeleOp_SingleStick
- * v3.0.2
- * 2/5/2018
+ * v3.0.3
+ * 2/7/2018
  */
 @TeleOp
 public class botCatzTeleOp_SingleStick extends LinearOpMode {
@@ -22,14 +22,17 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
     private static double deadzone = 0.2;
     private static boolean TankDriveActive = false, clawHold = false;
     private static boolean lsExtendPos = false, lsExtendNeg = false, lsRetractPos = false, lsRetractNeg = false;
+    private static boolean armUp = false, armDown = false;
 
     // declare motors as variables
     private DcMotor leftMotor, rightMotor; //declares drive motors
     private DcMotor slideMotor, armHeight, slideReverse; //declares attachment motors
 
     //declares motors as variables
-    private Servo servoStickRight1,servoStickLeft2; //declares servos with regular range of motion
+    private Servo servoStickRight1,servoStickLeft2, blockFlicker; //declares servos with regular range of motion
     private DcMotor clawMotor;
+
+    private static String version = "3.0.3";
 
     //private CRServo clawAngle;
     public void runOpMode() {
@@ -46,6 +49,7 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
         clawMotor = hardwareMap.dcMotor.get("clawMotor");
         servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
         servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
+        blockFlicker = hardwareMap.servo.get("blockFlicker");
 
         //sets parameters
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -54,6 +58,9 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
         waitForStart();//waits until we hit play
 
         while(opModeIsActive()) {//it loops the code inside until we hit stop
+
+            telemetry.addData("TeleOp Version: ", version);
+            telemetry.update();
 
             if (TankDriveActive == true){
                 /*leftMotor.setPower(gamepad1.left_stick_y);//sets power of leftMotor2 = to joystick value
@@ -86,43 +93,40 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
             }
 
             //controls the linearSlide
-
-            if(gamepad2.right_stick_y > 0.1){
-                slideReverse.setPower(0.5*gamepad2.right_stick_y);
-                slideMotor.setPower(gamepad2.right_stick_y);
-            } else if(gamepad2.right_stick_y < -0.1){
-                slideReverse.setPower(0.5*gamepad2.right_stick_y);
+            if(gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1){
                 slideMotor.setPower(gamepad2.right_stick_y);
             } else {
-                slideReverse.setPower(0);
                 slideMotor.setPower(0);
             }
+            if(gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1){
+                slideReverse.setPower(gamepad2.left_stick_y);
+            } else {
+                slideReverse.setPower(0);
+            }
 
+            //controls the height of the linear slide
+            //armHeight.setPower(-gamepad2.left_stick_y);//sets the motor controlling arm height equal to the left stick
             if (gamepad2.dpad_down){
-                lsExtendNeg = true;
-                if (lsExtendNeg) lsExtendPos = false;
+                armUp = !armUp;
+                if (armUp) armDown = false;
             }
             if (gamepad2.dpad_up){
-                lsExtendPos = true;
-                if (lsExtendPos) lsExtendNeg = false;
+                armDown = !armDown;
+                if (armDown) armUp = false;
             }
             if (gamepad2.dpad_left){
-                lsRetractPos = true;
-                if (lsRetractPos) lsRetractNeg = false;
+                armHeight.setPower(0);
+                armUp = false;
+                armDown = false;
             }
             if (gamepad2.dpad_right){
-                lsRetractNeg = true;
-                if (lsRetractNeg) lsRetractPos = false;
+                armHeight.setPower(0);
+                armUp = false;
+                armDown = false;
             }
+            if (armUp) armHeight.setPower(0.5);
+            if (armDown) armHeight.setPower(-0.5);
 
-            if (lsExtendNeg) slideMotor.setPower(-0.25);
-
-            if (lsExtendPos) slideMotor.setPower(0.25);
-
-            if (lsRetractNeg) slideReverse.setPower(-0.25);
-
-            if (lsRetractPos) slideReverse.setPower(0.25);
-            
             //sets power of clawMotor
             clawMotor.setPower(-gamepad2.right_trigger); //Close claw
             clawMotor.setPower(gamepad2.left_trigger); //Open claw
@@ -138,9 +142,6 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 // hold claw closed
                 clawMotor.setPower(-0.4);
             }
-
-            //controls the height of the linear slide
-            armHeight.setPower(-gamepad2.left_stick_y);//sets the motor controlling arm height equal to the left stick
 
             //gives drivers control of the servoStick in case it does not pull up
             if (gamepad2.a) {
@@ -162,6 +163,14 @@ public class botCatzTeleOp_SingleStick extends LinearOpMode {
                 servoStickLeft2.setPosition(0);
                 telemetry.addData("Wrong", "true");
                 telemetry.update();
+            }
+            if(gamepad1.left_bumper){
+                blockFlicker.setPosition(1);
+                telemetry.addData("Correct", "true");
+            }
+            if (gamepad1.right_bumper){
+                blockFlicker.setPosition(0);
+                telemetry.addData("Wrong", "true");
             }
 
             idle();//waits to be caught up
