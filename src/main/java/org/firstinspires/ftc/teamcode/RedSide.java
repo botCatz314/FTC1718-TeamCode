@@ -79,9 +79,10 @@ public class RedSide extends LinearOpMode {
         while (opModeIsActive()) {
 
             servoStickRight1.setPosition(1);
-            sleep(3000);
+            sleep(2000);
             try {
                 if (DriveFunctions.ReadColor(colorSensorRight) == 0) {
+                    // back jewell is red, forward to flick blue off
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
                     sleep(400);
                     DriveFunctions.Brake(leftMotor, rightMotor);
@@ -98,23 +99,25 @@ public class RedSide extends LinearOpMode {
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     sleep(100);
                     servoStickRight1.setPosition(0);
-                    sleep(3000);
+                    sleep(1000);
                     //DriveFunctions.Turn(-0.2,0.2,leftMotor,rightMotor);
                     //sleep(100);
                     servoStickRight1.setPosition(0);
                     sleep(1000);
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.2);
-                    sleep(400);
+                    sleep(200);
+                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    sleep(500);
                     DriveFunctions.Turn(-0.2,0.2,leftMotor,rightMotor);
                     sleep(300);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
                     //DriveFunctions.Turn(0.2,0.2,leftMotor,rightMotor);
                     //sleep(200);
                     DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
                     sleep(400);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     servoStickRight1.setPosition(0);
-                    sleep(100);
-                    sleep(3000);
+                    sleep(1000);
                 }
                 else{
                     servoStickRight1.setPosition(0);
@@ -139,24 +142,26 @@ public class RedSide extends LinearOpMode {
             DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
             sleep(300);
             DriveFunctions.Brake(leftMotor,rightMotor);
-            blockFlicker.setPosition(0);
-            sleep(1000);
-            blockFlicker.setPosition(1);
-            sleep(1000);
-            blockFlicker.setPosition(0);
-            sleep(1000);
-            blockFlicker.setPosition(1);
-            sleep(1000);
-            DriveFunctions.BackUp(leftMotor,rightMotor,0.1);
-            sleep(500);
-            DriveFunctions.Turn(0.2,0.2,leftMotor,rightMotor);
-            sleep(2000);
-            blockFlicker.setPosition(0);
-            sleep(1000);
-            blockFlicker.setPosition(1);
-            sleep(1000);
+            DriveFunctions.BackUp(leftMotor,rightMotor,0.2);
+            sleep(100);
             DriveFunctions.Brake(leftMotor,rightMotor);
-            sleep(3000);
+            DriveFunctions.Turn(0.2,0.2,leftMotor,rightMotor);
+            sleep(100);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            blockFlicker.setPosition(0);
+            sleep(1000);
+            blockFlicker.setPosition(1);
+            sleep(1000);
+            blockFlicker.setPosition(0);
+            sleep(1000);
+            blockFlicker.setPosition(1);
+            sleep(1000);
+            DriveFunctions.DriveStraight(leftMotor,rightMotor,0.2);
+            sleep(2000);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            DriveFunctions.BackUp(leftMotor,rightMotor,0.2);
+            sleep(250);
+            DriveFunctions.Brake(leftMotor,rightMotor);
             sleep(30000);
         }
 /*
