@@ -19,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "BlueSide", group = "Pushbot" )
+@Autonomous(name = "BlueSide2", group = "Pushbot" )
 public class BlueSide_Board2 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
     private Servo servoStickLeft2, servoStickRight1;
@@ -65,55 +65,47 @@ public class BlueSide_Board2 extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
+
             servoStickLeft2.setPosition(1);
             sleep(3000);
             try {
                 if (DriveFunctions.ReadColor(colorSensorLeft) == 0) {
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
+                   // DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
+                    DriveFunctions.Turn(-0.2, 0.2, leftMotor, rightMotor);
                     sleep(400);
                     DriveFunctions.Brake(leftMotor, rightMotor);
-                    servoStickRight1.setPosition(0);
-                    DriveFunctions.DriveStraight(leftMotor,rightMotor,-1);
-                    sleep(1200);
+                    servoStickLeft2.setPosition(0);
+                   DriveFunctions.Turn(0.2, -0.2, leftMotor, rightMotor);
+                    sleep(400);
                     DriveFunctions.Brake(leftMotor,rightMotor);
-                    DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
-                    sleep(300);
-                    DriveFunctions.Brake(leftMotor,rightMotor);
-                    DriveFunctions.DriveStraight(leftMotor,rightMotor,-0.3);
-                    sleep(300);
-                    DriveFunctions.Brake(leftMotor,rightMotor);
-                    sleep(30000);
                 }
                 else if(DriveFunctions.ReadColor(colorSensorLeft)==1){
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                    DriveFunctions.Turn(0.2, -0.2, leftMotor, rightMotor);
                     sleep(400);
                     DriveFunctions.Brake(leftMotor, rightMotor);
-                    sleep(100);
-                    servoStickRight1.setPosition(0);
+                    servoStickLeft2.setPosition(0);
+                    DriveFunctions.Turn(-0.2, 0.2, leftMotor, rightMotor);
                     sleep(3000);
-                    sleep(30000);
+                    DriveFunctions.Brake(leftMotor, rightMotor);
                 }
                 else{
-                    servoStickRight1.setPosition(0);
-                    DriveFunctions.Turn(0,0.3,leftMotor,rightMotor);
-                    sleep(300);
-                    DriveFunctions.Brake(leftMotor,rightMotor);
+                    servoStickLeft2.setPosition(1);
                     sleep(3000);
-                    DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
-                    sleep(2000);
-                    DriveFunctions.Brake(leftMotor, rightMotor);
                 }
             }
             catch(IllegalArgumentException INVALIDCOLOR){
                 sleep(300);
-                servoStickRight1.setPosition(0);
+                servoStickLeft2.setPosition(0);
                 sleep(3000);
                 DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
                 sleep(2000);
                 DriveFunctions.Brake(leftMotor,rightMotor);
             }
-            servoStickRight1.setPosition(0);
+            servoStickLeft2.setPosition(0);
             sleep(3000);
+            DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.4);
+            sleep(2000);
+            DriveFunctions.Brake(leftMotor, rightMotor);
             sleep(30000);
         }
     }

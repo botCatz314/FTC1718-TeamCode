@@ -34,7 +34,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "RedSide", group = "Pushbot" )
+@Autonomous(name = "RedSide2", group = "Pushbot" )
 public class RedSide extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
     private Servo servoStickLeft2, servoStickRight1, blockFlicker;
