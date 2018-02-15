@@ -186,7 +186,8 @@ public class botCatz_Test_TeleOp extends LinearOpMode {
             idle();//waits to be caught up
 
         }
-    }
+    }};
+        
     private void getJoyVals()
     {
         y = gamepad1.left_stick_y;

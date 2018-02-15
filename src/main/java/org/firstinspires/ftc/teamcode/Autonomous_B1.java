@@ -152,9 +152,9 @@ public class Autonomous_B1 extends LinearOpMode {
             else {
                 telemetry.addData("VuMark", "not visible");
             }
-            telemetry.addData(Left);
-            telemetry.addData(Center);
-            telemetry.addData(Right);
+            telemetry.addData("Left: ", true);
+            telemetry.addData("Center: ", true);
+            telemetry.addData("Right: ", true);
             telemetry.update();
         }
     }
