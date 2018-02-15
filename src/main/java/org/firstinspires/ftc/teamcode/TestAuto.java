@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "RedSide", group = "Pushbot" )
+@Autonomous(name = "TestAuto", group = "Pushbot" )
 public class TestAuto extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
     private Servo servoStickLeft2, servoStickRight1, blockFlicker;
