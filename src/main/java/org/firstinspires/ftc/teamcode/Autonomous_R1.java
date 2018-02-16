@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -27,9 +32,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_B1_V3.14", group = "Pushbot" )
+@Autonomous(name = "Autonomous_R1_V3.1", group = "Pushbot" )
 
-public class Autonomous_B1 extends LinearOpMode {
+public class Autonomous_R1 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
     private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
@@ -169,15 +174,15 @@ public class Autonomous_B1 extends LinearOpMode {
             // Write out the debug info
             telemetry.update();
 
-            servoStickLeft2.setPosition(down);
+            servoStickRight1.setPosition(down);
             sleep(2000);
-            if (DriveFunctions.ReadColor(colorSensorLeft) == 1){
+            if (DriveFunctions.ReadColor(colorSensorRight) == 1){
                 telemetry.addData("Color is","Blue");
                 telemetry.update();
                 DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
                 sleep(200);
                 DriveFunctions.Brake(leftMotor,rightMotor);
-                servoStickLeft2.setPosition(up);
+                servoStickRight1.setPosition(up);
                 sleep(2000);
                 DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
                 sleep(200);
@@ -189,7 +194,7 @@ public class Autonomous_B1 extends LinearOpMode {
                 DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
                 sleep(200);
                 DriveFunctions.Brake(leftMotor,rightMotor);
-                servoStickLeft2.setPosition(up);
+                servoStickRight1.setPosition(up);
                 sleep(2000);
                 DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
                 sleep(200);
@@ -199,13 +204,10 @@ public class Autonomous_B1 extends LinearOpMode {
                 telemetry.addData("Color is","not visible");
                 telemetry.update();
             }
-            servoStickLeft2.setPosition(up);
+            servoStickRight1.setPosition(up);
             sleep(2000);
-            DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
-            sleep(300);
-            DriveFunctions.Brake(leftMotor,rightMotor);
-            DriveFunctions.Turn(0.1,0.3,leftMotor,rightMotor);
-            sleep(700);
+            DriveFunctions.Turn(0.1,1,leftMotor,rightMotor);
+            sleep(1000);
             DriveFunctions.Brake(leftMotor,rightMotor);
             DriveFunctions.Turn(0.3,0.3,leftMotor,rightMotor);
             sleep(1000);
@@ -217,8 +219,8 @@ public class Autonomous_B1 extends LinearOpMode {
             sleep(2000);
             DriveFunctions.BackUp(leftMotor,rightMotor,0.3);
             sleep(100);
-            blockFlicker.setPosition(1);
             DriveFunctions.Brake(leftMotor,rightMotor);
+            blockFlicker.setPosition(1);
 
             sleep(300000);
 
