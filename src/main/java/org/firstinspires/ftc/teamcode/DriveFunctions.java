@@ -57,8 +57,8 @@ public class DriveFunctions {
         right.setPower(stop);
     }
 static public void Turn(double leftsSpeed, double rightSpeed, DcMotor leftMotor, DcMotor rightMotor){
-        leftMotor.setPower(leftsSpeed);
-        rightMotor.setPower(rightSpeed);
+        if (leftsSpeed != 0) leftMotor.setPower(leftsSpeed);
+        if (rightSpeed != 0) rightMotor.setPower(rightSpeed);
 }
 static public String LRC (){
     String LCR;
