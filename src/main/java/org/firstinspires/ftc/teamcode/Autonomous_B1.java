@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
+import android.graphics.Region;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+
+import com.sun.tools.javac.util.Name;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -17,307 +18,203 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-
-@Autonomous(name = "Autonomous_B1_V3.14", group = "Pushbot" )
-
+@Autonomous(name = "Autonomous_B1", group = "Pushbot" )
 public class Autonomous_B1 extends LinearOpMode {
-    private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
+    private DcMotor leftMotor;
+    private DcMotor rightMotor;
+    private DcMotor leftMotor2;
+    private DcMotor rightMotor2;
+    private ColorSensor colorSensor;
+    double powerOff = 0;
+    public boolean Right = false;
+    public boolean Center = false;
+    public boolean Left = false;
 
-    private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
+    public static final String TAG = "Vuforia VuMark Sample";
 
-    private ColorSensor colorSensorLeft, colorSensorRight; //declares color sensors
-
-    BNO055IMU imu; //declares integrated gyro
-    Orientation lastAngle = new Orientation();
-
-    private double Kp = 0.35, error, globalAngles, powerOff = 0;
-    private double pi = 3.1415926535897932;
-    double threshold = .25, colorThreshold;
-
-
-    public boolean Right = false; //Variable for the Vuforia code
-    public boolean Center = false;//Variable for the Vuforia code
-    public boolean Left = false;  //Variable for the Vuforia code
-    public static final String TAG = "Vuforia VuMark Sample"; //The Sample used in Vuforia
-    public boolean UsingEncoders = false;
     OpenGLMatrix lastLocation = null;
+
+    /**
+     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
+     * localization engine.
+     */
     VuforiaLocalizer vuforia;
-
- 
-    // Runs at init time
     @Override
-    public void runOpMode() {
+    public void runOpMode()
+    {
+        leftMotor = hardwareMap.dcMotor.get("leftMotor");
+        rightMotor = hardwareMap.dcMotor.get("rightMotor");
+        leftMotor2 = hardwareMap.dcMotor.get("leftMotor2");
+        rightMotor2 = hardwareMap.dcMotor.get("rightMotor2");
+        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
 
+        /*
+         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
+         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
+         */
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()); //Uses camera viewer on the phone
-        VuforiaLocalizer.Parameters parametersV = new VuforiaLocalizer.Parameters(cameraMonitorViewId); //Enables camera viewer on the phone
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-        parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/"; //Key for using Vuforia in code
-        parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT; //Decides which camera to use
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV); //Creates Vuforia Localizer
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark"); //Decides which pictures to use
-        VuforiaTrackable relicTemplate = relicTrackables.get(0); //Base pictures
-        relicTemplate.setName("relicVuMarkTemplate"); // Can help in debugging; otherwise not necessary
 
 
-        //declares drive motor
-        leftMotor = hardwareMap.dcMotor.get("leftMotor"); //gets properties of left motor from phone
-        rightMotor = hardwareMap.dcMotor.get("rightMotor"); //gets properties for second left motor from phone
-        clawMotor = hardwareMap.dcMotor.get("clawMotor");
-        armHeight = hardwareMap.dcMotor.get("armHeight");
+        parameters.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/";
 
-        double down = 1;
-        double up = 0;
+        /*
+         * We also indicate which camera on the RC that we wish to use.
+         * Here we chose the back (HiRes) camera (for greater range), but
+         * for a competition robot, the front camera might be more convenient.
+         */
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
-        //declares sensors
-        imu = hardwareMap.get(BNO055IMU.class, "imu"); //gets properties of gyro from phone
-        colorSensorRight = hardwareMap.colorSensor.get("colorSensorRight");
-        colorSensorLeft = hardwareMap.colorSensor.get("colorSensorLeft");
+        /**
+         * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
+         * in this data set: all three of the VuMarks in the game were created from this one template,
+         * but differ in their instance id information.
+         * @see VuMarkInstanceId
+         */
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        //declares servos
-        servoStickRight1 = hardwareMap.servo.get("servoStickRight1");
-        servoStickLeft2 = hardwareMap.servo.get("servoStickLeft2");
+        waitForStart();
 
-        //declares attachment motors
-        blockFlicker = hardwareMap.servo.get("blockFlicker");
+        relicTrackables.activate();
 
-        /*sets parameters*/
-        //sets right motors to go the correct direction
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
-
-        //sets parameters of gyro
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.mode = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled = false;
-        imu.initialize(parameters);
-
-        imu.readCalibrationData(); //calibrates gyro
-        imu.isGyroCalibrated(); //checks that gyro is calibrated
-        //shows user that gyro is calibrated
-
-
-        //stops and resets encoders of Drive Motors and runs using encoders
-        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        relicTrackables.activate(); //Activates Vuforia
-        
-        // Everything above is the init.
-        // This blocks and everything below is after start
-        waitForStart(); //waits until the user presses play
-        
-        // opModeIsActive will return false when the user hits stop.
         while (opModeIsActive()) {
-            // VuMark == camera access
 
-            //Sets variable for figuring out which picture it is
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate); //Reference to picture
-            //Checks if the VuMark is unknown and acts based on that
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) { //Events for if VuMark is unknown
-                // Do this when we know what the cypher is
+            /**
+             * See if any of the instances of {@link relicTemplate} are currently visible.
+             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
+             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
+             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
+             */
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
+                /* Found an instance of the template. In the actual game, you will probably
+                 * loop until this condition occurs, then move on to act accordingly depending
+                 * on which VuMark was visible. */
                 telemetry.addData("VuMark", "%s visible", vuMark);
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Gets the position of the picture
-                //Turns it into rotation and position coordinates
 
-                // Extract the position of the relic if there is one.
-                if (pose != null) { //Events to track position of the picture relative to the robot.
+                /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
+                 * it is perhaps unlikely that you will actually need to act on this pose information, but
+                 * we illustrate it nevertheless, for completeness. */
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
+                telemetry.addData("Pose", format(pose));
+
+                /* We further illustrate how to decompose the pose into useful rotational and
+                 * translational components */
+                if (pose != null) {
                     VectorF trans = pose.getTranslation();
                     Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
                     // Extract the X, Y, and Z components of the offset of the target relative to the robot
                     double tX = trans.get(0);
                     double tY = trans.get(1);
                     double tZ = trans.get(2);
+
                     // Extract the rotational components of the target relative to the robot
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
                 }
             }
-
-            // At this point we might have a known relic position.
-            // ??? if the relic is unknown.
-
-            //Runs a check to see which of the picture is active
-            Center = (vuMark == RelicRecoveryVuMark.CENTER);
-            Right = (vuMark == RelicRecoveryVuMark.RIGHT);
-            Left = (vuMark == RelicRecoveryVuMark.LEFT);
-            if (Center) {
-                telemetry.addData("Bool", "Center");
-            } else if (Right) {
-                telemetry.addData("Bool", "Right");
-            } else if (Left) {
-                telemetry.addData("Bool", "Left");
-            } else {
-                telemetry.addData("VuMark", "not visible");
+            if (vuMark == RelicRecoveryVuMark.CENTER){
+                Center = true;
             }
-
-            // Write out the debug info
-            telemetry.update();
-
-            servoStickLeft2.setPosition(down);
-            sleep(2000);
-            if (DriveFunctions.ReadColor(colorSensorLeft) == 1){
-                telemetry.addData("Color is","Blue");
-                telemetry.update();
-                DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
-                sleep(200);
-                DriveFunctions.Brake(leftMotor,rightMotor);
-                servoStickLeft2.setPosition(up);
-                sleep(2000);
-                DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
-                sleep(200);
-                DriveFunctions.Brake(leftMotor,rightMotor);
+            if (vuMark == RelicRecoveryVuMark.RIGHT){
+                Right = true;
             }
-            if (DriveFunctions.ReadColor(colorSensorRight) == 0){
-                telemetry.addData("Color is","Red");
-                telemetry.update();
-                DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
-                sleep(200);
-                DriveFunctions.Brake(leftMotor,rightMotor);
-                servoStickLeft2.setPosition(up);
-                sleep(2000);
-                DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
-                sleep(200);
-                DriveFunctions.Brake(leftMotor,rightMotor);
+            if (vuMark == RelicRecoveryVuMark.LEFT){
+                Left = true;
+            }
+            if (vuMark != RelicRecoveryVuMark.CENTER){
+                Center = false;
+            }
+            if (vuMark != RelicRecoveryVuMark.RIGHT){
+                Right = false;
+            }
+            if (vuMark != RelicRecoveryVuMark.LEFT){
+                Left = false;
             }
             else {
-                telemetry.addData("Color is","not visible");
-                telemetry.update();
+                telemetry.addData("VuMark", "not visible");
             }
-            servoStickLeft2.setPosition(up);
-            sleep(2000);
-            DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
-            sleep(300);
-            DriveFunctions.Brake(leftMotor,rightMotor);
-            DriveFunctions.Turn(0.1,0.3,leftMotor,rightMotor);
-            sleep(700);
-            DriveFunctions.Brake(leftMotor,rightMotor);
-            DriveFunctions.Turn(0.3,0.3,leftMotor,rightMotor);
-            sleep(1000);
-            DriveFunctions.Brake(leftMotor,rightMotor);
-            DriveFunctions.DriveStraight(leftMotor,rightMotor,0.3);
-            sleep(300);
-            DriveFunctions.Brake(leftMotor,rightMotor);
-            blockFlicker.setPosition(0);
-            sleep(2000);
-            DriveFunctions.BackUp(leftMotor,rightMotor,0.3);
-            sleep(100);
-            blockFlicker.setPosition(1);
-            DriveFunctions.Brake(leftMotor,rightMotor);
-
-            sleep(300000);
-
+            telemetry.addData("Left: ", true);
+            telemetry.addData("Center: ", true);
+            telemetry.addData("Right: ", true);
+            telemetry.update();
         }
-
     }
-    
-    //declares function that calculates math to drive by encoder
-    private void DriveWithEncoders(double distance, double speed) {
-        //computes mathematical formulas that translate between encoder counts and real distance
-        double off = 0;
-        double encoderCounts = 1120;
-        double driveGearReduction = 4.0;
-        double wheelDiameter = 9;
-        double countsPerMM = (encoderCounts * driveGearReduction) / (wheelDiameter * pi);
 
-        //declares two variables to serve as our left and right motor
-        int newLeftTarget;
-        int newRightTarget;
+    String format(OpenGLMatrix transformationMatrix) {
+        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+    }
 
-        if (opModeIsActive()) {
-            //adds desired distance to the current reading of encoders to ensure accurate measurements
-            newLeftTarget = leftMotor.getCurrentPosition() + (int) (countsPerMM * distance);
-            newRightTarget = rightMotor.getCurrentPosition() + (int) (countsPerMM * distance);
+    public void driveWithEncoders(double rightAmount, double leftAmount, double speed)
+    {
+        final double encoderCounts = 560;
+        final double driveReduction = 4.0;
+        final double wheelDiameter = 90;
+        final double countPerMM = (encoderCounts * driveReduction)/(wheelDiameter * 3.14159265);
+        int rightTarget;
+        int leftTarget;
+        resetAllEncoders();
+        runUsingEncoders();
+        if(opModeIsActive())
+        {
+            rightTarget = rightMotor.getCurrentPosition()+(int)(rightAmount * countPerMM);
+            leftTarget = leftMotor.getCurrentPosition()+(int)(leftAmount * countPerMM);
+            leftMotor.setTargetPosition(leftTarget);
+            leftMotor2.setTargetPosition(leftTarget);
+            rightMotor.setTargetPosition(rightTarget);
+            rightMotor2.setTargetPosition(rightTarget);
 
-            //sets the motors' target positions
-            leftMotor.setTargetPosition(newLeftTarget);
-            rightMotor.setTargetPosition(newRightTarget);
-
-            //sets the motors' mode
-            leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            //turn the motors on for input speed
             leftMotor.setPower(speed);
             rightMotor.setPower(speed);
+            rightMotor2.setPower(speed);
+            leftMotor2.setPower(speed);
 
-            //loops and gives telemetry until the motors are finished
-            while (opModeIsActive() && leftMotor.isBusy() && rightMotor.isBusy()) {
-                telemetry.addData("target left position: ", newLeftTarget);
-                telemetry.addData("target right position: ", newRightTarget);
-                telemetry.addData("current left position", leftMotor.getCurrentPosition());
-                telemetry.addData("current right position: ", rightMotor.getCurrentPosition());
-                telemetry.addData("rightMotor: ", rightMotor.isBusy());
-                telemetry.addData("leftMotor", leftMotor.isBusy());
-                telemetry.addData("rightSpeed", rightMotor.getPower());
-                telemetry.addData("leftSpeed", leftMotor.getPower());
-                telemetry.update();
+            while(opModeIsActive() && rightMotor.isBusy() && leftMotor.isBusy()
+                    && rightMotor2.isBusy() && leftMotor2.isBusy())
+            {
+                telemetry.addData("RightTarget: ", rightAmount);
+                telemetry.addData("LeftTarget: ", leftAmount);
+                telemetry.addData("CurrntPosRight", rightMotor.getCurrentPosition());
+                telemetry.addData("CurrentPosLeft", leftMotor.getCurrentPosition());
             }
-            //turns power of motors off
-            leftMotor.setPower(off);
-            rightMotor.setPower(off);
+            leftMotor.setPower(powerOff);
+            rightMotor.setPower(powerOff);
+            rightMotor2.setPower(powerOff);
+            leftMotor2.setPower(powerOff);
+            runUsingEncoders();
         }
+        resetAllEncoders();
     }
-    public double CalculateError(double desiredAngle) {
-        double error; //sets a variable to hold the error
-        error = desiredAngle - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYZ, AngleUnit.DEGREES).firstAngle; //subtracts the input angle from the imu reading
-        telemetry.addData("error", error); //sets the telemetry to send error to phone
-        telemetry.update(); //pushes previously set data to phone
-        return error; //sends back error value to be used
+    public void resetAllEncoders()
+    {
+        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
-    private void turnGyro(double angle, double speed){
-        telemetry.addData("turn Gyro", angle); //sets telemetry equal to the input angle
-        telemetry.update();//pushes telemetry to phone
-        while(opModeIsActive() && !OnHeading(speed, angle)){ //while the robot is not Onheading (see onHeading function)
-            telemetry.addData("turning", "check"); //sets telemetry
-            telemetry.update(); //pushes telemetry
-        }
-    }
-    public boolean OnHeading(double speed, double angle) {
-        double error, steer, leftSpeed, rightSpeed; //sets our doubles
-        boolean onTarget = false; //sets onTarget to false
-        error = CalculateError(angle); //gets the error from the calculate error function
-        if(error <= threshold ){ //if the error is not less than a double we declare
-            steer = 0.0; //sets steer double to 0
-            leftSpeed= 0.0; //sets motor speeds to 0
-            rightSpeed = 0.0;
-            onTarget = true; //sets onTarget to true
-        }
-        else {
-            steer = adjustHeading(error); //sets steer = adjust heading with the error as input (see adjustHeading function)
-            rightSpeed = -(speed * steer); // sets right speed to input speed multiplied by the adjusted heading
-            leftSpeed = -rightSpeed; //sets left speed to the opposite of the right speed
-        }
-        rightMotor.setPower(rightSpeed); //sets motor power to the speed
-        leftMotor.setPower(leftSpeed); //sets motor power to the speed
-        return onTarget; // the while statement in turnGyro will stop if this value is true
-    }
-    private double adjustHeading(double error){
-        double  Kp = .15, Ki = 0, Kd = 0; //declares PID constants
-        double errorPrior = 0; //declares prior error
-        double integral = 0, derivative = 0; //sets the original integral and derivative values to 0
-        ElapsedTime turning = new ElapsedTime(); //sets a new elapsed time for use to use
-        turning.reset(); //sets the elapsed time over
-        while(true) { //it will forever calculate
-            integral = integral + (error * turning.time()); //integral value = previous integral value (initial being 0) + the error * elapsed time
-            derivative = (error - errorPrior)/turning.time(); //derivative value = error subtracted by previous error divided by the elapsed time
-            errorPrior = error; //error prior = error which will be updated soon
-            return Range.clip((error * Kp)+(Ki*integral)+(Kd*derivative), -1, 1); //return P+I+D between -1 and 1 to be multiplied by the speed
-        }
+    public void runUsingEncoders()
+    {
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
