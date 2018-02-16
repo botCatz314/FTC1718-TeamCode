@@ -24,6 +24,7 @@ public class BlueSide_Board2 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
     private Servo servoStickLeft2, servoStickRight1;
     private ColorSensor colorSensorRight, colorSensorLeft;
+    private boolean Left = false, Right = false, Center = false;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
     BNO055IMU imu; //declares integrated gyro
     Orientation lastAngle = new Orientation();
@@ -65,18 +66,35 @@ public class BlueSide_Board2 extends LinearOpMode {
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
 
-
+            if(DriveFunctions.LRC() == "Left"){
+                Left = true;
+                telemetry.addData("left", Left);
+                telemetry.update();
+            }
+            else if (DriveFunctions.LRC() == "Right"){
+                Right = true;
+                telemetry.addData("right", Right);
+                telemetry.update();
+            }
+            else if(DriveFunctions.LRC() == "Center"){
+                Center = true;
+                telemetry.addData("Center", Center);
+                telemetry.update();
+            }
+            else{
+                Left = true;
+                telemetry.addData("None were true ", "going for Left");
+            }
             servoStickLeft2.setPosition(1);
             sleep(3000);
             try {
                 if (DriveFunctions.ReadColor(colorSensorLeft) == 0) {
-                   // DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
                     DriveFunctions.Turn(-0.2, 0.2, leftMotor, rightMotor);
                     sleep(400);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     servoStickLeft2.setPosition(0);
-                   DriveFunctions.Turn(0.2, -0.2, leftMotor, rightMotor);
-                    sleep(400);
+                    DriveFunctions.Turn(0.2, -0.2, leftMotor, rightMotor);
+                    sleep(500);
                     DriveFunctions.Brake(leftMotor,rightMotor);
                 }
                 else if(DriveFunctions.ReadColor(colorSensorLeft)==1){
@@ -85,7 +103,7 @@ public class BlueSide_Board2 extends LinearOpMode {
                     DriveFunctions.Brake(leftMotor, rightMotor);
                     servoStickLeft2.setPosition(0);
                     DriveFunctions.Turn(-0.2, 0.2, leftMotor, rightMotor);
-                    sleep(3000);
+                    sleep(500);
                     DriveFunctions.Brake(leftMotor, rightMotor);
                 }
                 else{
@@ -97,15 +115,47 @@ public class BlueSide_Board2 extends LinearOpMode {
                 sleep(300);
                 servoStickLeft2.setPosition(0);
                 sleep(3000);
-                DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
+              //  DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
+              //  sleep(4000);
+               // DriveFunctions.Brake(leftMotor,rightMotor);
+                DriveWithEncoders(20, 0.5);
                 sleep(2000);
-                DriveFunctions.Brake(leftMotor,rightMotor);
+                DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
+                sleep(7000);
+                DriveFunctions.Brake(leftMotor, rightMotor);
             }
             servoStickLeft2.setPosition(0);
             sleep(3000);
-            DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.4);
-            sleep(2000);
+           // DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+            DriveWithEncoders(20,0.3);
+            sleep(3000);
+           // DriveFunctions.Brake(leftMotor, rightMotor);
+            sleep(100);
+            DriveFunctions.Turn(-0.3, 0.3, leftMotor, rightMotor );
+            sleep(1100);
             DriveFunctions.Brake(leftMotor, rightMotor);
+
+            if(Left){
+                DriveFunctions.Turn(-0.3, 0.3, leftMotor, rightMotor);
+                sleep(400);
+                DriveFunctions.Brake(leftMotor, rightMotor);
+            }
+            if(Center){
+                DriveFunctions.Turn(-0.2, 0.2, leftMotor, rightMotor);
+                sleep(200);
+                DriveFunctions.Brake(leftMotor, rightMotor);
+            }
+            if(Right){
+                DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
+                sleep(200);
+                DriveFunctions.Brake(leftMotor, rightMotor);
+            }
+            else{
+                //DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+                DriveWithEncoders(20, 0.3);
+                sleep(200);
+                DriveFunctions.Brake(leftMotor, rightMotor);
+            }
             sleep(30000);
         }
     }
@@ -130,7 +180,7 @@ public class BlueSide_Board2 extends LinearOpMode {
             rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             leftMotor.setPower(speed);
-            rightMotor.setPower(speed);
+            rightMotor.setPower(speed *1.5);
 
             while (opModeIsActive() && leftMotor.isBusy() && rightMotor.isBusy()) {
                 telemetry.addData("target left position: ", newLeftTarget);

@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "RedSide", group = "Pushbot" )
+@Autonomous(name = "Test Auto", group = "Pushbot" )
 public class TestAuto extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
     private Servo servoStickLeft2, servoStickRight1, blockFlicker;
@@ -73,6 +73,24 @@ public class TestAuto extends LinearOpMode {
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart(); //waits until the user presses play
         while (opModeIsActive()) {
+
+            SensorManager sensorService = (SensorManager) hardwareMap.appContext.getSystemService(Context.SENSOR_SERVICE);
+            if (sensorService != null) {
+                Sensor rotation = sensorService.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+                if (rotation != null) {
+                    
+                }
+            }
+
+           // DriveFunctions.DriveStraight(leftMotor, rightMotor, .5);
+            //telemetry.addData("Left Speed: ", leftMotor.getPower());
+            //telemetry.addData("Right Speed: ", rightMotor.getPower());
+            //telemetry.update();
+            /////sleep(5000);
+            //DriveFunctions.Brake(leftMotor, rightMotor);
+
+
+
 
         }
     }

@@ -60,4 +60,24 @@ static public void Turn(double leftsSpeed, double rightSpeed, DcMotor leftMotor,
         leftMotor.setPower(leftsSpeed);
         rightMotor.setPower(rightSpeed);
 }
+static public String LRC (){
+    String LCR;
+    int Number;
+    int size =3;
+
+    Number = (int) Math.random()*size;
+    if(Number == 0){
+        LCR = "Left";
+    }
+    else if( Number == 1){
+        LCR = "Center";
+    }
+    else if (Number == 2){
+        LCR = "Right";
+    }
+    else{
+        LCR = "Left";
+    }
+    return LCR;
+}
 }
