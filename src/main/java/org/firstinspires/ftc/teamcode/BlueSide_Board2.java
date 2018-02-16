@@ -19,10 +19,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "BlueSide2", group = "Pushbot" )
+@Autonomous(name = "BlueSide2_v5", group = "Pushbot" )
 public class BlueSide_Board2 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
-    private Servo servoStickLeft2, servoStickRight1;
+    private Servo servoStickLeft2, servoStickRight1, blockFlicker;
     private ColorSensor colorSensorRight, colorSensorLeft;
     private boolean Left = false, Right = false, Center = false;
     double powerOff = 0; //creates a variable equal to zero so that the motors can turn off without the use of a magic number
@@ -43,6 +43,7 @@ public class BlueSide_Board2 extends LinearOpMode {
         colorSensorLeft = hardwareMap.colorSensor.get("colorSensorLeft");
         colorSensorRight = hardwareMap.colorSensor.get("colorSensorRight");
         rightMotor.setDirection(DcMotor.Direction.REVERSE);//sets the right motors reverse
+        blockFlicker = hardwareMap.servo.get("blockFlicker");
         //sets parameters of gyro
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -118,7 +119,7 @@ public class BlueSide_Board2 extends LinearOpMode {
               //  DriveFunctions.DriveStraight(leftMotor, rightMotor, -0.3);
               //  sleep(4000);
                // DriveFunctions.Brake(leftMotor,rightMotor);
-                DriveWithEncoders(20, 0.5);
+             //   DriveWithEncoders(20, 0.5);
                 sleep(2000);
                 DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
                 sleep(7000);
@@ -127,35 +128,44 @@ public class BlueSide_Board2 extends LinearOpMode {
             servoStickLeft2.setPosition(0);
             sleep(3000);
            // DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-            DriveWithEncoders(20,0.3);
-            sleep(3000);
+            //DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+            leftMotor.setPower(0.3);
+            rightMotor.setPower(0.5);
+            sleep(1500);
+            DriveFunctions.Brake(leftMotor, rightMotor);
            // DriveFunctions.Brake(leftMotor, rightMotor);
             sleep(100);
-            DriveFunctions.Turn(-0.3, 0.3, leftMotor, rightMotor );
-            sleep(1100);
+            rightMotor.setPower(0.8);
+            leftMotor.setPower(-0.2);
+            sleep(800);
             DriveFunctions.Brake(leftMotor, rightMotor);
 
-            if(Left){
-                DriveFunctions.Turn(-0.3, 0.3, leftMotor, rightMotor);
-                sleep(400);
-                DriveFunctions.Brake(leftMotor, rightMotor);
-            }
-            if(Center){
-                DriveFunctions.Turn(-0.2, 0.2, leftMotor, rightMotor);
-                sleep(200);
-                DriveFunctions.Brake(leftMotor, rightMotor);
-            }
-            if(Right){
-                DriveFunctions.Turn(0.3, -0.3, leftMotor, rightMotor);
-                sleep(200);
-                DriveFunctions.Brake(leftMotor, rightMotor);
-            }
-            else{
-                //DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
-                DriveWithEncoders(20, 0.3);
-                sleep(200);
-                DriveFunctions.Brake(leftMotor, rightMotor);
-            }
+            DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+            sleep(1000);
+            DriveFunctions.Brake(leftMotor, rightMotor);
+
+            DriveFunctions.BackUp(leftMotor, rightMotor, 0.4 );
+            sleep(400);
+            DriveFunctions.Brake(leftMotor, rightMotor);
+
+            blockFlicker.setPosition(0);
+            sleep(1000);
+            blockFlicker.setPosition(1);
+            sleep(1000);
+            blockFlicker.setPosition(0);
+            sleep(1000);
+            blockFlicker.setPosition(1);
+            sleep(1000);
+
+            DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+            sleep(1000);
+            DriveFunctions.Brake(leftMotor, rightMotor);
+
+            DriveFunctions.BackUp(leftMotor, rightMotor, 1);
+            sleep(300);
+            DriveFunctions.Brake(leftMotor, rightMotor);
+
+
             sleep(30000);
         }
     }
