@@ -32,7 +32,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_R1_V3.23", group = "Pushbot" )
+@Autonomous(name = "Autonomous_R1_V3.22", group = "Pushbot" )
 
 public class  Autonomous_R1 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
@@ -162,13 +162,13 @@ public class  Autonomous_R1 extends LinearOpMode {
             Right = (vuMark == RelicRecoveryVuMark.RIGHT);
             Left = (vuMark == RelicRecoveryVuMark.LEFT);
             if (Center) {
-                telemetry.addData("Bool", "Center");
+                log("Center");
             } else if (Right) {
-                telemetry.addData("Bool", "Right");
+                log("Right");
             } else if (Left) {
-                telemetry.addData("Bool", "Left");
+                log("Left");
             } else {
-                telemetry.addData("VuMark", "not visible");
+                log("VuMark", "not visible");
             }
 
             // Write out the debug info
@@ -177,8 +177,7 @@ public class  Autonomous_R1 extends LinearOpMode {
             servoStickRight1.setPosition(down);
             sleep(2000);
             if (DriveFunctions.ReadColor(colorSensorRight) == 1){
-                telemetry.addData("Color is","Blue");
-                telemetry.update();
+                log("Color is Blue");
                 DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
                 sleep(200);
                 DriveFunctions.Brake(leftMotor,rightMotor);
@@ -188,9 +187,8 @@ public class  Autonomous_R1 extends LinearOpMode {
                 sleep(200);
                 DriveFunctions.Brake(leftMotor,rightMotor);
             }
-            if (DriveFunctions.ReadColor(colorSensorRight) == 0){
-                telemetry.addData("Color is","Red");
-                telemetry.update();
+            else if (DriveFunctions.ReadColor(colorSensorRight) == 0){
+                log("Color is Red");
                 DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
                 sleep(200);
                 DriveFunctions.Brake(leftMotor,rightMotor);
@@ -201,50 +199,47 @@ public class  Autonomous_R1 extends LinearOpMode {
                 DriveFunctions.Brake(leftMotor,rightMotor);
             }
             else {
-                telemetry.addData("Color is","not visible");
-                telemetry.update();
+                log("Color is not visible");
             }
 
-            telemetry.addData("Begin off-board driving","");
-            telemetry.update();
-
+            log("Begin off-board driving");
             servoStickRight1.setPosition(up);
             sleep(2000);
 
-            telemetry.addData("Ease off the board","");
-            telemetry.update();
+            log("Ease off the board");
             DriveFunctions.DriveStraight(leftMotor,rightMotor,0.2);
             sleep(500);
-
-            telemetry.addData("Straight ish","");
-            telemetry.update();
-            DriveFunctions.Turn(0,0.9,leftMotor,rightMotor);
-            sleep(400);
             DriveFunctions.Brake(leftMotor,rightMotor);
 
-            telemetry.addData("Easy left turn","");
-            telemetry.update();
+            log("Easy left turn");
             DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
-            sleep(400);
+            sleep(700);
             DriveFunctions.Brake(leftMotor,rightMotor);
+
+            log("Straight ish");
+            DriveFunctions.Turn(0.1,0.7,leftMotor,rightMotor);
+            sleep(800);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+
+            /*log("Easy left turn");
+            DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
+            sleep(500);
+            DriveFunctions.Brake(leftMotor,rightMotor);*/
 
             sleep(1000);
 
-            telemetry.addData("Straight","");
-            telemetry.update();
-            DriveFunctions.Turn(0.2,0.6,leftMotor,rightMotor);
-            sleep(2000);
+            log("Straight");
+            DriveFunctions.Turn(0.6,0.3,leftMotor,rightMotor);
+            sleep(1300);
             DriveFunctions.Brake(leftMotor,rightMotor);
 
             //what if we're at the wall?
-            telemetry.addData("Backup in case we're at the wall","");
-            telemetry.update();
+            log("Backup in case we're at the wall");
             DriveFunctions.BackUp(leftMotor, rightMotor, 0.3);
             sleep(500);
             DriveFunctions.Brake(leftMotor,rightMotor);
 
-            telemetry.addData("Flick","");
-            telemetry.update();
+            log("Flick");
             blockFlicker.setPosition(0);
             sleep(1000);
             blockFlicker.setPosition(1);
@@ -255,44 +250,49 @@ public class  Autonomous_R1 extends LinearOpMode {
             sleep(1000);
 
             //back forth
-            telemetry.addData("Back-forth procedure instantiated","");
-            telemetry.update();
-            BackForth(leftMotor, rightMotor, 0.3, 300);
+            //log("Back-forth procedure instantiated");
+            //BackForth(leftMotor, rightMotor, 0.3, 600);
 
-            //back forth
-            telemetry.addData("Back-forth procedure instantiated","");
-            telemetry.update();
-            BackForth(leftMotor, rightMotor, 0.3, 500);
-
-
-            //back forth
-            telemetry.addData("Back-forth procedure instantiated","");
-            telemetry.update();
-            BackForth(leftMotor, rightMotor, 0.3, 300);
-
-            //back forth
-            telemetry.addData("Back-forth procedure instantiated","");
-            telemetry.update();
-            BackForth(leftMotor, rightMotor, 0.3, 500);
-
-            //back forth
-            telemetry.addData("Back-forth procedure instantiated","");
-            telemetry.update();
-            BackForth(leftMotor, rightMotor, 0.3, 500);
+            log("Straight");
+            DriveFunctions.Turn(0.3,0.3,leftMotor,rightMotor);
+            sleep(800);
+            DriveFunctions.Brake(leftMotor,rightMotor);
 
             //final back up
-            telemetry.addData("Backup one last time","");
-            telemetry.update();
+            log("Backup one last time");
             DriveFunctions.BackUp(leftMotor, rightMotor, 0.3);
             sleep(300);
             DriveFunctions.Brake(leftMotor,rightMotor);
 
+            //right turn
+            log("Easy right turn");
+            DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
+            sleep(500);
             DriveFunctions.Brake(leftMotor,rightMotor);
+
+            if (Center) {
+                log("Center");
+            } else if (Right) {
+                log("Right");
+            } else if (Left) {
+                log("Left");
+            } else {
+                log("VuMark", "not visible");
+            }
 
             sleep(300000);
 
         }
 
+    }
+
+    public void log (String text1, String text2){
+        telemetry.addData(text1, text2);
+        telemetry.update();
+    }
+    public void log (String text1){
+        telemetry.addData(text1, "");
+        telemetry.update();
     }
 
     // back forth
