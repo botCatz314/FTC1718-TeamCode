@@ -207,7 +207,7 @@ public class  Autonomous_R1 extends LinearOpMode {
             sleep(2000);
 
             log("Ease off the board");
-            DriveFunctions.DriveStraight(leftMotor,rightMotor,0.2);
+            DriveFunctions.Turn(0.3,0.7, leftMotor,rightMotor);
             sleep(1000);
             DriveFunctions.Brake(leftMotor,rightMotor);
 
