@@ -229,6 +229,7 @@ public class  Erik_Auto_R1 extends LinearOpMode {
             sleep(300);
             DriveFunctions.Brake(leftMotor,rightMotor);
 
+            // pause here to end
             sleep(300000);
 
 
