@@ -27,7 +27,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_R1_Right_3", group = "Pushbot" )
+@Autonomous(name = "Autonomous_R1_Center_314", group = "Pushbot" )
 
 public class Autonomous_R1_Right extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
@@ -52,7 +52,7 @@ public class Autonomous_R1_Right extends LinearOpMode {
     OpenGLMatrix lastLocation = null;
     VuforiaLocalizer vuforia;
 
- 
+
     // Runs at init time
     @Override
     public void runOpMode() {
@@ -116,11 +116,11 @@ public class Autonomous_R1_Right extends LinearOpMode {
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         relicTrackables.activate(); //Activates Vuforia
-        
+
         // Everything above is the init.
         // This blocks and everything below is after start
         waitForStart(); //waits until the user presses play
-        
+
         // opModeIsActive will return false when the user hits stop.
         while (opModeIsActive()) {
             // VuMark == camera access
@@ -202,14 +202,14 @@ public class Autonomous_R1_Right extends LinearOpMode {
             sleep(2000);
 
             log("Ease off the board");
-            DriveFunctions.Turn(0.3,0.7, leftMotor,rightMotor);
+            DriveFunctions.Turn(0.3,0.6, leftMotor,rightMotor);
             sleep(1000);
             DriveFunctions.Brake(leftMotor,rightMotor);
 
             DriveFunctions.Turn(-0.3, 0.6, leftMotor,rightMotor);
-            sleep(100);
+            sleep(300);
             DriveFunctions.Brake(leftMotor,rightMotor);
-
+            sleep(2000);
             DriveFunctions.Turn(0.3, 0.6, leftMotor,rightMotor);
             sleep(200);
             DriveFunctions.Brake(leftMotor,rightMotor);
@@ -218,7 +218,19 @@ public class Autonomous_R1_Right extends LinearOpMode {
             sleep(2000);
             blockFlicker.setPosition(0);
             sleep(2000);
-            
+            blockFlicker.setPosition(1);
+            sleep(2000);
+            blockFlicker.setPosition(0);
+            sleep(2000);
+
+            DriveFunctions.Turn(0.3,0.6, leftMotor, rightMotor);
+            sleep(400);
+            DriveFunctions.Brake(leftMotor, rightMotor);
+
+            DriveFunctions.Turn(-0.3, -0.6, leftMotor, rightMotor);
+            sleep(300);
+            DriveFunctions.Brake(leftMotor, rightMotor);
+
 
             sleep(300000);
 
