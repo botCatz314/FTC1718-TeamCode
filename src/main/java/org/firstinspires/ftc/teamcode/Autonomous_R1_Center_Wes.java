@@ -29,7 +29,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name = "Autonomous_R1_Center_314", group = "Pushbot" )
 
-public class Autonomous_R1_Right extends LinearOpMode {
+public class Autonomous_R1_Center_Wes extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
     private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
@@ -207,7 +207,7 @@ public class Autonomous_R1_Right extends LinearOpMode {
             DriveFunctions.Brake(leftMotor,rightMotor);
 
             DriveFunctions.Turn(-0.3, 0.6, leftMotor,rightMotor);
-            sleep(300);
+            sleep(330);
             DriveFunctions.Brake(leftMotor,rightMotor);
             sleep(2000);
             DriveFunctions.Turn(0.3, 0.6, leftMotor,rightMotor);
