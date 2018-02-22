@@ -27,9 +27,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_R1_Right_3.14", group = "Pushbot" )
+@Autonomous(name = "Autonomous_R1_Right_Geo_3.14", group = "Pushbot" )
 
-public class Autonomous_R1Right extends LinearOpMode {
+public class Autonomous_R1_Right_Geo extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
     private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
