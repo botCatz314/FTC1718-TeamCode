@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -29,9 +28,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_R1_State_v8", group = "Pushbot" )
+@Autonomous(name = "Autonomous_R2_State_v1", group = "Pushbot" )
 
-public class Autonomous_R1_State extends LinearOpMode {
+public class Autonomous_R2_State extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
     private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
@@ -222,10 +221,10 @@ public class Autonomous_R1_State extends LinearOpMode {
         sleep(1100);
         DriveFunctions.Brake(leftMotor,rightMotor);
 
-        log("Turn 90");
-        DriveFunctions.Turn(-0.3,0.7,leftMotor,rightMotor);
-        sleep(650);
-        DriveFunctions.Brake(leftMotor,rightMotor);
+        //log("Turn 90");
+        //DriveFunctions.Turn(-0.3,0.7,leftMotor,rightMotor);
+        //sleep(650);
+        //DriveFunctions.Brake(leftMotor,rightMotor);
 
         long driveTime = 1000;
         if (column == 1) driveTime = 300;
@@ -245,7 +244,7 @@ public class Autonomous_R1_State extends LinearOpMode {
 
         log("Drive straight");
         DriveFunctions.Turn(0.3,0.7,leftMotor,rightMotor);
-        sleep(600);
+        sleep(300);
         DriveFunctions.Brake(leftMotor,rightMotor);
         FlickBlock();
         FlickBlock();

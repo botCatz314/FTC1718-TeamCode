@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -29,9 +28,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_R1_State_v8", group = "Pushbot" )
+@Autonomous(name = "Autonomous_B1_State_v1", group = "Pushbot" )
 
-public class Autonomous_R1_State extends LinearOpMode {
+public class Autonomous_B1_State extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
 
     private Servo servoStickLeft2, servoStickRight1, blockFlicker; //declares servos
@@ -177,7 +176,8 @@ public class Autonomous_R1_State extends LinearOpMode {
                 log("VuMark", "not visible");
             }
 
-            RedSideJewell(servoStickRight1);
+            //RedSideJewell(servoStickRight1);
+            BlueSideJewell(servoStickLeft2);
 
             log("Begin off-board driving");
             servoStickRight1.setPosition(up);
@@ -185,17 +185,17 @@ public class Autonomous_R1_State extends LinearOpMode {
 
             if (Right) {
                 log("Go for Right");
-                GlyphBox(1);
+                GlyphBoxBlue(3);
             } else if (Left) {
                 log("Go for Left");
-                GlyphBox(3);
+                GlyphBoxBlue(1);
             } else {
                 if (Center) {
                     log("Go for Center");
                 } else {
                     log("Unknown. Go for center");
                 }
-                GlyphBox(2);
+                GlyphBoxBlue(2);
             }
 
             // say the side now again
@@ -215,7 +215,7 @@ public class Autonomous_R1_State extends LinearOpMode {
 
     }
 
-    public void GlyphBox(int column){
+    public void GlyphBoxBlue(int column){
         // Start GlyphBox
         log("Ease off the board");
         DriveFunctions.Turn(0.3,0.7, leftMotor,rightMotor);
@@ -223,24 +223,24 @@ public class Autonomous_R1_State extends LinearOpMode {
         DriveFunctions.Brake(leftMotor,rightMotor);
 
         log("Turn 90");
-        DriveFunctions.Turn(-0.3,0.7,leftMotor,rightMotor);
+        DriveFunctions.Turn(0.3,-0.7,leftMotor,rightMotor);
         sleep(650);
         DriveFunctions.Brake(leftMotor,rightMotor);
 
         long driveTime = 1000;
-        if (column == 1) driveTime = 300;
-        if (column == 2) driveTime = 450;
-        if (column == 3) driveTime = 600;
+        if (column == 1) driveTime = 450;
+        if (column == 2) driveTime = 600;
+        if (column == 3) driveTime = 750;
 
         log("Drive straight");
-        DriveFunctions.Turn(0.3,0.7,leftMotor,rightMotor);
+        DriveFunctions.Turn(0.2,0.6,leftMotor,rightMotor);
         // we should just have to adjust this drivespeed for the correct column
         sleep(driveTime);
         DriveFunctions.Brake(leftMotor,rightMotor);
 
-        log("Turn -90");
-        DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
-        sleep(800);
+        log("Turn 90");
+        DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
+        sleep(650);
         DriveFunctions.Brake(leftMotor,rightMotor);
 
         log("Drive straight");
@@ -308,6 +308,36 @@ public class Autonomous_R1_State extends LinearOpMode {
             sleep(200);
             DriveFunctions.Brake(leftMotor,rightMotor);
             servoStickRight1.setPosition(up);
+            sleep(2000);
+            DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
+            sleep(200);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+        }
+        else {
+            log("Color is not visible");
+        }
+    }
+
+    public void BlueSideJewell(Servo servoStick){
+        servoStick.setPosition(down);
+        sleep(2000);
+        if (DriveFunctions.ReadColor(colorSensorRight) == 0){
+            log("Color is Blue");
+            DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
+            sleep(200);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            servoStick.setPosition(up);
+            sleep(2000);
+            DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
+            sleep(200);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+        }
+        else if (DriveFunctions.ReadColor(colorSensorRight) == 1){
+            log("Color is Red");
+            DriveFunctions.Turn(-0.3,0.3,leftMotor,rightMotor);
+            sleep(200);
+            DriveFunctions.Brake(leftMotor,rightMotor);
+            servoStick.setPosition(up);
             sleep(2000);
             DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
             sleep(200);
