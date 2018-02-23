@@ -32,6 +32,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
+@Disabled
 @Autonomous(name = "Autonomous_R1_V3.22", group = "Pushbot" )
 
 public class  Autonomous_R1 extends LinearOpMode {

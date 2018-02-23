@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 /**
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
-
+@Disabled
 @Autonomous(name = "BlueSide2_v5", group = "Pushbot" )
 public class BlueSide_Board2 extends LinearOpMode {
     private DcMotor leftMotor, rightMotor; //Declares the motors
