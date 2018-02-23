@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.util.Range;
  * 2/7/2018
  */
 @TeleOp
-public class botCatz_Test_TeleOp extends LinearOpMode {
+public class botCatz_State_TeleOp extends LinearOpMode {
 
     private float x, y, z, w, pwr;
     private static double deadzone = 0.2;
