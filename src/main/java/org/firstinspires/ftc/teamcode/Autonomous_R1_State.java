@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.vuforia.CameraDevice;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -27,7 +28,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by ITSA-GAMINGHP2 on 11/9/2017.
  */
 
-@Autonomous(name = "Autonomous_R1_State_v1", group = "Pushbot" )
+@Autonomous(name = "Autonomous_R1_State_v7", group = "Pushbot" )
 
 public class Autonomous_R1_State extends LinearOpMode {
     private DcMotor leftMotor, rightMotor,clawMotor,armHeight; //Declares the drive motors
@@ -65,7 +66,7 @@ public class Autonomous_R1_State extends LinearOpMode {
         // OR...  Do Not Activate the Camera Monitor View, to save power
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
         parametersV.vuforiaLicenseKey = "AeOpxj3/////AAAAGa1hky4Ahkp6jA7uCGunP+KJAZb3Di06YSh1ToEAxDmlWGeqxY3Mp26DqFw1P5Lyc/gFq992XUJ2bf8QtwYWln76jzRISvwAoSotdCOMreIL6fpbK4fdsAG9u85FTJlPDsOMY5u9YktxQ/JERWyrQC/NhAxJX+RDVtTouFnrUx/EI8CJDHR/IFcHnQ4KIJdCfQBoeC6+qMJ1RCa2lo2BFPcQv4blFatYz4Z0P+0XVhiza0t0mwJXKzTlwq+c4V9X0nWseTQZXnmgbB0kwQx+m/pGzr9ImML9WhSiWp5qPjyqDYitWs7cU/zWLFFT1wWpW7KkhQ+boQ2zwUsYKemRKY21LV9lkHh5/2a7bJWqKHY/"; //Key for using Vuforia in code
-        parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT; //Decides which camera to use
+        parametersV.cameraDirection = VuforiaLocalizer.CameraDirection.BACK; //Decides which camera to use .BACK or .FRONT
         this.vuforia = ClassFactory.createVuforiaLocalizer(parametersV); //Creates Vuforia Localizer
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark"); //Decides which pictures to use
         VuforiaTrackable relicTemplate = relicTrackables.get(0); //Base pictures
@@ -123,6 +124,8 @@ public class Autonomous_R1_State extends LinearOpMode {
         // opModeIsActive will return false when the user hits stop.
         while (opModeIsActive()) {
             // VuMark == camera access
+            CameraDevice.getInstance().setFlashTorchMode(true); //Turns flashlight on
+            sleep(2000);
 
             //Sets variable for figuring out which picture it is
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate); //Reference to picture
@@ -130,6 +133,8 @@ public class Autonomous_R1_State extends LinearOpMode {
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) { //Events for if VuMark is unknown
                 // Do this when we know what the cypher is
                 telemetry.addData("VuMark", "%s visible", vuMark);
+
+
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose(); //Gets the position of the picture
                 //Turns it into rotation and position coordinates
 
@@ -155,6 +160,12 @@ public class Autonomous_R1_State extends LinearOpMode {
             Center = (vuMark == RelicRecoveryVuMark.CENTER);
             Right = (vuMark == RelicRecoveryVuMark.RIGHT);
             Left = (vuMark == RelicRecoveryVuMark.LEFT);
+
+            sleep(4000);
+
+            //flashlight off
+            CameraDevice.getInstance().setFlashTorchMode(false);
+
             if (Center) {
                 log("Center");
             } else if (Right) {
@@ -186,6 +197,17 @@ public class Autonomous_R1_State extends LinearOpMode {
                 GlyphBox(2);
             }
 
+            // say the side now again
+            if (Center) {
+                log("Center");
+            } else if (Right) {
+                log("Right");
+            } else if (Left) {
+                log("Left");
+            } else {
+                log("VuMark", "not visible");
+            }
+
             sleep(300000);
 
         }
@@ -201,13 +223,28 @@ public class Autonomous_R1_State extends LinearOpMode {
 
         log("Turn 90");
         DriveFunctions.Turn(-0.3,0.7,leftMotor,rightMotor);
+        sleep(650);
+        DriveFunctions.Brake(leftMotor,rightMotor);
+
+        long driveTime = 1000;
+        if (column == 1) driveTime = 300;
+        if (column == 2) driveTime = 500;
+        if (column == 3) driveTime = 700;
+
+        log("Drive straight");
+        DriveFunctions.Turn(0.3,0.7,leftMotor,rightMotor);
+        // we should just have to adjust this drivespeed for the correct column
+        sleep(driveTime);
+        DriveFunctions.Brake(leftMotor,rightMotor);
+
+        log("Turn -90");
+        DriveFunctions.Turn(0.3,-0.3,leftMotor,rightMotor);
         sleep(700);
         DriveFunctions.Brake(leftMotor,rightMotor);
 
         log("Drive straight");
         DriveFunctions.Turn(0.3,0.7,leftMotor,rightMotor);
-        // we should just have to adjust this drivespeed for the correct column
-        sleep(1000);
+        sleep(600);
         DriveFunctions.Brake(leftMotor,rightMotor);
         FlickBlock();
         FlickBlock();
@@ -216,25 +253,36 @@ public class Autonomous_R1_State extends LinearOpMode {
         log("Back Up to Ensure Scoring Procedural Success");
         DriveFunctions.Turn(-0.3,-0.7,leftMotor,rightMotor);
         sleep(300);
-        FlickBlock();
-        FlickBlock();
         DriveFunctions.Brake(leftMotor,rightMotor);
 
-        //final back up
-        log("Backup one last time");
+        FlickBlock();
+        FlickBlock();
+
+
+        // back up
+        log("Backup");
         DriveFunctions.BackUp(leftMotor, rightMotor, 0.3);
         sleep(200);
         DriveFunctions.Brake(leftMotor,rightMotor);
 
         FlickBlock();
         FlickBlock();
+
+        log("Forward back");
+        DriveFunctions.DriveStraight(leftMotor, rightMotor, 0.3);
+        sleep(600);
+        DriveFunctions.Brake(leftMotor,rightMotor);
+        DriveFunctions.BackUp(leftMotor, rightMotor, 0.3);
+        sleep(300);
+        DriveFunctions.Brake(leftMotor,rightMotor);
+
         // end GlyphBox
     }
 
     public void FlickBlock(){
-        blockFlicker.setPosition(up);
-        sleep(1000);
         blockFlicker.setPosition(down);
+        sleep(1000);
+        blockFlicker.setPosition(up);
         sleep(1000);
 
     }
